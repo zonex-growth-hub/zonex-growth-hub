@@ -148,7 +148,7 @@ export function Portfolio() {
                 key={project.id}
                 project={project}
                 onPreview={() => setPreview(project)}
-                onOpen={project.id === 1 ? () => window.open(project.url, '_blank', 'noopener,noreferrer') : undefined}
+                onOpen={project.id === 3 ? () => window.open(project.url, '_blank', 'noopener,noreferrer') : undefined}
               />
             ))}
           </AnimatePresence>

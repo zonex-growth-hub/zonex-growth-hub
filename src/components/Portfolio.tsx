@@ -11,7 +11,7 @@ const metricColors: Record<string, string> = {
   royal: 'text-violet-300 border-violet-400/30 bg-violet-400/10',
 };
 
-function TiltCard({ project, onPreview }: { project: Project; onPreview: () => void }) {
+function TiltCard({ project, onPreview, onOpen }: { project: Project; onPreview: () => void; onOpen?: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -35,6 +35,15 @@ function TiltCard({ project, onPreview }: { project: Project; onPreview: () => v
       ref={ref}
       onMouseMove={handleMouse}
       onMouseLeave={handleLeave}
+      onClick={onOpen}
+      onKeyDown={(e) => {
+        if (onOpen && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          onOpen();
+        }
+      }}
+      role={onOpen ? 'link' : undefined}
+      tabIndex={onOpen ? 0 : undefined}
       style={style}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -59,7 +68,7 @@ function TiltCard({ project, onPreview }: { project: Project; onPreview: () => v
 
       {/* Content */}
       <div className="p-6" style={{ transform: 'translateZ(30px)' }}>
-        <span className="text-xs font-semibold text-violet-400 uppercase tracking-wider">{project.category === 'Brand Identity' ? 'BRAND IDENTITY / WEB DEVELOPMENT' : project.category === 'Web Development' ? 'WEB DEVELOPMENT' : project.category.toUpperCase()}</span>
+        <span className="text-xs font-semibold text-violet-400 uppercase tracking-wider">{project.category === 'Restaurant & Food Chain Web App' ? project.category : project.category === 'Brand Identity' ? 'BRAND IDENTITY / WEB DEVELOPMENT' : project.category === 'Web Development' ? 'WEB DEVELOPMENT' : project.category.toUpperCase()}</span>
         <h3 className="mt-2 font-display text-xl font-bold">{project.title}</h3>
         <p className="mt-2 text-sm text-slate-400 light:text-slate-600 leading-relaxed">{project.description}</p>
 
@@ -78,13 +87,17 @@ function TiltCard({ project, onPreview }: { project: Project; onPreview: () => v
             href={project.url}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
             className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm font-semibold bg-violet-500/15 text-violet-300 border border-violet-500/40 hover:bg-violet-500/25 hover:border-violet-400 transition-all"
           >
             <ExternalLink className="w-4 h-4" />
-            View Live Project
+            Explore Live Portfolio
           </a>
           <button
-            onClick={onPreview}
+            onClick={(e) => {
+              e.stopPropagation();
+              onPreview();
+            }}
             className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl text-sm font-semibold glass text-slate-300 hover:bg-violet-500/10 transition-all"
           >
             <Eye className="w-4 h-4" />
@@ -131,7 +144,12 @@ export function Portfolio() {
         <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <AnimatePresence mode="popLayout">
             {filtered.map((project) => (
-              <TiltCard key={project.id} project={project} onPreview={() => setPreview(project)} />
+              <TiltCard
+                key={project.id}
+                project={project}
+                onPreview={() => setPreview(project)}
+                onOpen={project.id === 1 ? () => window.open(project.url, '_blank', 'noopener,noreferrer') : undefined}
+              />
             ))}
           </AnimatePresence>
         </motion.div>

@@ -332,7 +332,7 @@ export const BEFORE_AFTER = [
 export interface Project {
   id: number;
   title: string;
-  category: 'Web Development' | 'Video Reels & Ads' | 'Brand Identity' | 'SEO Growth';
+  category: 'Web Development' | 'Video Reels & Ads' | 'Brand Identity' | 'SEO Growth' | 'Restaurant & Food Chain Web App';
   metric: string;
   metricColor: string;
   url: string;
@@ -344,14 +344,14 @@ export interface Project {
 export const PROJECTS: Project[] = [
   {
     id: 1,
-    title: 'ZoneX Academy Platform',
-    category: 'Web Development',
+    title: 'M.H. Biryani Center',
+    category: 'Restaurant & Food Chain Web App',
     metric: 'Live Project',
     metricColor: 'emerald',
-    url: 'https://zonex-academy.com',
-    tech: ['React', 'Node.js', 'LMS', 'GA4'],
-    description: 'Official ed-tech learning platform built for seamless course delivery and student engagement.',
-    image: '/assets/images/WhatsApp_Image_2026-08-06_at_3.32.41_PM.jpeg',
+    url: 'https://mhbiryanicenter.vercel.app/',
+    tech: ['React', 'Online Ordering', 'Restaurant UI', 'Responsive Web'],
+    description: 'Seamless online ordering platform developed for increased digital presence and revenue growth.',
+    image: '/assets/images/WhatsApp_Image_2026-08-07_at_10.31.15_AM.jpeg',
   },
   {
     id: 2,

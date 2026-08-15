@@ -1,7 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Sparkles, ArrowRight, Calculator, TrendingUp, Star } from 'lucide-react';
-import { AIRobot } from '@/components/AIRobot';
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -15,9 +14,17 @@ export function Hero() {
       ref={ref}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Full-width edge-to-edge robot background visual */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <AIRobot />
+      {/* Background Video Wrapper */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src="/assets/videos/hero-bg.mp4" type="video/mp4" />
+        </video>
       </div>
 
       {/* Dark overlay on the left for text readability on desktop */}

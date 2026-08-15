@@ -9,10 +9,13 @@ import { Services } from '@/components/Services';
 import { BeforeAfter } from '@/components/BeforeAfter';
 import { TechMarquee } from '@/components/TechMarquee';
 import { Process } from '@/components/Process';
+import { GrowthInsights } from '@/components/GrowthInsights';
 import { Testimonials } from '@/components/Testimonials';
 import { FAQs } from '@/components/FAQs';
 import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
+import { FloatingWhatsApp } from '@/components/FloatingWhatsApp';
+
 function App() {
   return (
     <ThemeProvider>
@@ -28,11 +31,13 @@ function App() {
           <BeforeAfter />
           <TechMarquee />
           <Process />
+          <GrowthInsights />
           <Testimonials />
           <FAQs />
           <Contact />
         </main>
         <Footer />
+        <FloatingWhatsApp />
       </div>
     </ThemeProvider>
   );

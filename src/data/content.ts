@@ -19,6 +19,7 @@ export const NAV_ITEMS = [
   { label: 'ROI Estimator', href: '#roi' },
   { label: 'Reels Showcase', href: '#reels' },
   { label: 'Process', href: '#process' },
+  { label: 'Insights', href: '#insights' },
   { label: 'FAQs', href: '#faqs' },
 ];
 

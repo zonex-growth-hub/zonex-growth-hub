@@ -35,10 +35,11 @@ export function Hero() {
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
         </div>
 
-        <nav className="hidden md:flex items-center gap-8 text-xs tracking-[0.2em] uppercase font-semibold text-slate-300">
+        <nav className="hidden md:flex items-center gap-7 text-xs tracking-[0.2em] uppercase font-semibold text-slate-300">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="hover:text-white transition-colors cursor-pointer">Home</button>
           <button onClick={() => scrollToSection('services')} className="hover:text-white transition-colors cursor-pointer">Services</button>
           <button onClick={handleExplorePortfolio} className="hover:text-white transition-colors cursor-pointer">Portfolios</button>
+          <button onClick={() => scrollToSection('insights')} className="hover:text-white transition-colors cursor-pointer">Insights</button>
           <a href="https://zonex-academy.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors cursor-pointer flex items-center gap-1">
             <span>Academy</span>
             <span className="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-bold border border-cyan-500/30">PRO</span>

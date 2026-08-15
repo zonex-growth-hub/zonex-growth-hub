@@ -1,0 +1,167 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUpRight, Target } from 'lucide-react';
+import { SectionHeading } from './SectionHeading';
+import { analytics } from '@/utils/analytics';
+
+interface ArticleItem {
+  id: string;
+  tag: string;
+  tagColor: string;
+  title: string;
+  excerpt: string;
+  readTime: string;
+  hub: string;
+  points: string[];
+}
+
+const ARTICLES: ArticleItem[] = [
+  {
+    id: 'mysuru-digital-marketing-framework',
+    tag: 'Regional SEO & Local Domination',
+    tagColor: 'border-violet-500/30 text-violet-400 bg-violet-500/10',
+    title: 'How Mysuru & Bengaluru Businesses Scale 10x with Hyper-Local SEO & Google Maps Domination',
+    excerpt: 'A deep-dive into how ZoneX Growth Hub captures high-intent local search queries across Karnataka commercial hubs, generating 4x higher inbound customer inquiries.',
+    readTime: '4 min read',
+    hub: 'Mysuru (HQ) & Bengaluru',
+    points: [
+      'Google Business Profile (GBP) Local 3-Pack Optimization',
+      'Hyper-targeted geo-keyword clusters (Mysuru, Bengaluru, Chikkamagaluru)',
+      'Schema structured data injection for instant AI search citations',
+    ],
+  },
+  {
+    id: 'meta-google-ads-roas-scaling',
+    tag: 'Performance Advertising',
+    tagColor: 'border-cyan-500/30 text-cyan-400 bg-cyan-500/10',
+    title: 'The 4.2x ROAS Meta & Google PPC Playbook for D2C & Regional Enterprises',
+    excerpt: 'Discover the exact creative testing frameworks, dynamic budget allocation methods, and full-funnel tracking architectures we use to scale paid media spend profitably.',
+    readTime: '5 min read',
+    hub: 'Statewide Karnataka & India',
+    points: [
+      'High-CTR video hook formulas engineered for short-form attention',
+      'Custom audience segmentation & predictive lifetime value modeling',
+      'Server-side CAPI tracking & zero-leak attribution dashboards',
+    ],
+  },
+  {
+    id: 'ai-business-automation-growth',
+    tag: 'AI Workflows & Web Systems',
+    tagColor: 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10',
+    title: 'Next-Gen AI Business Automations & Frictionless Lead Funnels for High Conversion',
+    excerpt: 'Why traditional slow-loading websites lose 60% of paid ad traffic and how lightning-fast React architecture combined with WhatsApp lead triggers compounds conversion rates.',
+    readTime: '3 min read',
+    hub: 'Karnataka Tech Ecosystem',
+    points: [
+      'Sub-second Core Web Vitals performance for maximum Google quality scores',
+      'Automated 2-step WhatsApp inquiry routing (< 5 min response time)',
+      'Programmatic landing page generation for multi-city search capture',
+    ],
+  },
+];
+
+export function GrowthInsights() {
+  const [selected, setSelected] = useState<string | null>(null);
+
+  const handleRead = (article: ArticleItem) => {
+    analytics.trackViewContent(`Growth Insight: ${article.title}`, { hub: article.hub });
+    setSelected(selected === article.id ? null : article.id);
+  };
+
+  const handleConsultation = () => {
+    analytics.trackLead('Growth Insight CTA Click');
+    const el = document.getElementById('contact');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <section id="insights" className="section-pad relative" aria-label="Growth Insights & Digital Marketing Playbooks">
+      <div className="container-max">
+        <SectionHeading
+          eyebrow="Continuous Knowledge Engine"
+          title={<>Authoritative <span className="gradient-text">Growth Insights</span> &amp; Playbooks</>}
+          subtitle="Programmatically curated strategies on performance advertising, local SEO engineering, and AI automation for regional leaders."
+        />
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {ARTICLES.map((art, i) => {
+            const isOpen = selected === art.id;
+
+            return (
+              <motion.article
+                key={art.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="glass-strong rounded-3xl p-6 sm:p-7 border border-violet-500/20 hover:border-violet-500/50 transition-all flex flex-col justify-between shadow-[0_0_30px_rgba(139,92,246,0.1)] group"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <span className={`text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full border ${art.tagColor}`}>
+                      {art.tag}
+                    </span>
+                    <span className="text-[11px] text-slate-500 font-medium">{art.readTime}</span>
+                  </div>
+
+                  <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-cyan-300 transition-colors leading-snug mb-3">
+                    {art.title}
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4">
+                    {art.excerpt}
+                  </p>
+
+                  <div className="flex items-center gap-1.5 text-xs text-violet-400 font-medium mb-4">
+                    <Target className="w-3.5 h-3.5" />
+                    <span>Focus: {art.hub}</span>
+                  </div>
+
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden pt-3 pb-2 border-t border-white/10"
+                      >
+                        <h4 className="text-xs font-bold uppercase text-cyan-300 mb-2">Key Execution Highlights:</h4>
+                        <ul className="space-y-2 mb-4">
+                          {art.points.map((pt) => (
+                            <li key={pt} className="flex items-start gap-2 text-xs text-slate-300">
+                              <span className="w-1.5 h-1.5 rounded-full bg-violet-400 mt-1.5 shrink-0" />
+                              <span>{pt}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-2">
+                  <button
+                    onClick={() => handleRead(art)}
+                    className="text-xs font-bold text-violet-400 hover:text-white flex items-center gap-1 transition-colors cursor-pointer"
+                  >
+                    <span>{isOpen ? 'Show Less' : 'Read Framework'}</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </button>
+
+                  <button
+                    onClick={handleConsultation}
+                    className="px-3.5 py-1.5 rounded-full text-[11px] font-bold bg-violet-950/60 hover:bg-violet-700 text-purple-200 hover:text-white border border-violet-500/30 transition-all cursor-pointer"
+                  >
+                    Apply to My Brand
+                  </button>
+                </div>
+              </motion.article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default GrowthInsights;

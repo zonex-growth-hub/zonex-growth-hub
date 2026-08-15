@@ -1,6 +1,5 @@
 import { ThemeProvider } from '@/context/ThemeContext';
 import { AmbientBackground } from '@/components/AmbientBackground';
-import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
 import { HeroStats } from '@/components/HeroStats';
 import { Portfolio } from '@/components/Portfolio';
@@ -19,7 +18,6 @@ function App() {
     <ThemeProvider>
       <div className="relative min-h-screen">
         <AmbientBackground />
-        <Navbar />
         <main>
           <Hero />
           <HeroStats />

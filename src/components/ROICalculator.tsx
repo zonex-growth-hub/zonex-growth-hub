@@ -6,6 +6,7 @@ import {
 import { DollarSign, Target, TrendingUp, Users, MessageCircle, Calculator } from 'lucide-react';
 import { AGENCY } from '@/data/content';
 import { SectionHeading } from './SectionHeading';
+import { analytics } from '@/utils/analytics';
 
 function formatINR(n: number) {
   if (n >= 10000000) return `₹${(n / 10000000).toFixed(1)}Cr`;
@@ -122,10 +123,11 @@ export function ROICalculator() {
                 href={AGENCY.whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-glow w-full"
+                onClick={() => analytics.trackInitiateCheckout('ROI Strategy Claim on WhatsApp', { budget, targetSales })}
+                className="btn-glow w-full cursor-pointer flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-5 h-5" />
-                Get Strategy for My Budget on WhatsApp
+                Get Strategy for My Budget on WhatsApp →
               </a>
             </div>
           </motion.div>

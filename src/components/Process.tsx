@@ -5,12 +5,12 @@ import { SectionHeading } from './SectionHeading';
 
 export function Process() {
   return (
-    <section id="process" className="section-pad relative">
+    <section id="process" className="section-pad relative" aria-label="Growth Process & Methodology">
       <div className="container-max">
         <SectionHeading
-          eyebrow="How We Work"
-          title={<>4-Step <span className="gradient-text">Frictionless</span> Onboarding</>}
-          subtitle="From first call to daily optimization — a clear, proven path to scaling your brand."
+          eyebrow="Data-Backed Growth Methodology"
+          title={<>Data-Backed <span className="gradient-text">Growth Stack:</span> Paid Media, SEO &amp; Conversion Optimization</>}
+          subtitle="From initial brand audit to multi-channel scaling — a proven, battle-tested execution framework for businesses across Karnataka."
         />
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
@@ -44,3 +44,5 @@ export function Process() {
     </section>
   );
 }
+
+export default Process;

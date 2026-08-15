@@ -55,7 +55,7 @@ function TiltCard({ project, onPreview, onOpen }: { project: Project; onPreview:
       <div className="relative h-52 overflow-hidden" style={{ transform: 'translateZ(40px)' }}>
         <img
           src={project.image}
-          alt={project.title}
+          alt={`ZoneX Growth Hub digital marketing strategy and web engineering - ${project.title}`}
           loading="lazy"
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />

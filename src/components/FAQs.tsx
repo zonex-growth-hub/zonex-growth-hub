@@ -8,12 +8,12 @@ export function FAQs() {
   const [open, setOpen] = useState<number | null>(1);
 
   return (
-    <section id="faqs" className="section-pad relative" aria-label="Frequently Asked Questions">
+    <section id="faqs" className="section-pad relative" aria-label="Frequently Asked Growth Questions">
       <div className="container-max">
         <SectionHeading
-          eyebrow="FAQs"
-          title={<>Frequently Asked <span className="gradient-text">Questions</span></>}
-          subtitle="Everything you need to know about timelines, budgets, guarantees, and deliverables."
+          eyebrow="Growth FAQ &amp; Regional Insights"
+          title={<>Frequently Asked <span className="gradient-text">Growth Questions</span></>}
+          subtitle="Answers to common inquiries regarding digital marketing, paid ads scaling, timelines, local SEO in Karnataka, and ZoneX Academy."
         />
 
         <div className="max-w-3xl mx-auto space-y-3">

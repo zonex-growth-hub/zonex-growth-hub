@@ -82,37 +82,33 @@ export function Hero() {
         {/* Regional Authority Rating Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-950/60 border border-purple-500/40 text-purple-300 text-xs sm:text-sm font-semibold mb-6 backdrop-blur-md shadow-[0_0_20px_rgba(168,85,247,0.2)]">
           <span className="text-yellow-400">★ ★ ★ ★ ★</span>
-          <span>RATED #1 DIGITAL GROWTH AGENCY IN KARNATAKA | MYSURU (HQ) • BENGALURU</span>
+          <span>#1 DIGITAL GROWTH &amp; AI PERFORMANCE AGENCY IN KARNATAKA</span>
         </div>
 
-        {/* Main Headline */}
+        {/* Primary Semantic H1 */}
         <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-tight uppercase max-w-5xl drop-shadow-md">
-          We Scale Brands into{' '}
+          Next-Gen AI &amp;{' '}
           <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 bg-clip-text text-transparent">
-            Market Leaders
+            Digital Growth Engine
           </span>{' '}
-          with High-CTR Ads, Viral Content & Web Architecture.
+          for Karnataka Businesses
         </h1>
 
-        {/* High-Converting Agency Description */}
+        {/* High-Converting Strategic Agency Description */}
         <p className="mt-6 text-sm sm:text-base md:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed">
-          Full-service growth agency headquartered in Mysuru, serving high-growth brands across Bengaluru, Chikkamagaluru, Mangaluru, and India. Specializing in high-ROAS Meta & Google PPC scaling, viral short-form video reels, custom high-converting web architecture, and AI marketing workflows.
+          Scale 10x with ZoneX Growth Hub. Top-tier Meta &amp; Google Ads, Local SEO dominance, AI-powered web systems, and viral performance marketing across <strong>Bengaluru, Mysuru, Chikkamagaluru</strong>, and statewide Karnataka.
         </p>
 
         {/* Regional City Coverage Trust Pills */}
         <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-[11px] font-medium text-slate-400">
-          <span className="text-violet-400 font-semibold">Active Hubs:</span>
-          <span>Mysuru (HQ)</span>
+          <span className="text-violet-400 font-semibold">Active Regional Hubs:</span>
+          <span>Digital Marketing Agency Mysuru (HQ)</span>
           <span>•</span>
-          <span>Bengaluru</span>
+          <span>Performance Marketing Bengaluru</span>
           <span>•</span>
-          <span>Chikkamagaluru</span>
+          <span>Local SEO Chikkamagaluru</span>
           <span>•</span>
-          <span>Mangaluru</span>
-          <span>•</span>
-          <span>Hubballi</span>
-          <span>•</span>
-          <span>Pan-India</span>
+          <span>AI Business Automation Karnataka</span>
         </div>
 
         {/* Conversion Action Buttons with Event Tracking */}

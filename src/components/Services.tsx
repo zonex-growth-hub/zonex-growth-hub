@@ -5,12 +5,12 @@ import { SectionHeading } from './SectionHeading';
 
 export function Services() {
   return (
-    <section id="services" className="section-pad relative">
+    <section id="services" className="section-pad relative" aria-label="Performance Solutions & Digital Services">
       <div className="container-max">
         <SectionHeading
-          eyebrow="Our Services"
-          title={<>The Complete <span className="gradient-text">11 Core Services</span> Suite</>}
-          subtitle="Everything your brand needs to scale — from identity and content to paid ads, web development, and analytics."
+          eyebrow="Regional & Multi-City Growth Solutions"
+          title={<>Hyper-Targeted <span className="gradient-text">Performance Solutions</span> in Bengaluru, Mysuru &amp; Chikkamagaluru</>}
+          subtitle="Data-backed growth stack: High-ROI Meta & Google PPC ads, local SEO dominance, high-conversion web engineering, and AI marketing workflows."
         />
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -25,9 +25,14 @@ export function Services() {
                 transition={{ duration: 0.4, delay: (i % 3) * 0.1 }}
                 className="group relative glass-strong rounded-3xl overflow-hidden card-glow-hover hover:border-violet-500/50"
               >
-                {/* Background image */}
+                {/* Background image with geo-infused alt tag */}
                 <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-500">
-                  <img src={service.image} alt="" loading="lazy" className="w-full h-full object-cover" />
+                  <img
+                    src={service.image}
+                    alt={`ZoneX Growth Hub digital marketing and AI growth service - ${service.title}`}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/80 to-transparent" />
 
@@ -65,3 +70,5 @@ export function Services() {
     </section>
   );
 }
+
+export default Services;

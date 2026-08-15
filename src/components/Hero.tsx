@@ -1,68 +1,113 @@
 import React from 'react';
 
 export function Hero() {
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-black overflow-hidden">
+    <div id="hero" className="relative w-full min-h-screen overflow-hidden bg-black text-white">
       
-      {/* 1. Top Section: Badge & Main Headline */}
-      <div className="w-full max-w-4xl mx-auto flex flex-col items-center text-center">
-        {/* Rating Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-950/60 border border-purple-500/40 text-purple-300 text-xs sm:text-sm font-semibold mb-4 backdrop-blur-md shadow-[0_0_20px_rgba(168,85,247,0.2)]">
-          <span className="text-yellow-400">★ ★ ★ ★ ★</span>
-          <span>ZONEX GROWTH HUB AGENCY</span>
-        </div>
-
-        {/* Headline */}
-        <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight drop-shadow-lg">
-          We Scale Brands into Market Leaders with{' '}
-          <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 bg-clip-text text-transparent">
-            High-CTR Ads
-          </span>
-          , Viral Content & Web Architecture.
-        </h1>
+      {/* 1. Full-Screen Background Video Layer */}
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          controls={false}
+          className="w-full h-full object-cover object-center"
+        >
+          <source src="/assets/videos/hero-bg.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        {/* Subtle cinematic gradient overlay to ensure text and navigation pop */}
+        <div className="absolute inset-0 bg-black/40 bg-gradient-to-b from-black/80 via-black/20 to-black/90" />
       </div>
 
-      {/* 2. Middle Section: 16:9 3D Comparison Video (Crystal clear, vibrant, no dark overlay) */}
-      <div className="w-full max-w-4xl mx-auto my-6 sm:my-8 px-2 sm:px-0">
-        <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-purple-500/40 shadow-[0_0_40px_rgba(168,85,247,0.3)] bg-slate-950">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            controls={false}
-            className="w-full h-full object-cover object-center"
+      {/* 2. Transparent Top Navigation Bar */}
+      <header className="relative z-20 w-full px-6 sm:px-12 py-6 flex items-center justify-between">
+        {/* Brand Logo / Name */}
+        <div 
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="cursor-pointer font-black text-xl sm:text-2xl tracking-wider text-white hover:text-cyan-400 transition-colors"
+        >
+          ZONEX<span className="text-purple-400">.</span>
+        </div>
+
+        {/* Navigation Links with Smooth Scroll */}
+        <nav className="hidden md:flex items-center gap-8 text-sm font-medium tracking-widest uppercase text-slate-300">
+          <button 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
+            className="hover:text-white transition-colors"
           >
-            <source src="/assets/videos/hero-bg.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </div>
+            Home
+          </button>
+          <button 
+            onClick={() => scrollToSection('services')} 
+            className="hover:text-white transition-colors"
+          >
+            Services
+          </button>
+          <button 
+            onClick={() => scrollToSection('portfolio')} 
+            className="hover:text-white transition-colors"
+          >
+            Portfolios
+          </button>
+          <button 
+            onClick={() => scrollToSection('contact')} 
+            className="hover:text-white transition-colors"
+          >
+            Contact Us
+          </button>
+        </nav>
 
-      {/* 3. Bottom Section: Description & Action Buttons */}
-      <div className="w-full max-w-3xl mx-auto flex flex-col items-center text-center">
-        <p className="text-slate-300 text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed mb-6">
-          Full-service growth agency specializing in Brand Identity, Meta/Google PPC Scaling, Short-Form Reel Creation, and Custom High-Converting Websites.
+        {/* Right Action Button */}
+        <div>
+          <button
+            onClick={() => scrollToSection('contact')}
+            className="px-5 py-2 rounded-full border border-white/40 text-xs sm:text-sm font-semibold tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 backdrop-blur-sm"
+          >
+            Get In Touch
+          </button>
+        </div>
+      </header>
+
+      {/* 3. Center Luxury Hero Content (Mantra Milestones Style) */}
+      <main className="relative z-10 w-full min-h-[calc(100vh-100px)] flex flex-col items-center justify-center text-center px-4 sm:px-6">
+        
+        {/* Minimal Sub-tag */}
+        <p className="text-xs sm:text-sm md:text-base font-semibold tracking-[0.3em] uppercase text-cyan-300 mb-4 drop-shadow-md">
+          Performance Marketing & Web Architecture
         </p>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-4 w-full">
-          <a
-            href="#portfolio"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 shadow-[0_0_25px_rgba(147,51,234,0.4)] transition-all duration-300 transform hover:scale-105 text-center"
-          >
-            Explore Live Portfolios →
-          </a>
-          <a
-            href="#roi"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-cyan-300 border border-cyan-500/40 bg-black/40 backdrop-blur-md hover:bg-cyan-950/30 transition-all duration-300 text-center"
-          >
-            Calculate Your ROI
-          </a>
-        </div>
-      </div>
+        {/* Massive Luxury Heading */}
+        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white uppercase drop-shadow-[0_4px_30px_rgba(0,0,0,0.8)] max-w-5xl">
+          ZONEX GROWTH HUB
+        </h1>
 
-    </section>
+        {/* Clean One-Line Subtitle */}
+        <p className="mt-6 text-sm sm:text-base md:text-xl text-slate-200 font-light max-w-2xl mx-auto leading-relaxed drop-shadow-md">
+          Scaling modern brands into market leaders through viral content, high-CTR ads, and elite digital systems.
+        </p>
+
+        {/* Explore Button */}
+        <div className="mt-10">
+          <button
+            onClick={() => scrollToSection('portfolio')}
+            className="px-8 py-3.5 rounded-full bg-white text-black font-bold text-sm sm:text-base tracking-wider uppercase shadow-[0_0_30px_rgba(255,255,255,0.4)] hover:bg-cyan-400 hover:text-black transition-all duration-300 transform hover:scale-105"
+          >
+            Explore Portfolio ↓
+          </button>
+        </div>
+
+      </main>
+
+    </div>
   );
 }
 

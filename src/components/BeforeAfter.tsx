@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { X, Check, ArrowLeftRight } from 'lucide-react';
+import { X, Check, ArrowLeftRight, ArrowRight } from 'lucide-react';
 import { BEFORE_AFTER } from '@/data/content';
 import { SectionHeading } from './SectionHeading';
+import { analytics } from '@/utils/analytics';
 
 export function BeforeAfter() {
   const [pos, setPos] = useState(50);
@@ -16,8 +16,14 @@ export function BeforeAfter() {
     setPos(Math.max(0, Math.min(100, p)));
   };
 
+  const handleAuditClick = () => {
+    analytics.trackLead('BeforeAfter Transformation CTA');
+    const el = document.getElementById('contact');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section className="section-pad relative">
+    <section className="section-pad relative" aria-label="Transformation Comparison">
       <div className="container-max">
         <SectionHeading
           eyebrow="The Difference"
@@ -27,7 +33,7 @@ export function BeforeAfter() {
 
         <div
           ref={ref}
-          className="relative max-w-4xl mx-auto rounded-3xl overflow-hidden glass-strong select-none"
+          className="relative max-w-4xl mx-auto rounded-3xl overflow-hidden glass-strong select-none border border-violet-500/20 shadow-[0_0_40px_rgba(139,92,246,0.15)]"
           onMouseMove={(e) => dragging.current && update(e.clientX)}
           onMouseDown={(e) => { dragging.current = true; update(e.clientX); }}
           onMouseUp={() => (dragging.current = false)}
@@ -36,19 +42,19 @@ export function BeforeAfter() {
         >
           <div className="grid grid-cols-2">
             {/* Before */}
-            <div className="p-8 bg-red-950/20">
+            <div className="p-6 sm:p-8 bg-red-950/20">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
                   <X className="w-5 h-5 text-red-400" />
                 </div>
                 <div>
-                  <h3 className="font-display font-bold">Traditional / In-House</h3>
+                  <h3 className="font-display font-bold text-sm sm:text-base">Traditional In-House</h3>
                   <p className="text-xs text-slate-400">Competitors</p>
                 </div>
               </div>
               <div className="space-y-3">
                 {BEFORE_AFTER.map((item) => (
-                  <div key={item.label} className="flex items-center justify-between text-sm">
+                  <div key={item.label} className="flex items-center justify-between text-xs sm:text-sm">
                     <span className="text-slate-400">{item.label}</span>
                     <span className="font-semibold text-red-400">{item.before}</span>
                   </div>
@@ -57,19 +63,19 @@ export function BeforeAfter() {
             </div>
 
             {/* After */}
-            <div className="p-8 bg-violet-950/20">
+            <div className="p-6 sm:p-8 bg-violet-950/20">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-violet-500/20 flex items-center justify-center">
                   <Check className="w-5 h-5 text-violet-400" />
                 </div>
                 <div>
-                  <h3 className="font-display font-bold">With Our Agency</h3>
+                  <h3 className="font-display font-bold text-sm sm:text-base text-violet-300">With ZoneX Growth Hub</h3>
                   <p className="text-xs text-violet-400">Growth Partner</p>
                 </div>
               </div>
               <div className="space-y-3">
                 {BEFORE_AFTER.map((item) => (
-                  <div key={item.label} className="flex items-center justify-between text-sm">
+                  <div key={item.label} className="flex items-center justify-between text-xs sm:text-sm">
                     <span className="text-slate-400">{item.label}</span>
                     <span className="font-semibold text-violet-400">{item.after}</span>
                   </div>
@@ -91,15 +97,20 @@ export function BeforeAfter() {
           </div>
         </div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center text-sm text-slate-500 mt-4"
-        >
-          Drag the slider to compare
-        </motion.p>
+        <div className="mt-8 flex flex-col items-center gap-4 text-center">
+          <p className="text-xs sm:text-sm text-slate-500">
+            ← Drag the slider horizontally to compare outcomes →
+          </p>
+          <button
+            onClick={handleAuditClick}
+            className="inline-flex items-center gap-2 px-7 py-3 rounded-full font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 shadow-[0_0_25px_rgba(147,51,234,0.4)] transition-all duration-300 transform hover:scale-105 uppercase tracking-wider cursor-pointer"
+          >
+            Claim Your Transformation Audit <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
     </section>
   );
 }
+
+export default BeforeAfter;

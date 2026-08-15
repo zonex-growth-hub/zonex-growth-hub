@@ -5,37 +5,20 @@ import { Sparkles, ArrowRight, Calculator, TrendingUp, Star } from 'lucide-react
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
     <section
       id="hero"
       ref={ref}
-      className="relative min-h-[90vh] md:min-h-screen w-full flex flex-col justify-between items-center overflow-hidden"
+      className="relative min-h-screen w-full flex flex-col justify-center items-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden"
     >
-      {/* Background Video Layer */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
-        <video
-          src="/assets/videos/hero-bg.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          controls={false}
-          className="w-full h-full object-cover object-center"
-        />
-      </div>
-
-      {/* Cinematic Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90 z-10 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/30 to-black/80 z-10 pointer-events-none" />
-
-      {/* Foreground Content Structure */}
       <motion.div
         style={{ y, opacity }}
-        className="container-max px-4 sm:px-6 lg:px-8 relative z-20 w-full my-auto text-center flex flex-col items-center justify-center pt-28 sm:pt-32 pb-12"
+        className="w-full text-center flex flex-col items-center z-10"
       >
+        {/* Top: Glowing badge + Main Headline */}
         <div className="max-w-4xl mx-auto flex flex-col items-center">
           {/* Glowing Tag Badge */}
           <motion.div
@@ -67,37 +50,58 @@ export function Hero() {
             </span>
           </motion.div>
 
-          {/* Main Title with high contrast drop-shadow */}
+          {/* Main Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] text-white"
-            style={{ textShadow: '0 4px 32px rgba(0,0,0,0.9), 0 0 24px rgba(0,0,0,0.7)' }}
+            style={{ textShadow: '0 4px 28px rgba(0,0,0,0.6)' }}
           >
             We Scale Brands into{' '}
             <span className="neon-cyan lg:!text-transparent lg:!bg-clip-text lg:![-webkit-text-fill-color:transparent]" style={{ color: '#00FFFF', textShadow: '0 0 4px #FFFFFF' }}>Market Leaders</span> with{' '}
             <span className="neon-purple lg:!text-transparent lg:!bg-clip-text lg:![-webkit-text-fill-color:transparent]" style={{ color: '#00FFFF', textShadow: '0 0 4px #FFFFFF' }}>High-CTR Ads</span>,{' '}
             <span className="neon-cyan lg:!text-transparent lg:!bg-clip-text lg:![-webkit-text-fill-color:transparent]" style={{ color: '#00FFFF', textShadow: '0 0 4px #FFFFFF' }}>Viral Content</span> & Web Architecture.
           </motion.h1>
+        </div>
 
+        {/* Center: The uncropped 16:9 Comparison Video Card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="relative w-full max-w-5xl mx-auto aspect-video rounded-2xl overflow-hidden border border-purple-500/40 shadow-[0_0_40px_rgba(168,85,247,0.25)] bg-slate-950 my-6"
+        >
+          <video
+            src="/assets/videos/hero-bg.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls={false}
+            className="w-full h-full object-contain md:object-cover"
+          />
+        </motion.div>
+
+        {/* Bottom: Description text + CTA action buttons */}
+        <div className="max-w-3xl mx-auto flex flex-col items-center">
           {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-slate-200 text-sm md:text-base max-w-2xl mx-auto mt-4 sm:mt-6 leading-relaxed drop-shadow-md"
-            style={{ textShadow: '0 2px 16px rgba(0,0,0,0.8)' }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed"
+            style={{ textShadow: '0 2px 14px rgba(0,0,0,0.55)' }}
           >
             Full-service growth agency specializing in Brand Identity, Meta/Google PPC Scaling, Short-Form Reel Creation, and Custom High-Converting Websites.
           </motion.p>
 
-          {/* Action Bar / CTAs */}
+          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
+            className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
           >
             <a href="#portfolio" className="btn-glass-neon w-full sm:w-auto">
               Explore Live Portfolios
@@ -116,7 +120,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="relative z-20 pb-6 flex flex-col items-center gap-1.5 text-slate-400"
+        className="mt-8 flex flex-col items-center gap-1.5 text-slate-400 z-10"
       >
         <TrendingUp className="w-4 h-4" />
         <span className="text-[10px] uppercase tracking-widest">Scroll to explore</span>

@@ -8,7 +8,7 @@ export function FAQs() {
   const [open, setOpen] = useState<number | null>(1);
 
   return (
-    <section id="faqs" className="section-pad relative">
+    <section id="faqs" className="section-pad relative" aria-label="Frequently Asked Questions">
       <div className="container-max">
         <SectionHeading
           eyebrow="FAQs"
@@ -30,9 +30,10 @@ export function FAQs() {
               >
                 <button
                   onClick={() => setOpen(isOpen ? null : faq.id)}
-                  className="flex items-center justify-between w-full p-5 text-left"
+                  className="flex items-center justify-between w-full p-5 text-left cursor-pointer"
+                  aria-expanded={isOpen}
                 >
-                  <span className="font-semibold text-base sm:text-lg">{faq.question}</span>
+                  <h3 className="font-semibold text-base sm:text-lg text-white pr-4">{faq.question}</h3>
                   <span className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isOpen ? 'bg-violet-500/20 text-violet-400' : 'glass'}`}>
                     {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                   </span>
@@ -60,3 +61,5 @@ export function FAQs() {
     </section>
   );
 }
+
+export default FAQs;

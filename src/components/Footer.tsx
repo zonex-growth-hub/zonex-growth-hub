@@ -3,7 +3,7 @@ import { AGENCY, NAV_ITEMS } from '@/data/content';
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-violet-500/20 pt-16 pb-8">
+    <footer className="relative border-t border-violet-500/20 pt-16 pb-8" aria-label="ZoneX Growth Hub Footer">
       <div className="container-max px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
@@ -11,14 +11,17 @@ export function Footer() {
             <div className="flex items-center gap-3 mb-4">
               <img
                 src="/logo.png"
-                alt={AGENCY.name}
+                alt="ZoneX Growth Hub digital marketing agency logo"
                 className="h-10 w-auto object-contain"
                 onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
               />
               <span className="font-display font-bold text-xl">{AGENCY.name}</span>
             </div>
-            <p className="text-sm text-slate-400 light:text-slate-600 leading-relaxed max-w-md">
-              We scale brands into market leaders with high-CTR ads, viral content, and conversion-first web architecture. Your growth is our only metric.
+            <p className="text-sm text-slate-300 light:text-slate-600 leading-relaxed max-w-md mb-3">
+              Headquartered in Mysuru — Empowering brands across Mysuru, Bengaluru, Chikkamagaluru, and Karnataka with high-conversion marketing engines.
+            </p>
+            <p className="text-xs text-slate-400 light:text-slate-600 leading-relaxed max-w-md">
+              We scale brands into market leaders with high-CTR ads, viral video reels, local SEO engineering, and conversion-first web architecture.
             </p>
             <div className="flex gap-3 mt-6">
               {[
@@ -52,6 +55,11 @@ export function Footer() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a href="https://zonex-academy.com" target="_blank" rel="noopener noreferrer" className="text-sm text-cyan-400 hover:underline">
+                  ZoneX Academy 🎓
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -61,18 +69,18 @@ export function Footer() {
             <ul className="space-y-2.5 text-sm text-slate-400 light:text-slate-600">
               <li><a href={`mailto:${AGENCY.email}`} className="hover:text-violet-400 transition-colors">{AGENCY.email}</a></li>
               <li><a href={`tel:${AGENCY.phone}`} className="hover:text-violet-400 transition-colors">{AGENCY.phone}</a></li>
-              <li>{AGENCY.office}</li>
+              <li className="text-slate-300 font-medium">{AGENCY.office}</li>
             </ul>
           </div>
         </div>
 
         {/* Bottom */}
         <div className="pt-8 border-t border-violet-500/20 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-slate-500">
-            © {new Date().getFullYear()} {AGENCY.name}. All rights reserved.
+          <p className="text-xs text-slate-400">
+            © {new Date().getFullYear()} {AGENCY.name}. All rights reserved. Headquartered in Mysuru, Karnataka.
           </p>
-          <p className="text-xs text-slate-500">
-            Built with precision · Designed to convert
+          <p className="text-xs text-slate-400">
+            Built with precision · Designed to convert · AI &amp; AEO Optimized
           </p>
         </div>
       </div>
@@ -88,3 +96,5 @@ export function Footer() {
     </footer>
   );
 }
+
+export default Footer;

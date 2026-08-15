@@ -3,6 +3,16 @@ import * as Icons from 'lucide-react';
 import { SERVICES } from '@/data/content';
 import { SectionHeading } from './SectionHeading';
 
+const getCategoryTag = (title: string): string => {
+  if (title.includes('Paid') || title.includes('Video') || title.includes('Marketing') || title.includes('Creative') || title.includes('Social')) {
+    return 'Performance Ads';
+  }
+  if (title.includes('SEO') || title.includes('Website') || title.includes('Search')) {
+    return 'Local SEO Engineering';
+  }
+  return 'AI Growth Systems';
+};
+
 export function Services() {
   return (
     <section id="services" className="section-pad relative" aria-label="Performance Solutions & Digital Services">
@@ -13,9 +23,18 @@ export function Services() {
           subtitle="Data-backed growth stack: High-ROI Meta & Google PPC ads, local SEO dominance, high-conversion web engineering, and AI marketing workflows."
         />
 
+        {/* Dedicated Semantic Regional Anchor Highlight */}
+        <div className="mb-12 p-5 sm:p-6 rounded-2xl glass-strong border border-violet-500/30 text-center max-w-4xl mx-auto shadow-[0_0_30px_rgba(139,92,246,0.15)]">
+          <p className="text-xs sm:text-sm md:text-base font-medium text-slate-200 leading-relaxed">
+            📍 <span className="text-cyan-400 font-bold">Headquartered in Mysuru</span> — Empowering brands across <strong className="text-white">Mysuru, Bengaluru, Chikkamagaluru, and Karnataka</strong> with high-conversion marketing engines.
+          </p>
+        </div>
+
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {SERVICES.map((service, i) => {
             const Icon = (Icons as unknown as Record<string, Icons.LucideIcon>)[service.icon] ?? Icons.Sparkles;
+            const categoryTag = getCategoryTag(service.title);
+
             return (
               <motion.div
                 key={service.id}
@@ -38,7 +57,7 @@ export function Services() {
 
                 {/* Content */}
                 <div className="relative p-6">
-                  <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-start justify-between mb-3">
                     <div className="w-12 h-12 rounded-2xl glass flex items-center justify-center group-hover:glow-crimson transition-all duration-300">
                       <Icon className="w-6 h-6 text-violet-400" />
                     </div>
@@ -46,6 +65,11 @@ export function Services() {
                       {String(service.id).padStart(2, '0')}
                     </span>
                   </div>
+
+                  {/* Contextual AEO Tag */}
+                  <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-violet-500/10 text-cyan-300 border border-violet-500/20 mb-2.5 inline-block">
+                    {categoryTag}
+                  </span>
 
                   <h3 className="font-display font-bold text-lg leading-tight mb-2">{service.title}</h3>
                   <p className="text-sm text-slate-400 light:text-slate-600 leading-relaxed mb-4">{service.description}</p>

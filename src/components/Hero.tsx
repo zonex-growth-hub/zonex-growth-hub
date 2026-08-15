@@ -15,31 +15,36 @@ export function Hero() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Background Video Wrapper */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-cover"
+          preload="auto"
+          controls={false}
+          className="w-full h-full object-cover object-center scale-105"
         >
           <source src="/assets/videos/hero-bg.mp4" type="video/mp4" />
         </video>
       </div>
 
+      {/* Subtle dark overlay for maximum readability */}
+      <div className="absolute inset-0 bg-black/40 z-10 pointer-events-none" />
+
       {/* Dark overlay on the left for text readability on desktop */}
       <div
-        className="absolute inset-0 z-[1] pointer-events-none hidden lg:block"
+        className="absolute inset-0 z-10 pointer-events-none hidden lg:block"
         style={{
           background:
             'linear-gradient(90deg, rgba(10,8,20,0.9) 0%, rgba(10,8,20,0.66) 35%, rgba(10,8,20,0.15) 55%, transparent 75%)',
         }}
       />
       {/* Flat dark overlay for mobile readability behind text */}
-      <div className="absolute inset-0 z-[1] pointer-events-none bg-black/60 lg:hidden" />
+      <div className="absolute inset-0 z-10 pointer-events-none bg-black/60 lg:hidden" />
       {/* Top/bottom fade for mobile readability */}
       <div
-        className="absolute inset-0 z-[1] pointer-events-none lg:hidden"
+        className="absolute inset-0 z-10 pointer-events-none lg:hidden"
         style={{
           background:
             'linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 22%, transparent 45%, rgba(0,0,0,0.9) 100%)',
@@ -49,7 +54,7 @@ export function Hero() {
       {/* Text content layered above the background */}
       <motion.div
         style={{ y, opacity }}
-        className="container-max px-4 sm:px-6 lg:px-8 relative z-10 w-full pt-28 pb-20"
+        className="container-max px-4 sm:px-6 lg:px-8 relative z-20 w-full pt-28 pb-20"
       >
         <div className="max-w-3xl mx-auto lg:mx-0">
           {/* HUD Badge */}
@@ -131,7 +136,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-slate-400"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-slate-400"
       >
         <TrendingUp className="w-5 h-5" />
         <span className="text-xs uppercase tracking-widest">Scroll to explore</span>

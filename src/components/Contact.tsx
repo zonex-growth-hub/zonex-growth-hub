@@ -1,17 +1,17 @@
 import { motion } from 'framer-motion';
 import { MessageCircle, Calendar, Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
-import { AGENCY } from '@/data/content';
+import { AGENCY, KARNATAKA_CITIES } from '@/data/content';
 import { SectionHeading } from './SectionHeading';
 import { analytics } from '@/utils/analytics';
 
 export function Contact() {
   return (
-    <section id="contact" className="section-pad relative">
+    <section id="contact" className="section-pad relative" aria-label="Contact & Free Audit">
       <div className="container-max">
         <SectionHeading
           eyebrow="Let's Talk"
           title={<>Ready to Scale Your Brand to <span className="gradient-text">7-Figures?</span></>}
-          subtitle="Choose your preferred way to connect — we respond within 2 hours during business days."
+          subtitle="Headquartered in Mysuru, partnering with ambitious brands across Bengaluru, Karnataka, and Pan-India."
         />
 
         <motion.div
@@ -33,7 +33,7 @@ export function Contact() {
               <MessageCircle className="w-7 h-7 text-violet-400" />
             </div>
             <h3 className="font-display font-bold text-lg mb-1">Instant WhatsApp Chat</h3>
-            <p className="text-sm text-slate-400 mb-3">Fastest response</p>
+            <p className="text-sm text-slate-400 mb-3">Fastest response (&lt; 15 mins)</p>
             <span className="inline-flex items-center gap-1 text-violet-400 text-sm font-semibold">
               Chat now <ArrowUpRight className="w-4 h-4" />
             </span>
@@ -74,13 +74,40 @@ export function Contact() {
           </a>
         </motion.div>
 
+        {/* Karnataka Regional Growth Network Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.25 }}
+          className="mt-12 p-6 sm:p-8 rounded-3xl glass-strong border border-violet-500/20 text-center max-w-4xl mx-auto shadow-[0_0_40px_rgba(139,92,246,0.1)]"
+        >
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+            <p className="text-xs uppercase tracking-widest text-cyan-400 font-bold">
+              Karnataka Regional Growth Hubs • Statewide Domination
+            </p>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-400 mb-4 max-w-2xl mx-auto">
+            Providing on-ground & full-stack digital marketing partnerships for businesses across Karnataka:
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-slate-200">
+            {KARNATAKA_CITIES.map((city) => (
+              <span key={city} className="flex items-center gap-1.5 bg-black/50 px-3.5 py-1.5 rounded-full border border-purple-500/20 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+                {city}
+              </span>
+            ))}
+          </div>
+        </motion.div>
+
         {/* Contact Info Bar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="mt-10 flex flex-wrap justify-center items-center gap-6 text-sm text-slate-400"
+          transition={{ delay: 0.35 }}
+          className="mt-8 flex flex-wrap justify-center items-center gap-6 text-sm text-slate-400"
         >
           <a href={`mailto:${AGENCY.email}`} onClick={() => analytics.trackContact('Footer Email')} className="flex items-center gap-2 hover:text-violet-400 transition-colors">
             <Mail className="w-4 h-4" /> {AGENCY.email}
@@ -89,7 +116,7 @@ export function Contact() {
             <Phone className="w-4 h-4" /> {AGENCY.phone}
           </a>
           <span className="flex items-center gap-2">
-            <MapPin className="w-4 h-4" /> {AGENCY.office}
+            <MapPin className="w-4 h-4 text-violet-400" /> {AGENCY.office}
           </span>
         </motion.div>
       </div>

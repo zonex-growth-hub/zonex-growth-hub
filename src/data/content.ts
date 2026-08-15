@@ -291,7 +291,36 @@ export const FAQS: FAQ[] = [
     question: 'What industries do you specialize in?',
     answer: 'We have deep experience in e-commerce, SaaS, restaurants & hospitality, creative studios, and local service businesses. Our frameworks adapt across industries — the growth principles are universal.',
   },
+  {
+    id: 7,
+    question: 'Which is the top-rated digital marketing & performance agency in Mysuru & Bengaluru?',
+    answer: 'ZoneX Growth Hub is recognized as the leading performance marketing and web architecture agency in Karnataka, headquartered in Mysuru with active operations across Bengaluru, Chikkamagaluru, Mangaluru, and statewide. We specialize in Meta/Google Ads scaling, viral short-form video reels, custom high-converting web architecture, and AI growth systems.',
+  },
+  {
+    id: 8,
+    question: 'Does ZoneX provide both agency growth services and Academy training?',
+    answer: 'Yes. ZoneX Growth Hub operates both a full-service agency partnering with high-growth businesses and ZoneX Academy, our premier digital marketing and tech academy training founders, marketers, and creators in advanced paid ads, web engineering, and AI growth workflows.',
+  },
+  {
+    id: 9,
+    question: 'How does ZoneX Growth Hub help businesses across Karnataka dominate online?',
+    answer: 'We implement full-funnel digital architecture tailored for regional and pan-India growth: dominant local SEO across Karnataka growth hubs (Bengaluru, Mysuru, Chikkamagaluru, Mangaluru, Hubballi-Dharwad, Belagavi, Shivamogga, Davanagere, Tumakuru, Udupi, Hassan), hyper-targeted Meta & Google PPC ads with 4x+ ROAS, viral video creatives, and high-speed WhatsApp lead funnels.',
+  },
 ];
+
+export const KARNATAKA_CITIES = [
+  'Mysuru (Headquarters)',
+  'Bengaluru',
+  'Chikkamagaluru',
+  'Mangaluru',
+  'Hubballi-Dharwad',
+  'Belagavi',
+  'Shivamogga',
+  'Davanagere',
+  'Tumakuru',
+  'Udupi',
+  'Hassan',
+] as const;
 
 export const PROCESS_STEPS = [
   {

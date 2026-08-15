@@ -8,7 +8,7 @@ export function Hero() {
   };
 
   const handleClaimAudit = () => {
-    analytics.trackLead('Claim Free Audit Header CTA');
+    analytics.trackLead('Book Free Growth Audit Header CTA');
     scrollToSection('contact');
   };
 
@@ -29,7 +29,7 @@ export function Hero() {
       <header className="w-full px-6 md:px-12 py-5 flex items-center justify-between bg-black/90 backdrop-blur-md z-30 border-b border-white/10 sticky top-0">
         <div 
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="cursor-pointer font-black text-xl sm:text-2xl tracking-widest text-white hover:text-cyan-400 transition-colors uppercase select-none flex items-center gap-1.5"
+          className="cursor-pointer font-black text-xl sm:text-2xl tracking-widest text-white hover:text-cyan-400 transition-colors uppercase select-none flex items-center gap-2"
         >
           <span>ZONEX GROWTH HUB</span>
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
@@ -39,6 +39,10 @@ export function Hero() {
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="hover:text-white transition-colors cursor-pointer">Home</button>
           <button onClick={() => scrollToSection('services')} className="hover:text-white transition-colors cursor-pointer">Services</button>
           <button onClick={handleExplorePortfolio} className="hover:text-white transition-colors cursor-pointer">Portfolios</button>
+          <a href="https://zonex-academy.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors cursor-pointer flex items-center gap-1">
+            <span>Academy</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-bold border border-cyan-500/30">PRO</span>
+          </a>
           <button onClick={() => scrollToSection('contact')} className="hover:text-white transition-colors cursor-pointer">Contact</button>
         </nav>
 
@@ -47,7 +51,7 @@ export function Hero() {
             onClick={handleClaimAudit}
             className="px-6 py-2.5 rounded-full border border-purple-500/60 bg-gradient-to-r from-purple-950/60 to-purple-900/60 hover:from-purple-600 hover:to-indigo-600 text-purple-200 hover:text-white text-xs font-bold tracking-widest uppercase transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] cursor-pointer transform hover:scale-105"
           >
-            Claim Free Audit
+            Book Free Audit
           </button>
         </div>
       </header>
@@ -75,10 +79,10 @@ export function Hero() {
       {/* 3. HIGH-CTR HEADLINES & CONVERSION CTA BUTTONS */}
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex flex-col items-center text-center">
         
-        {/* Rating Badge */}
+        {/* Regional Authority Rating Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-950/60 border border-purple-500/40 text-purple-300 text-xs sm:text-sm font-semibold mb-6 backdrop-blur-md shadow-[0_0_20px_rgba(168,85,247,0.2)]">
           <span className="text-yellow-400">★ ★ ★ ★ ★</span>
-          <span>4.9/5 RATED PERFORMANCE & CREATIVE GROWTH AGENCY</span>
+          <span>RATED #1 DIGITAL GROWTH AGENCY IN KARNATAKA | MYSURU (HQ) • BENGALURU</span>
         </div>
 
         {/* Main Headline */}
@@ -91,17 +95,33 @@ export function Hero() {
         </h1>
 
         {/* High-Converting Agency Description */}
-        <p className="mt-6 text-sm sm:text-base md:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
-          Turn ad spend into predictable revenue. Full-service growth agency specializing in Brand Identity, Meta/Google PPC Scaling, Short-Form Reel Creation, and Custom High-Converting Websites.
+        <p className="mt-6 text-sm sm:text-base md:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed">
+          Full-service growth agency headquartered in Mysuru, serving high-growth brands across Bengaluru, Chikkamagaluru, Mangaluru, and India. Specializing in high-ROAS Meta & Google PPC scaling, viral short-form video reels, custom high-converting web architecture, and AI marketing workflows.
         </p>
+
+        {/* Regional City Coverage Trust Pills */}
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-[11px] font-medium text-slate-400">
+          <span className="text-violet-400 font-semibold">Active Hubs:</span>
+          <span>Mysuru (HQ)</span>
+          <span>•</span>
+          <span>Bengaluru</span>
+          <span>•</span>
+          <span>Chikkamagaluru</span>
+          <span>•</span>
+          <span>Mangaluru</span>
+          <span>•</span>
+          <span>Hubballi</span>
+          <span>•</span>
+          <span>Pan-India</span>
+        </div>
 
         {/* Conversion Action Buttons with Event Tracking */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4 w-full">
           <button
-            onClick={handleExplorePortfolio}
+            onClick={handleClaimAudit}
             className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 shadow-[0_0_30px_rgba(147,51,234,0.45)] hover:shadow-[0_0_45px_rgba(147,51,234,0.7)] transition-all duration-300 transform hover:scale-105 uppercase tracking-wider text-xs sm:text-sm cursor-pointer"
           >
-            Explore Live Portfolios →
+            Book Free Growth Audit →
           </button>
           <button
             onClick={handleCalculateROI}
@@ -109,6 +129,15 @@ export function Hero() {
           >
             Calculate Your ROI
           </button>
+          <a
+            href="https://zonex-academy.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => analytics.trackViewContent('ZoneX Academy Link Click')}
+            className="w-full sm:w-auto px-6 py-4 rounded-xl font-semibold text-purple-300 border border-purple-500/30 bg-purple-950/30 hover:bg-purple-900/40 hover:text-white transition-all duration-300 uppercase tracking-wider text-xs sm:text-sm cursor-pointer flex items-center justify-center gap-1.5"
+          >
+            <span>ZoneX Academy 🎓</span>
+          </a>
         </div>
 
       </div>

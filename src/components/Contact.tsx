@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { MessageCircle, Calendar, Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
 import { AGENCY } from '@/data/content';
 import { SectionHeading } from './SectionHeading';
+import { analytics } from '@/utils/analytics';
 
 export function Contact() {
   return (
@@ -25,6 +26,7 @@ export function Contact() {
             href={AGENCY.whatsapp}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => analytics.trackContact('Instant WhatsApp Chat')}
             className="group glass-strong rounded-3xl p-7 text-center card-glow-hover hover:glow-crimson transition-all hover:border-violet-500/50"
           >
             <div className="w-14 h-14 rounded-2xl bg-violet-500/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
@@ -42,6 +44,7 @@ export function Contact() {
             href={AGENCY.calendar}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => analytics.trackLead('1-on-1 Strategy Call')}
             className="group glass-strong rounded-3xl p-7 text-center card-glow-hover hover:glow-crimson transition-all hover:border-violet-500/50"
           >
             <div className="w-14 h-14 rounded-2xl bg-violet-500/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
@@ -57,6 +60,7 @@ export function Contact() {
           {/* Email */}
           <a
             href={`mailto:${AGENCY.email}`}
+            onClick={() => analytics.trackContact('Email Inquiry')}
             className="group glass-strong rounded-3xl p-7 text-center card-glow-hover hover:glow-warm transition-all hover:border-cyan-500/50"
           >
             <div className="w-14 h-14 rounded-2xl bg-cyan-500/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
@@ -78,10 +82,10 @@ export function Contact() {
           transition={{ delay: 0.2 }}
           className="mt-10 flex flex-wrap justify-center items-center gap-6 text-sm text-slate-400"
         >
-          <a href={`mailto:${AGENCY.email}`} className="flex items-center gap-2 hover:text-violet-400 transition-colors">
+          <a href={`mailto:${AGENCY.email}`} onClick={() => analytics.trackContact('Footer Email')} className="flex items-center gap-2 hover:text-violet-400 transition-colors">
             <Mail className="w-4 h-4" /> {AGENCY.email}
           </a>
-          <a href={`tel:${AGENCY.phone}`} className="flex items-center gap-2 hover:text-violet-400 transition-colors">
+          <a href={`tel:${AGENCY.phone}`} onClick={() => analytics.trackContact('Direct Phone Call')} className="flex items-center gap-2 hover:text-violet-400 transition-colors">
             <Phone className="w-4 h-4" /> {AGENCY.phone}
           </a>
           <span className="flex items-center gap-2">
@@ -92,3 +96,5 @@ export function Contact() {
     </section>
   );
 }
+
+export default Contact;

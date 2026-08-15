@@ -1,9 +1,25 @@
 import React from 'react';
+import { analytics } from '@/utils/analytics';
 
 export function Hero() {
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleClaimAudit = () => {
+    analytics.trackLead('Claim Free Audit Header CTA');
+    scrollToSection('contact');
+  };
+
+  const handleExplorePortfolio = () => {
+    analytics.trackViewContent('Hero Portfolio CTA');
+    scrollToSection('portfolio');
+  };
+
+  const handleCalculateROI = () => {
+    analytics.trackInitiateCheckout('Hero ROI Calculator CTA');
+    scrollToSection('roi');
   };
 
   return (
@@ -13,7 +29,7 @@ export function Hero() {
       <header className="w-full px-6 md:px-12 py-5 flex items-center justify-between bg-black/90 backdrop-blur-md z-30 border-b border-white/10">
         <div 
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="cursor-pointer font-black text-xl sm:text-2xl tracking-widest text-white hover:text-cyan-400 transition-colors uppercase"
+          className="cursor-pointer font-black text-xl sm:text-2xl tracking-widest text-white hover:text-cyan-400 transition-colors uppercase select-none"
         >
           ZONEX GROWTH HUB
         </div>
@@ -21,14 +37,14 @@ export function Hero() {
         <nav className="hidden md:flex items-center gap-8 text-xs tracking-[0.2em] uppercase font-semibold text-slate-300">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="hover:text-white transition-colors">Home</button>
           <button onClick={() => scrollToSection('services')} className="hover:text-white transition-colors">Services</button>
-          <button onClick={() => scrollToSection('portfolio')} className="hover:text-white transition-colors">Portfolios</button>
+          <button onClick={() => handleExplorePortfolio()} className="hover:text-white transition-colors">Portfolios</button>
           <button onClick={() => scrollToSection('contact')} className="hover:text-white transition-colors">Contact</button>
         </nav>
 
         <div>
           <button
-            onClick={() => scrollToSection('contact')}
-            className="px-5 py-2 rounded-full border border-purple-500/50 bg-purple-950/30 text-xs font-bold tracking-widest uppercase hover:bg-purple-600 hover:text-white transition-all duration-300"
+            onClick={handleClaimAudit}
+            className="px-5 py-2 rounded-full border border-purple-500/50 bg-purple-950/30 text-xs font-bold tracking-widest uppercase hover:bg-purple-600 hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(168,85,247,0.25)]"
           >
             Claim Free Audit
           </button>
@@ -50,7 +66,7 @@ export function Hero() {
         </video>
       </div>
 
-      {/* 3. ALL HEADLINES & CTA BUTTONS (Strictly BELOW the video) */}
+      {/* 3. HIGH-CTR HEADLINES & CONVERSION CTA BUTTONS */}
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 flex flex-col items-center text-center">
         
         {/* Rating Badge */}
@@ -68,21 +84,21 @@ export function Hero() {
           with High-CTR Ads, Viral Content & Web Architecture.
         </h1>
 
-        {/* Description */}
+        {/* High-Converting Agency Description */}
         <p className="mt-6 text-sm sm:text-base md:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
-          Full-service growth agency specializing in Brand Identity, Meta/Google PPC Scaling, Short-Form Reel Creation, and Custom High-Converting Websites.
+          Turn ad spend into predictable revenue. Full-service growth agency specializing in Brand Identity, Meta/Google PPC Scaling, Short-Form Reel Creation, and Custom High-Converting Websites.
         </p>
 
-        {/* Action Buttons */}
+        {/* Conversion Action Buttons with Event Tracking */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4 w-full">
           <button
-            onClick={() => scrollToSection('portfolio')}
+            onClick={handleExplorePortfolio}
             className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 shadow-[0_0_25px_rgba(147,51,234,0.4)] transition-all duration-300 transform hover:scale-105 uppercase tracking-wider text-xs sm:text-sm"
           >
             Explore Live Portfolios →
           </button>
           <button
-            onClick={() => scrollToSection('contact')}
+            onClick={handleCalculateROI}
             className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-cyan-300 border border-cyan-500/40 bg-black/60 backdrop-blur-md hover:bg-cyan-950/40 transition-all duration-300 uppercase tracking-wider text-xs sm:text-sm"
           >
             Calculate Your ROI

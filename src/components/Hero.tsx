@@ -66,36 +66,34 @@ export const Hero: React.FC = () => {
       style={{ isolation: 'isolate' }}
     >
       {/* Background Video & Gradient Overlay */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none -z-10 bg-[#030305]">
+        {/* High-Performance Looping Video Background */}
         <video
-          id="heroVideo"
           ref={videoRef}
           autoPlay
+          loop
           muted
           playsInline
-          loop
-          preload="auto"
-          className="w-full h-full object-cover opacity-60 will-change-transform transition-transform duration-75 ease-out"
+          preload="metadata"
+          className="w-full h-full object-cover opacity-50 mix-blend-screen transition-opacity duration-1000 will-change-transform"
           style={{ transform: 'scale(1) translateZ(0)' }}
-          onLoadedMetadata={(e) => {
-            const vid = e.currentTarget;
-            vid.currentTime = 0;
-            vid.play().catch(() => {});
-          }}
         >
+          <source
+            src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-charts-and-data-31912-large.mp4"
+            type="video/mp4"
+          />
           <source
             src="https://strvid.nyc3.cdn.digitaloceanspaces.com/cloudinary/portfolio_hero_bg_zuhahj.webm"
             type="video/webm"
           />
         </video>
 
-        {/* Cinematic Readability Gradient Overlay */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: "linear-gradient(90deg, rgba(3, 3, 5, 0.95) 0%, rgba(20, 15, 38, 0.45) 45%, rgba(3, 3, 5, 0.75) 100%)"
-          }}
-        />
+        {/* Sleek Cyber Neon Ambient Glow Mesh (Fallback & Depth Layer) */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-purple-600/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/3 right-10 w-[400px] h-[300px] bg-indigo-600/15 rounded-full blur-[100px] pointer-events-none" />
+
+        {/* Balanced Visual Overlay for High Contrast Text Readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030305]/40 via-transparent to-[#030305]" />
       </div>
 
       {/* Top Navbar Placeholder spacing/offset */}

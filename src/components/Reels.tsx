@@ -118,47 +118,32 @@ export function Reels() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={closeModal}
-            className="fixed inset-0 z-[60] bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
+            className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-sm bg-zinc-950 border border-white/15 rounded-3xl overflow-hidden shadow-2xl flex flex-col items-center p-2"
+              className="relative z-[101] w-full max-w-sm sm:max-w-md aspect-[9/16] bg-black rounded-3xl overflow-hidden border border-white/20 shadow-2xl flex items-center justify-center"
             >
               {/* Close Button */}
               <button 
                 onClick={closeModal}
-                className="absolute top-3 right-3 z-30 w-9 h-9 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-sm border border-white/10 transition-colors cursor-pointer"
+                className="absolute top-4 right-4 z-[105] w-9 h-9 rounded-full bg-black/60 text-white border border-white/30 flex items-center justify-center hover:bg-white hover:text-black transition-colors cursor-pointer"
                 aria-label="Close video player"
               >
                 <X className="w-5 h-5" />
               </button>
 
-              {/* 9:16 Video Player */}
-              <div className="relative w-full aspect-[9/16] bg-black rounded-2xl overflow-hidden">
-                <video
-                  src={selectedReel.video}
-                  autoPlay
-                  loop
-                  playsInline
-                  controls
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Metadata details */}
-              <div className="w-full p-4 text-left">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-semibold text-purple-400 uppercase tracking-wider">{selectedReel.type}</span>
-                  <span className="text-[10px] text-slate-400 bg-white/5 border border-white/10 px-2 py-0.5 rounded-full font-mono flex items-center gap-1">
-                    <Eye className="w-3 h-3 text-cyan-400" /> {selectedReel.views}
-                  </span>
-                </div>
-                <h3 className="font-display font-black text-base sm:text-lg text-white mb-1 uppercase tracking-tight leading-tight">{selectedReel.title}</h3>
-                <p className="text-xs text-slate-400 leading-normal">{selectedReel.caption}</p>
-              </div>
+              <video
+                key={selectedReel.video}
+                src={selectedReel.video}
+                controls
+                autoPlay
+                playsInline
+                className="w-full h-full object-contain relative z-[102] bg-black"
+              />
             </motion.div>
           </motion.div>
         )}

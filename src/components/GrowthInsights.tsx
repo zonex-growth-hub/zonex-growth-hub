@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, Target } from 'lucide-react';
 import { SectionHeading } from './SectionHeading';
@@ -62,6 +62,55 @@ const ARTICLES: ArticleItem[] = [
 
 export function GrowthInsights() {
   const [selected, setSelected] = useState<string | null>(null);
+
+  // Dynamically inject Article Schema markup for index crawl on playbook expansion
+  useEffect(() => {
+    const scriptId = 'insights-article-schema';
+    const oldScript = document.getElementById(scriptId);
+    if (oldScript) oldScript.remove();
+
+    if (selected) {
+      const art = ARTICLES.find(a => a.id === selected);
+      if (art) {
+        const schema = {
+          "@context": "https://schema.org",
+          "@type": "TechArticle",
+          "headline": art.title,
+          "description": art.excerpt,
+          "inLanguage": "en",
+          "author": {
+            "@type": "Organization",
+            "name": "ZoneX Growth Agency",
+            "url": "https://www.zonexgrowth-agency.in"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "ZoneX Growth Agency",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.zonexgrowth-agency.in/logo-zonex.jpg"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.zonexgrowth-agency.in/#insights"
+          },
+          "datePublished": "2026-08-30",
+          "dateModified": "2026-08-30"
+        };
+        const script = document.createElement('script');
+        script.id = scriptId;
+        script.type = 'application/ld+json';
+        script.innerHTML = JSON.stringify(schema);
+        document.head.appendChild(script);
+      }
+    }
+
+    return () => {
+      const script = document.getElementById(scriptId);
+      if (script) script.remove();
+    };
+  }, [selected]);
 
   const handleRead = (article: ArticleItem) => {
     analytics.trackViewContent(`Growth Insight: ${article.title}`, { hub: article.hub });

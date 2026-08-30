@@ -14,6 +14,7 @@ import { FloatingWhatsApp } from '@/components/FloatingWhatsApp';
 import { X, Sparkles, Download, Bell } from 'lucide-react';
 import { sanitizeInput } from '@/utils/security';
 import { SEOManager } from '@/components/SEOManager';
+import { GeoLanding } from '@/components/GeoLanding';
 
 // Lazy-loaded components for optimal bundle tree-shaking and chunk split sizes
 const ROICalculator = lazy(() => import('@/components/ROICalculator'));
@@ -40,6 +41,23 @@ function AppContent() {
   const [toast, setToast] = useState<string | null>(null);
   const [showExitModal, setShowExitModal] = useState(false);
   const [exitEmail, setExitEmail] = useState('');
+
+  // Client-Side Programmatic SEO Router State
+  const [currentRoute, setCurrentRoute] = useState(window.location.pathname);
+
+  useEffect(() => {
+    const handleLocation = () => {
+      setCurrentRoute(window.location.pathname);
+    };
+    window.addEventListener('popstate', handleLocation, { passive: true });
+    return () => window.removeEventListener('popstate', handleLocation);
+  }, []);
+
+  const navigateTo = (path: string) => {
+    window.history.pushState({}, '', path);
+    setCurrentRoute(path);
+    window.scrollTo(0, 0);
+  };
 
   // 1. Lenis Smooth Scroll Tuning with Memory Safety event cleanups
   useEffect(() => {
@@ -131,6 +149,8 @@ function AppContent() {
     setShowExitModal(false);
   };
 
+  const isGeoRoute = ['/mysuru', '/bengaluru', '/chikkamagaluru'].includes(currentRoute.toLowerCase());
+
   return (
     <div className="min-h-screen bg-[#EDEEF5] text-zinc-900 dark:bg-[#030307] dark:text-white selection:bg-[#7c3aed] selection:text-white overflow-x-hidden transition-colors duration-300">
       
@@ -143,21 +163,27 @@ function AppContent() {
       <SEOManager />
       <Navbar />
       <AmbientBackground />
-      <main>
-        <Hero />
-        <HeroStats />
-        <Portfolio />
-        <Reels />
-        <Suspense fallback={<SectionLoader />}><ROICalculator /></Suspense>
-        <Services />
-        <Suspense fallback={<SectionLoader />}><BeforeAfter /></Suspense>
-        <Suspense fallback={<SectionLoader />}><TechMarquee /></Suspense>
-        <Suspense fallback={<SectionLoader />}><Process /></Suspense>
-        <Suspense fallback={<SectionLoader />}><GrowthInsights /></Suspense>
-        <Suspense fallback={<SectionLoader />}><Testimonials /></Suspense>
-        <Suspense fallback={<SectionLoader />}><FAQs /></Suspense>
-        <Suspense fallback={<SectionLoader />}><Contact /></Suspense>
-      </main>
+
+      {isGeoRoute ? (
+        <GeoLanding citySlug={currentRoute.replace('/', '')} onBack={() => navigateTo('/')} />
+      ) : (
+        <main>
+          <Hero />
+          <HeroStats />
+          <Portfolio />
+          <Reels />
+          <Suspense fallback={<SectionLoader />}><ROICalculator /></Suspense>
+          <Services />
+          <Suspense fallback={<SectionLoader />}><BeforeAfter /></Suspense>
+          <Suspense fallback={<SectionLoader />}><TechMarquee /></Suspense>
+          <Suspense fallback={<SectionLoader />}><Process /></Suspense>
+          <Suspense fallback={<SectionLoader />}><GrowthInsights /></Suspense>
+          <Suspense fallback={<SectionLoader />}><Testimonials /></Suspense>
+          <Suspense fallback={<SectionLoader />}><FAQs /></Suspense>
+          <Suspense fallback={<SectionLoader />}><Contact /></Suspense>
+        </main>
+      )}
+
       <Footer />
       <FloatingWhatsApp />
 

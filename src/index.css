@@ -723,3 +723,110 @@ input[type="range"]::-moz-range-thumb {
   margin-right: 4px;
   box-shadow: 0 0 8px #10b981;
 }
+
+/* ── 3D Fullscreen Shader Canvas Engine Styles ── */
+#canvas-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+.hud {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+}
+.hud-top, .hud-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: auto;
+}
+.brand {
+  font-weight: 900;
+  letter-spacing: 3px;
+  font-size: 1.1rem;
+  color: #fff;
+  text-transform: uppercase;
+}
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+}
+.nav-links span {
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.2s;
+}
+.nav-links span:hover {
+  color: #fff;
+}
+.btn-contact {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.5rem 1.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s;
+}
+.btn-contact:hover {
+  background: #fff;
+  color: #000;
+}
+.hud-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+  z-index: 2;
+}
+.bg-title {
+  font-size: clamp(5rem, 18vw, 15rem);
+  font-weight: 900;
+  letter-spacing: -4px;
+  color: rgba(255, 255, 255, 0.12);
+  text-transform: uppercase;
+  user-select: none;
+}
+.card-info {
+  position: absolute;
+  bottom: 12%;
+  left: 3rem;
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 1.2rem 1.8rem;
+  border-radius: 6px;
+  backdrop-filter: blur(12px);
+  max-width: 420px;
+}
+.card-tag {
+  font-size: 0.7rem;
+  color: #38bdf8;
+  letter-spacing: 2px;
+  margin-bottom: 0.3rem;
+}
+.card-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+.card-desc {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}

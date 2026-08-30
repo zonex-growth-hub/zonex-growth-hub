@@ -223,7 +223,7 @@ export function Portfolio() {
 
           <div className="shrink-0 w-full md:w-auto">
             <a
-              href="/certificate.pdf"
+              href="https://drive.google.com/file/d/1v5MguLXSTf1ALjttmKxj_ONFsrW1QFuB/view?usp=drivesdk"
               target="_blank"
               rel="noopener noreferrer"
               onClick={playClick}

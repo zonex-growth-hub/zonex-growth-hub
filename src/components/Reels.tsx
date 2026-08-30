@@ -119,17 +119,16 @@ function MobileReelCard({ reel, index, onSelect }: { reel: ReelItem; index: numb
       viewport={{ once: true, margin: '-30px' }}
       transition={{ duration: 0.4, delay: (index % 3) * 0.08 }}
       className="flex sm:hidden flex-col items-center w-full"
-      onClick={() => onSelect(reel)}
     >
       <div
-        className="cursor-pointer rounded-2xl border-[2px] border-black/40 dark:border-white/20 p-1 bg-black aspect-[9/16] w-full max-h-[220px] overflow-hidden relative group hover:scale-[1.02] transition-transform shadow-lg shadow-black/40"
+        onClick={() => onSelect(reel)}
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          onSelect(reel);
+        }}
+        className="cursor-pointer relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black border border-white/15 active:scale-95 transition-transform shadow-lg shadow-black/40"
+        style={{ touchAction: 'manipulation' }}
       >
-        <div className="absolute inset-0 bg-black/10 z-10 flex items-center justify-center">
-          <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/20">
-            <Play className="w-4 h-4 text-white" fill="currentColor" />
-          </div>
-        </div>
-
         {failed ? (
           <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-neutral-800 via-neutral-900 to-black p-4 text-center">
             <Film className="h-5 w-5 text-violet-400" />
@@ -144,14 +143,13 @@ function MobileReelCard({ reel, index, onSelect }: { reel: ReelItem; index: numb
             playsInline
             preload="metadata"
             onError={() => setFailed(true)}
-            className="w-full h-full object-cover rounded-xl pointer-events-none"
+            className="w-full h-full object-cover pointer-events-none"
           />
         )}
 
         {/* View count badge */}
-        <div className="text-[9px] px-1.5 py-0.5 bg-black/60 backdrop-blur-sm bottom-2 left-2 rounded-full flex items-center gap-1 absolute z-10 text-white font-semibold">
-          <Eye className="h-2.5 w-2.5 text-white" />
-          {reel.views}
+        <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/70 backdrop-blur-sm rounded-full text-[9px] text-white pointer-events-none z-10 flex items-center gap-1 font-semibold">
+          <span>👁</span> {reel.views}
         </div>
       </div>
 
@@ -244,24 +242,27 @@ export function Reels() {
       <AnimatePresence>
         {selectedReel && (
           <div 
-            className="fixed top-0 left-0 w-screen h-[100dvh] z-[9999] bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
+            className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md flex items-center justify-center p-3"
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: '100vw', height: '100dvh' }}
             onClick={closeModal}
           >
+            {/* Dialog Box */}
             <div 
-              className="relative z-[10000] w-full max-w-[320px] max-h-[85dvh] aspect-[9/16] bg-black rounded-3xl overflow-hidden border border-white/20 shadow-2xl flex flex-col justify-between"
+              className="relative z-[100000] w-full max-w-[340px] h-[80dvh] max-h-[640px] bg-black rounded-3xl overflow-hidden border border-white/20 shadow-2xl flex flex-col justify-between"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}
               <button
+                type="button"
                 onClick={closeModal}
-                className="absolute top-3 right-3 z-[10010] w-8 h-8 rounded-full bg-black/70 border border-white/30 text-white flex items-center justify-center font-bold text-xs cursor-pointer hover:bg-white hover:text-black transition-colors"
-                aria-label="Close"
+                className="absolute top-3 right-3 z-[100010] w-9 h-9 rounded-full bg-black/80 border border-white/40 text-white flex items-center justify-center font-bold text-sm shadow-xl cursor-pointer"
+                aria-label="Close modal"
               >
                 ✕
               </button>
 
-              {/* Video Container (Strict Visible Sizing) */}
-              <div className="relative w-full h-full flex items-center justify-center bg-black">
+              {/* Playable Video with Sound */}
+              <div className="relative w-full h-full bg-black flex items-center justify-center">
                 <video
                   key={selectedReel.videoUrl || selectedReel.video || selectedReel.src}
                   src={selectedReel.videoUrl || selectedReel.video || selectedReel.src}
@@ -272,19 +273,14 @@ export function Reels() {
                 />
               </div>
 
-              {/* Bottom Details Overlay */}
-              <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black via-black/70 to-transparent z-[10005] pointer-events-none">
-                <span className="text-xs font-semibold text-purple-400 block mb-1">
+              {/* Bottom Details */}
+              <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black via-black/80 to-transparent z-[100005] pointer-events-none">
+                <span className="text-[11px] font-semibold text-purple-400 block mb-0.5">
                   {selectedReel.type || selectedReel.category || selectedReel.tag || 'Instagram Reel'}
                 </span>
-                <h3 className="text-base font-bold text-white leading-tight">
-                  {selectedReel.title || 'Video Showcase'}
+                <h3 className="text-sm font-bold text-white leading-tight">
+                  {selectedReel.title || 'Reel Showcase'}
                 </h3>
-                {selectedReel.views && (
-                  <span className="text-xs text-zinc-300 mt-1 block">
-                    👁 {selectedReel.views} views
-                  </span>
-                )}
               </div>
             </div>
           </div>

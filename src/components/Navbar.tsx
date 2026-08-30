@@ -30,10 +30,10 @@ export function Navbar() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 w-full z-50 py-5 md:py-8 transition-all duration-300 ${
+      <nav className={`fixed top-0 left-0 w-full z-50 py-5 md:py-8 transition-all duration-500 ${
         scrolled 
-          ? 'bg-[#EDEEF5]/95 border-b border-slate-200 shadow-md dark:bg-[#030307]/95 dark:border-white/[0.08] dark:shadow-[0_10px_30px_rgba(3,3,7,0.8)]' 
-          : 'bg-[#EDEEF5]/40 border-b border-slate-200/50 dark:bg-transparent dark:border-white/[0.06]'
+          ? 'bg-[#EDEEF5]/95 border-b border-slate-200 shadow-md dark:bg-[#030307]/95 dark:border-white/[0.08] dark:shadow-[0_10px_30px_rgba(3,3,7,0.8)] translate-y-0 opacity-100' 
+          : '-translate-y-full opacity-0 pointer-events-none'
       } backdrop-blur-md`}>
         <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-12 items-center w-full">
           

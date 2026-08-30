@@ -60,8 +60,12 @@ function AppContent() {
     window.scrollTo(0, 0);
   };
 
-  // 1. Lenis Smooth Scroll Tuning with Memory Safety event cleanups
+  // 1. Lenis Smooth Scroll — disabled on touch/mobile devices to prevent scroll lockup
   useEffect(() => {
+    // Touch devices have their own native smooth scroll — Lenis conflicts with it
+    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    if (isTouchDevice) return;
+
     const lenis = new Lenis({
       duration: 0.9,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -105,6 +109,21 @@ function AppContent() {
       window.removeEventListener('scroll', handleScroll);
       document.removeEventListener('mouseleave', handleMouseLeave);
     };
+  }, []);
+
+  // On touch devices, still track scroll progress and exit intent
+  useEffect(() => {
+    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    if (!isTouchDevice) return;
+
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        setScrollProgress((window.scrollY / totalHeight) * 100);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // 2. Social Proof Live Notification Toasts Loop with useEffect memory safety cleanups
@@ -153,7 +172,7 @@ function AppContent() {
   const isGeoRoute = ['/mysuru', '/bengaluru', '/chikkamagaluru', '/mangaluru', '/hubballi', '/belagavi', '/shivamogga', '/udupi', '/india'].includes(currentRoute.toLowerCase());
 
   return (
-    <div className="min-h-screen bg-[#EDEEF5] text-zinc-900 dark:bg-[#030307] dark:text-white selection:bg-[#7c3aed] selection:text-white overflow-x-hidden transition-colors duration-300">
+    <div className="min-h-screen bg-[#EDEEF5] text-zinc-900 dark:bg-[#030307] dark:text-white selection:bg-[#7c3aed] selection:text-white transition-colors duration-300" style={{ overflowX: 'clip' }}>
       
       {/* Neon Scroll Progress Glow Line */}
       <div 
@@ -188,10 +207,10 @@ function AppContent() {
       <Footer />
       <FloatingWhatsApp />
 
-      {/* Social Proof Live Notification Toast */}
+      {/* Social Proof Live Notification Toast — top-right on mobile, bottom-left on desktop */}
       {toast && (
-        <div className="fixed bottom-6 left-6 z-[80] animate-fade-up max-w-sm rounded-2xl bg-white/80 dark:bg-zinc-950/75 backdrop-blur-xl border border-zinc-200/80 dark:border-purple-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.15)] p-4 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500">
+        <div className="fixed top-16 right-4 sm:top-auto sm:bottom-6 sm:left-6 sm:right-auto z-[80] animate-fade-up max-w-[calc(100vw-2rem)] sm:max-w-sm rounded-2xl bg-white/90 dark:bg-zinc-950/85 backdrop-blur-xl border border-zinc-200/80 dark:border-purple-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.15)] p-3 sm:p-4 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 shrink-0">
             <Bell className="w-4 h-4 animate-bounce" />
           </div>
           <div>

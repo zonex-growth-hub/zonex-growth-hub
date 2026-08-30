@@ -17,7 +17,7 @@ export function FloatingWhatsApp() {
   };
 
   return (
-    <div className="fixed bottom-6 left-6 z-50 flex flex-col items-start font-sans">
+    <div className="fixed bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end font-sans">
       <AnimatePresence>
         {open && (
           <motion.div
@@ -25,7 +25,7 @@ export function FloatingWhatsApp() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="mb-3 w-80 sm:w-96 rounded-3xl glass-strong border border-emerald-500/40 p-5 shadow-[0_0_50px_rgba(16,185,129,0.3)] bg-neutral-950/95 backdrop-blur-2xl"
+            className="mb-3 w-[calc(100vw-2rem)] max-w-sm sm:w-96 rounded-3xl glass-strong border border-emerald-500/40 p-5 shadow-[0_0_50px_rgba(16,185,129,0.3)] bg-neutral-950/95 backdrop-blur-2xl"
           >
             {/* Header */}
             <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-4">

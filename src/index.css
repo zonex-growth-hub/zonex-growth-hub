@@ -425,7 +425,7 @@ input[type="range"]::-moz-range-thumb {
   border: 2px solid #8B5CF6;
 }
 
-/* ── Lenis Smooth Scroll Engine ── */
+/* ── Lenis Smooth Scroll Engine (desktop only) ── */
 html.lenis, html.lenis body {
   height: auto;
 }
@@ -435,18 +435,12 @@ html.lenis, html.lenis body {
 .lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
 }
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
-}
+/* NOTE: lenis-stopped overflow:hidden removed — it caused permanent scroll lock on mobile */
 
-/* Force GPU compositing on heavy animated elements */
-video, #hero, main {
+/* GPU compositing on Hero video only — not on all main/video globally (causes mobile stacking issues) */
+#hero video {
   transform: translateZ(0);
   backface-visibility: hidden;
-  will-change: transform, opacity;
 }
 
 /* ── Hero Design System Animations & Tokens ── */
@@ -569,3 +563,27 @@ video, #hero, main {
   animation: glitterSweep 6s ease infinite;
 }
 
+/* ── Marquee Animation (required by TechMarquee) ── */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee { animation: none; }
+}
+
+/* ── Mobile-safe touch scrolling ── */
+html, body {
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+/* ── Mobile nav offset — push hero below the sticky mobile bar ── */
+@media (max-width: 767px) {
+  .hero-section {
+    padding-top: calc(4rem + env(safe-area-inset-top, 0px));
+  }
+}

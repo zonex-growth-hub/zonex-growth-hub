@@ -7,47 +7,74 @@ import { DollarSign, Target, TrendingUp, Users, MessageCircle, Calculator } from
 import { AGENCY } from '@/data/content';
 import { SectionHeading } from './SectionHeading';
 import { analytics } from '@/utils/analytics';
-
-function formatINR(n: number) {
-  if (n >= 10000000) return `₹${(n / 10000000).toFixed(1)}Cr`;
-  if (n >= 100000) return `₹${(n / 100000).toFixed(1)}L`;
-  if (n >= 1000) return `₹${(n / 1000).toFixed(0)}K`;
-  return `₹${n}`;
-}
-
-function formatINRShort(n: number) {
-  if (n >= 100000) return `₹${(n / 100000).toFixed(1)}L`;
-  return `₹${n}K`;
-}
+import { useApp } from '@/context/AppContext';
 
 export function ROICalculator() {
-  const [budget, setBudget] = useState(5000);
-  const [targetSales, setTargetSales] = useState(50000);
+  const { currency, formatPrice, playClick } = useApp();
+
+  const isINR = currency === 'INR';
+
+  // Config bounds depending on active currency
+  const budgetMin = isINR ? 5000 : 100;
+  const budgetMax = isINR ? 500000 : 10000;
+  const budgetStep = isINR ? 5000 : 100;
+  
+  const salesMin = isINR ? 50000 : 1000;
+  const salesMax = isINR ? 5000000 : 100000;
+  const salesStep = isINR ? 10000 : 250;
+
+  const [budgetVal, setBudgetVal] = useState(isINR ? 25000 : 300);
+  const [targetSalesVal, setTargetSalesVal] = useState(isINR ? 200000 : 2500);
+
+  // Sync state on currency switch
+  const [prevCurrency, setPrevCurrency] = useState(currency);
+  if (currency !== prevCurrency) {
+    setPrevCurrency(currency);
+    if (isINR) {
+      setBudgetVal(budgetVal * 80);
+      setTargetSalesVal(targetSalesVal * 80);
+    } else {
+      setBudgetVal(Math.round(budgetVal / 80));
+      setTargetSalesVal(Math.round(targetSalesVal / 80));
+    }
+  }
+
+  // Convert values back to INR to execute calculations
+  const budgetInINR = isINR ? budgetVal : budgetVal * 80;
 
   const calc = useMemo(() => {
-    // Realistic Indian market model with diminishing returns
-    // ₹1,000 → ~300 visitors, ₹5,000 → ~750 visitors
-    const traffic = Math.round(280 * Math.pow(budget / 1000, 0.6));
-    const conversionRate = 0.03;
+    // Realistic conversion rates compounding
+    const traffic = Math.round(280 * Math.pow(budgetInINR / 1000, 0.65));
+    const conversionRate = 0.038; // Deployed premium CRO optimization
     const leads = Math.round(traffic * conversionRate);
 
-    // Estimated realistic ROAS: 2.5x–3.5x for low budgets, scaling sublinearly
-    const roas = 2.5 + 2 * Math.pow(budget / 100000, 0.5);
+    // sublinear scaling return on ad spend
+    const roas = 2.8 + 1.8 * Math.pow(budgetInINR / 100000, 0.4);
 
-    // 6-month projection with compounding growth from target sales
+    // compounded chart data over 6 months
     const chartData = Array.from({ length: 6 }, (_, i) => {
       const growth = 1 + i * 0.15;
       return {
         month: `M${i + 1}`,
-        revenue: Math.round((targetSales * growth) / 1000),
-        budget: Math.round((budget * growth) / 1000),
+        revenue: Math.round((targetSalesVal * growth)),
+        budget: Math.round((budgetVal * growth)),
       };
     });
 
-    const projectedRevenue = chartData.reduce((sum, d) => sum + d.revenue * 1000, 0);
+    const projectedRevenue = targetSalesVal * 4.2;
 
     return { traffic, leads, roas, projectedRevenue, chartData };
-  }, [budget, targetSales]);
+  }, [budgetInINR, budgetVal, targetSalesVal]);
+
+  const handleBudgetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    playClick();
+    setBudgetVal(Number(e.target.value));
+  };
+
+  const handleSalesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    playClick();
+    setTargetSalesVal(Number(e.target.value));
+  };
 
   return (
     <section id="roi" className="relative pt-4 pb-4 md:pt-8 md:pb-8">
@@ -55,7 +82,7 @@ export function ROICalculator() {
         <SectionHeading
           eyebrow="ROI Estimator"
           title={<>Interactive <span className="gradient-text">ROI Growth</span> Calculator</>}
-          subtitle="Built for Indian startups & small businesses. Drag the sliders to see realistic projections for your budget."
+          subtitle="Built for Indian startups &amp; small businesses. Drag the sliders to see realistic projections for your budget."
         />
 
         <div className="grid lg:grid-cols-2 gap-8">
@@ -65,56 +92,93 @@ export function ROICalculator() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="glass-strong rounded-3xl p-8"
+            className="glass-strong rounded-3xl p-6 sm:p-8"
           >
             <div className="space-y-8">
               {/* Budget Slider */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <label className="flex items-center gap-2 text-sm font-semibold">
-                    <DollarSign className="w-4 h-4 text-violet-400" />
+                  <label className="flex items-center gap-2 text-sm font-bold text-zinc-900 dark:text-white">
+                    <DollarSign className="w-4 h-4 text-purple-600 dark:text-violet-400" />
                     Monthly Marketing Budget
                   </label>
-                  <span className="text-xl font-bold gradient-text">{formatINR(budget)}</span>
+                  <span className="text-xl font-bold gradient-text">{formatPrice(isINR ? budgetVal : budgetVal * 80)}</span>
                 </div>
-                <input type="range" min={500} max={100000} step={500} value={budget} onChange={(e) => setBudget(Number(e.target.value))} className="w-full" />
-                <div className="flex justify-between text-xs text-slate-500 mt-2"><span>₹500</span><span>₹1L</span></div>
+                <input
+                  type="range"
+                  min={budgetMin}
+                  max={budgetMax}
+                  step={budgetStep}
+                  value={budgetVal}
+                  onChange={handleBudgetChange}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-zinc-650 dark:text-slate-500 mt-2 font-medium">
+                  <span>{formatPrice(isINR ? budgetMin : budgetMin * 80, true)}</span>
+                  <span>{formatPrice(isINR ? budgetMax : budgetMax * 80, true)}</span>
+                </div>
               </div>
 
               {/* Target Sales Slider */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <label className="flex items-center gap-2 text-sm font-semibold">
-                    <Target className="w-4 h-4 text-violet-400" />
+                  <label className="flex items-center gap-2 text-sm font-bold text-zinc-900 dark:text-white">
+                    <Target className="w-4 h-4 text-purple-600 dark:text-violet-400" />
                     Target Monthly Sales
                   </label>
-                  <span className="text-xl font-bold gradient-text">{formatINR(targetSales)}</span>
+                  <span className="text-xl font-bold gradient-text">{formatPrice(isINR ? targetSalesVal : targetSalesVal * 80)}</span>
                 </div>
-                <input type="range" min={5000} max={500000} step={5000} value={targetSales} onChange={(e) => setTargetSales(Number(e.target.value))} className="w-full" />
-                <div className="flex justify-between text-xs text-slate-500 mt-2"><span>₹5K</span><span>₹5L</span></div>
+                <input
+                  type="range"
+                  min={salesMin}
+                  max={salesMax}
+                  step={salesStep}
+                  value={targetSalesVal}
+                  onChange={handleSalesChange}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-zinc-650 dark:text-slate-500 mt-2 font-medium">
+                  <span>{formatPrice(isINR ? salesMin : salesMin * 80, true)}</span>
+                  <span>{formatPrice(isINR ? salesMax : salesMax * 80, true)}</span>
+                </div>
               </div>
 
               {/* Results Grid */}
-              <div className="grid grid-cols-2 gap-4 pt-2">
-                <div className="glass rounded-2xl p-4">
-                  <div className="flex items-center gap-2 text-xs text-slate-400 mb-1"><Users className="w-3.5 h-3.5 text-violet-400" /> Projected Visitors</div>
-                  <div className="text-2xl font-bold text-violet-400">{calc.traffic.toLocaleString()}</div>
-                  <div className="text-xs text-slate-500">visitors / month</div>
+              <div className="grid grid-cols-2 gap-4 pt-2 select-none">
+                <div className="bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-4 shadow-sm">
+                  <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-slate-400 mb-1 font-semibold">
+                    <Users className="w-3.5 h-3.5 text-purple-600 dark:text-violet-400" /> 
+                    Projected Visitors
+                  </div>
+                  <div className="text-2xl font-bold text-purple-600 dark:text-violet-400">{calc.traffic.toLocaleString()}</div>
+                  <div className="text-[10px] text-zinc-550 dark:text-slate-500 font-medium">visitors / month</div>
                 </div>
-                <div className="glass rounded-2xl p-4">
-                  <div className="flex items-center gap-2 text-xs text-slate-400 mb-1"><TrendingUp className="w-3.5 h-3.5 text-violet-400" /> High-Intent Leads</div>
-                  <div className="text-2xl font-bold text-violet-400">{calc.leads.toLocaleString()}</div>
-                  <div className="text-xs text-slate-500">leads / month</div>
+
+                <div className="bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-4 shadow-sm">
+                  <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-slate-400 mb-1 font-semibold">
+                    <TrendingUp className="w-3.5 h-3.5 text-purple-600 dark:text-violet-400" /> 
+                    High-Intent Leads
+                  </div>
+                  <div className="text-2xl font-bold text-purple-600 dark:text-violet-400">{calc.leads.toLocaleString()}</div>
+                  <div className="text-[10px] text-zinc-550 dark:text-slate-500 font-medium">leads / month</div>
                 </div>
-                <div className="glass rounded-2xl p-4">
-                  <div className="flex items-center gap-2 text-xs text-slate-400 mb-1"><Calculator className="w-3.5 h-3.5 text-violet-400" /> Estimated ROAS</div>
-                  <div className="text-2xl font-bold text-violet-400">{calc.roas.toFixed(1)}x</div>
-                  <div className="text-xs text-slate-500">return on ad spend</div>
+
+                <div className="bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-4 shadow-sm">
+                  <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-slate-400 mb-1 font-semibold">
+                    <Calculator className="w-3.5 h-3.5 text-purple-600 dark:text-violet-400" /> 
+                    Estimated ROAS
+                  </div>
+                  <div className="text-2xl font-bold text-purple-600 dark:text-violet-400">{calc.roas.toFixed(1)}x</div>
+                  <div className="text-[10px] text-zinc-550 dark:text-slate-500 font-medium">return on ad spend</div>
                 </div>
-                <div className="glass rounded-2xl p-4">
-                  <div className="flex items-center gap-2 text-xs text-slate-400 mb-1"><DollarSign className="w-3.5 h-3.5 text-cyan-400" /> 6-Mo Revenue</div>
-                  <div className="text-2xl font-bold text-cyan-400">{formatINR(calc.projectedRevenue)}</div>
-                  <div className="text-xs text-slate-500">projected total</div>
+
+                <div className="bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-4 shadow-sm">
+                  <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-slate-400 mb-1 font-semibold">
+                    <DollarSign className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" /> 
+                    Projected Revenue
+                  </div>
+                  <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">{formatPrice(isINR ? calc.projectedRevenue : calc.projectedRevenue * 80, true)}</div>
+                  <div className="text-[10px] text-zinc-550 dark:text-slate-500 font-medium font-semibold">estimated compounds</div>
                 </div>
               </div>
 
@@ -123,8 +187,11 @@ export function ROICalculator() {
                 href={AGENCY.whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => analytics.trackInitiateCheckout('ROI Strategy Claim on WhatsApp', { budget, targetSales })}
-                className="btn-glow w-full cursor-pointer flex items-center justify-center gap-2"
+                onClick={() => {
+                  playClick();
+                  analytics.trackInitiateCheckout('ROI Strategy Claim on WhatsApp', { budget: budgetVal, targetSales: targetSalesVal });
+                }}
+                className="btn-glow w-full cursor-pointer flex items-center justify-center gap-2 text-xs uppercase tracking-wider font-bold py-4"
               >
                 <MessageCircle className="w-5 h-5" />
                 Get Strategy for My Budget on WhatsApp →
@@ -138,10 +205,10 @@ export function ROICalculator() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="glass-strong rounded-3xl p-8 flex flex-col"
+            className="glass-strong rounded-3xl p-6 sm:p-8 flex flex-col"
           >
-            <h3 className="font-display font-bold text-lg mb-1">6-Month Projected Revenue Growth</h3>
-            <p className="text-sm text-slate-400 mb-6">Compounding growth model based on your inputs</p>
+            <h3 className="font-display font-bold text-lg mb-1 text-zinc-900 dark:text-white">6-Month Projected Revenue Growth</h3>
+            <p className="text-sm text-zinc-600 dark:text-slate-400 mb-6 font-medium">Compounding growth model based on your inputs</p>
             <div className="flex-1 min-h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={calc.chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
@@ -157,20 +224,25 @@ export function ROICalculator() {
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
                   <XAxis dataKey="month" tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => formatINRShort(v)} />
+                  <YAxis 
+                    tick={{ fill: '#94a3b8', fontSize: 11 }} 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tickFormatter={(v) => formatPrice(isINR ? v * 1000 : v * 80000, true)} 
+                  />
                   <Tooltip
                     contentStyle={{ background: 'rgba(11,15,25,0.95)', border: '1px solid rgba(139,92,246,0.25)', borderRadius: '12px', fontSize: '13px' }}
                     labelStyle={{ color: '#8B5CF6' }}
-                    formatter={(value) => [`₹${value}K`, 'Revenue']}
+                    formatter={(value: string | number) => [formatPrice(isINR ? Number(value) * 1000 : Number(value) * 80, true), 'Value']}
                   />
                   <Area type="monotone" dataKey="revenue" stroke="#8B5CF6" strokeWidth={2.5} fill="url(#revGradient)" />
                   <Area type="monotone" dataKey="budget" stroke="#00F0FF" strokeWidth={2} fill="url(#budGradient)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex items-center justify-center gap-6 mt-4 text-xs">
-              <span className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-violet-electric" /> Revenue</span>
-              <span className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-cyan-400" /> Budget</span>
+            <div className="flex items-center justify-center gap-6 mt-4 text-xs font-semibold select-none">
+              <span className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-purple-500" /> Revenue Target</span>
+              <span className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-cyan-400" /> Marketing Spend</span>
             </div>
           </motion.div>
         </div>
@@ -178,3 +250,5 @@ export function ROICalculator() {
     </section>
   );
 }
+
+export default ROICalculator;

@@ -1,20 +1,65 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Film, Eye, Play, Pause, Volume2, VolumeX, AlertCircle } from 'lucide-react';
+import { Film, AlertCircle, Eye, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { REELS, type ReelItem } from '@/data/content';
 import { SectionHeading } from './SectionHeading';
+import { useApp } from '@/context/AppContext';
 
-// Original Desktop Reel Card with Inline Controls
+// Animated Equalizer component
+function Equalizer({ playing }: { playing: boolean }) {
+  return (
+    <div className="absolute top-4 right-4 z-20 flex gap-0.5 items-end h-3 px-1.5 py-1 bg-black/40 backdrop-blur-sm rounded-md border border-white/10 pointer-events-none">
+      <style>{`
+        @keyframes eq-bar {
+          0% { height: 3px; }
+          100% { height: 12px; }
+        }
+      `}</style>
+      <span 
+        className="w-[2px] bg-purple-500 rounded-full" 
+        style={{ 
+          height: '100%', 
+          animation: playing ? 'eq-bar 0.8s ease infinite alternate 0.1s' : 'none' 
+        }} 
+      />
+      <span 
+        className="w-[2px] bg-purple-500 rounded-full" 
+        style={{ 
+          height: '60%', 
+          animation: playing ? 'eq-bar 0.8s ease infinite alternate 0.3s' : 'none' 
+        }} 
+      />
+      <span 
+        className="w-[2px] bg-purple-500 rounded-full" 
+        style={{ 
+          height: '80%', 
+          animation: playing ? 'eq-bar 0.8s ease infinite alternate 0.5s' : 'none' 
+        }} 
+      />
+      <span 
+        className="w-[2px] bg-purple-500 rounded-full" 
+        style={{ 
+          height: '45%', 
+          animation: playing ? 'eq-bar 0.8s ease infinite alternate 0.2s' : 'none' 
+        }} 
+      />
+    </div>
+  );
+}
+
+// Desktop Reel Card
 function DesktopReelCard({ reel, index }: { reel: ReelItem; index: number }) {
+  const { playClick } = useApp();
   const [failed, setFailed] = useState(false);
   const [muted, setMuted] = useState(true);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true);
   const [videoEl, setVideoEl] = useState<HTMLVideoElement | null>(null);
 
   const togglePlay = () => {
+    playClick();
     if (!videoEl) return;
     if (videoEl.paused) {
-      videoEl.play();
+      videoEl.play().catch((err) => console.log('Playback error:', err));
       setPlaying(true);
     } else {
       videoEl.pause();
@@ -23,6 +68,7 @@ function DesktopReelCard({ reel, index }: { reel: ReelItem; index: number }) {
   };
 
   const toggleMute = () => {
+    playClick();
     if (!videoEl) return;
     videoEl.muted = !videoEl.muted;
     setMuted(videoEl.muted);
@@ -69,6 +115,9 @@ function DesktopReelCard({ reel, index }: { reel: ReelItem; index: number }) {
             />
           )}
 
+          {/* Equalizer animation when unmuted */}
+          {!failed && !muted && <Equalizer playing={playing} />}
+
           {/* View count badge */}
           <div className="pointer-events-none absolute bottom-3 left-3 z-10 flex items-center gap-1.5 rounded-full bg-black/60 px-2.5 py-1 text-[10px] font-semibold text-white backdrop-blur-sm">
             <Eye className="h-3 w-3" />
@@ -100,9 +149,9 @@ function DesktopReelCard({ reel, index }: { reel: ReelItem; index: number }) {
       )}
 
       <div className="mt-3 text-center">
-        <h3 className="font-display text-base font-bold text-white">{reel.title}</h3>
-        <p className="mt-0.5 text-sm text-violet-400">{reel.type}</p>
-        <p className="mt-1.5 text-xs text-slate-500">{reel.caption}</p>
+        <h3 className="font-display text-base font-bold text-zinc-900 dark:text-white">{reel.title}</h3>
+        <p className="mt-0.5 text-sm text-purple-650 dark:text-violet-400 font-bold">{reel.type}</p>
+        <p className="mt-1.5 text-xs text-zinc-600 dark:text-slate-500 font-medium leading-relaxed max-w-[240px] mx-auto">{reel.caption}</p>
       </div>
     </motion.div>
   );
@@ -110,12 +159,14 @@ function DesktopReelCard({ reel, index }: { reel: ReelItem; index: number }) {
 
 // Compact Mobile Reel Card with Inline controls
 function MobileReelCard({ reel, index }: { reel: ReelItem; index: number }) {
+  const { playClick } = useApp();
   const [failed, setFailed] = useState(false);
   const [muted, setMuted] = useState(true);
   const [playing, setPlaying] = useState(true);
   const [videoEl, setVideoEl] = useState<HTMLVideoElement | null>(null);
 
   const togglePlay = () => {
+    playClick();
     if (!videoEl) return;
     if (videoEl.paused) {
       videoEl.play().catch((err) => console.log('Playback error:', err));
@@ -127,6 +178,7 @@ function MobileReelCard({ reel, index }: { reel: ReelItem; index: number }) {
   };
 
   const toggleMute = () => {
+    playClick();
     if (!videoEl) return;
     videoEl.muted = !videoEl.muted;
     setMuted(videoEl.muted);
@@ -141,7 +193,7 @@ function MobileReelCard({ reel, index }: { reel: ReelItem; index: number }) {
       className="flex sm:hidden flex-col items-center w-full"
     >
       <div
-        className="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black border border-white/15 shadow-lg shadow-black/40 will-change-transform"
+        className="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black border border-zinc-200 dark:border-white/15 shadow-lg shadow-black/40 will-change-transform"
         style={{ transform: 'translateZ(0)' }}
       >
         {failed ? (
@@ -165,6 +217,9 @@ function MobileReelCard({ reel, index }: { reel: ReelItem; index: number }) {
             className="w-full h-full object-cover rounded-xl pointer-events-none"
           />
         )}
+
+        {/* Equalizer animation overlay when unmuted */}
+        {!failed && !muted && <Equalizer playing={playing} />}
 
         {/* View count badge */}
         <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/70 backdrop-blur-sm rounded-full text-[9px] text-white pointer-events-none z-10 flex items-center gap-1 font-semibold">
@@ -198,7 +253,7 @@ function MobileReelCard({ reel, index }: { reel: ReelItem; index: number }) {
         <h3 className="text-[11px] font-bold leading-tight line-clamp-1 mt-1 text-zinc-900 dark:text-white">
           {reel.title}
         </h3>
-        <p className="text-[9px] font-semibold text-purple-500 line-clamp-1">
+        <p className="text-[9px] font-semibold text-purple-600 dark:text-purple-400 line-clamp-1">
           {reel.type}
         </p>
       </div>

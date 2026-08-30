@@ -512,3 +512,60 @@ video, #hero, main {
 .translate-z-0 {
   transform: translateZ(0);
 }
+
+/* Card Flip classes */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+/* Laser flow animations */
+@keyframes laserFlow {
+  0% {
+    left: -20%;
+  }
+  100% {
+    left: 120%;
+  }
+}
+.animate-laser {
+  position: relative;
+  overflow: hidden;
+}
+.animate-laser::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 80px;
+  background: linear-gradient(90deg, transparent, #a855f7, #22d3ee, transparent);
+  animation: laserFlow 2s linear infinite;
+}
+
+/* Holographic glitter sweep */
+@keyframes glitterSweep {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.holographic-glow {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.05), rgba(6, 182, 212, 0.05), rgba(236, 72, 153, 0.05));
+  background-size: 200% 200%;
+  animation: glitterSweep 6s ease infinite;
+}
+

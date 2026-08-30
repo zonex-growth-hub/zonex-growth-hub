@@ -1,32 +1,35 @@
 import React, { useEffect, useRef } from 'react';
 import Lenis from '@studio-freight/lenis';
-
-const scrollTo = (id: string) => {
-  const target = document.getElementById(id);
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth' });
-  }
-};
-
-const scrollToAudit = () => {
-  const target = document.getElementById('contact');
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth' });
-    // Focus first input in the audit form after scroll settles
-    setTimeout(() => {
-      const input = target.querySelector<HTMLInputElement>('input');
-      if (input) input.focus({ preventScroll: true });
-    }, 800);
-  }
-};
+import { motion } from 'framer-motion';
+import { useApp } from '@/context/AppContext';
 
 export const Hero: React.FC = () => {
+  const { playClick } = useApp();
   const videoRef = useRef<HTMLVideoElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  const scrollTo = (id: string) => {
+    playClick();
+    const target = document.getElementById(id);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToAudit = () => {
+    playClick();
+    const target = document.getElementById('contact');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        const input = target.querySelector<HTMLInputElement>('input');
+        if (input) input.focus({ preventScroll: true });
+      }, 800);
+    }
+  };
+
   useEffect(() => {
-    // 1. Lenis Smooth Scroll Initialization
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -41,13 +44,11 @@ export const Hero: React.FC = () => {
     }
     rafId = requestAnimationFrame(raf);
 
-    // 2. Direct Video Autoplay Control
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
       videoRef.current.play().catch((err) => console.log('Autoplay prevented:', err));
     }
 
-    // 3. Scroll-Bound Video Zoom & Content Dissolve
     const handleScroll = () => {
       if (!heroRef.current) return;
       const scrollY = window.scrollY;
@@ -93,7 +94,6 @@ export const Hero: React.FC = () => {
           className="w-full h-full object-cover will-change-transform transition-transform duration-75 ease-out"
           style={{ transform: 'scale(1) translateZ(0)' }}
         />
-        {/* Gradient overlay for text readability */}
         <div
           className="absolute inset-0"
           style={{
@@ -102,33 +102,8 @@ export const Hero: React.FC = () => {
         />
       </div>
 
-      {/* Top Navbar (hero-internal — kept for standalone page scroll) */}
-      <nav className="navbar flex justify-between items-center w-full pb-8 z-20">
-        <div className="logo flex items-center gap-2 text-xl font-bold tracking-wider font-['Outfit']">
-          <i className="ph ph-cube-transparent text-2xl text-[#8A63F8]" />
-          <span>ZONEX</span>
-        </div>
-
-        <div className="nav-links hidden md:flex items-center gap-10 font-['Inter'] text-[0.85rem] font-medium tracking-widest uppercase text-[#d5d5d5]">
-          <button onClick={() => scrollTo('services')} className="hover:text-white transition-colors cursor-pointer">Services</button>
-          <button onClick={() => scrollTo('portfolio')} className="hover:text-white transition-colors cursor-pointer">Our Work</button>
-          <button onClick={() => scrollTo('insights')} className="hover:text-white transition-colors cursor-pointer">Insights</button>
-          <a href="https://zonex-academy.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Academy</a>
-        </div>
-
-        <div className="nav-actions hidden md:block">
-          <button
-            onClick={scrollToAudit}
-            className="btn-outline inline-flex items-center justify-center px-6 py-2.5 rounded-lg border border-white/10 bg-[rgba(20,20,25,0.4)] backdrop-blur-md text-[0.85rem] font-semibold tracking-wider uppercase font-['Inter'] hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer"
-          >
-            LET'S WORK TOGETHER
-          </button>
-        </div>
-
-        <button className="mobile-menu-toggle md:hidden text-2xl p-2 text-white">
-          <i className="ph ph-list" />
-        </button>
-      </nav>
+      {/* Top Navbar Placeholder spacing/offset */}
+      <div className="w-full h-16 md:h-20 shrink-0" />
 
       {/* Hero Center Content */}
       <div
@@ -136,26 +111,34 @@ export const Hero: React.FC = () => {
         className="hero-content flex-1 flex flex-col justify-center max-w-[820px] py-8 z-20 will-change-transform"
       >
         {/* Badge */}
-        <span className="greeting inline-flex items-center gap-2 text-[#8A63F8] text-[0.75rem] sm:text-[0.85rem] font-bold tracking-[2px] mb-5 uppercase font-['Outfit'] animate-fade-up">
+        <span className="greeting inline-flex items-center gap-2 text-[#8A63F8] text-[0.75rem] sm:text-[0.85rem] font-bold tracking-[2px] mb-5 uppercase font-['Outfit'] animate-fade-up select-none">
           <span>✨</span>
           <span>High-Performance Digital Marketing &amp; Growth Agency</span>
         </span>
 
         {/* H1 Headline */}
         <h1
-          className="main-title text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08] mb-4 font-['Outfit'] animate-fade-up"
+          className="main-title text-4xl sm:text-6xl lg:text-7.5xl font-bold tracking-tight text-white leading-[1.08] mb-6 font-['Outfit'] animate-fade-up"
           style={{ animationDelay: '0.1s' }}
         >
           We Scale Ambitious<br />
           Brands Into{' '}
-          <span
-            style={{
-              background: 'linear-gradient(90deg, #9C7AFA 0%, #5A8CFF 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
+          <span className="relative inline-block">
             Category Giants.
+            {/* Animated Underline */}
+            <svg className="absolute left-0 -bottom-2.5 w-full h-3 overflow-visible" viewBox="0 0 100 10" preserveAspectRatio="none">
+              <motion.path
+                d="M 2 8 Q 50 2 98 8"
+                stroke="#8A63F8"
+                strokeWidth="3.5"
+                fill="none"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.2, delay: 0.6, ease: 'easeOut' }}
+              />
+            </svg>
           </span>
         </h1>
 
@@ -165,7 +148,24 @@ export const Hero: React.FC = () => {
           style={{ animationDelay: '0.2s' }}
         >
           We architect hyper-profitable paid ads, viral short-form creatives, and high-converting funnels engineered for{' '}
-          <span className="text-white font-semibold">10x ROI</span> and predictable brand growth.
+          <span className="relative inline-block font-semibold text-white">
+            10x ROI
+            {/* Animated Underline */}
+            <svg className="absolute left-0 -bottom-1 w-full h-2 overflow-visible" viewBox="0 0 100 10" preserveAspectRatio="none">
+              <motion.path
+                d="M 2 8 Q 50 4 98 8"
+                stroke="#22d3ee"
+                strokeWidth="2.5"
+                fill="none"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.0, delay: 1.2, ease: 'easeOut' }}
+              />
+            </svg>
+          </span>{' '}
+          and predictable revenue scaling.
         </p>
 
         {/* CTA Buttons */}
@@ -187,14 +187,14 @@ export const Hero: React.FC = () => {
       </div>
 
       {/* Hero Footer & Status Card */}
-      <footer className="hero-footer flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pt-8 z-20 font-['Inter'] text-sm text-[#d5d5d5]">
+      <footer className="hero-footer flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pt-8 z-20 font-['Inter'] text-sm text-[#d5d5d5] select-none">
         {/* Availability Glass Card */}
-        <div className="glass-panel flex items-center gap-3 bg-[rgba(20,20,25,0.4)] backdrop-blur-md border border-white/10 rounded-2xl px-6 py-4 max-w-[340px] shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+        <div className="glass-panel flex items-center gap-3 bg-[rgba(20,20,25,0.4)] backdrop-blur-md border border-white/10 rounded-2xl px-6 py-4 max-w-[345px] shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
           <div className="relative flex items-center justify-center w-3 h-3">
             <span className="pulse-dot w-2.5 h-2.5 bg-[#00FF88] rounded-full" />
             <span className="absolute w-full h-full bg-[#00FF88] rounded-full animate-ping opacity-75" />
           </div>
-          <span className="text-xs tracking-wider uppercase font-medium">NOW ACCEPTING NEW CLIENTS — LIMITED SLOTS</span>
+          <span className="text-[10px] sm:text-xs tracking-wider uppercase font-medium">NOW ACCEPTING NEW CLIENTS — LIMITED SLOTS</span>
         </div>
 
         {/* Scroll Indicator */}

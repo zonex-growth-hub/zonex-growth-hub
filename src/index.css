@@ -214,7 +214,7 @@
   }
 
   /* ── Layout helpers ────────────────────────────── */
-  .section-pad { @apply px-4 sm:px-6 lg:px-8 py-20 lg:py-28; }
+  .section-pad { @apply px-4 sm:px-6 lg:px-8 py-8 md:py-14; }
   .container-max { @apply max-w-7xl mx-auto; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

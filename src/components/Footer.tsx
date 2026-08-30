@@ -3,7 +3,7 @@ import { Instagram, Linkedin, Youtube, Twitter, ArrowUp } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-950 text-zinc-700 dark:text-zinc-400 pt-16 pb-8 transition-colors duration-300 animate-fade-up" aria-label="ZoneX Growth Hub Footer">
+    <footer className="relative border-t border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-950 text-zinc-700 dark:text-zinc-400 pt-10 pb-6 transition-colors duration-300 animate-fade-up" aria-label="ZoneX Growth Hub Footer">
       <div className="container-max px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-10 mb-12">
           {/* Brand */}

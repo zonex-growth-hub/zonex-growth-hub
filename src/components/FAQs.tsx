@@ -12,7 +12,7 @@ export function FAQs() {
   const mobileFaqs = showAllFaqs ? FAQS : FAQS.slice(0, 3);
 
   return (
-    <section id="faqs" className="section-pad relative" aria-label="Frequently Asked Growth Questions">
+    <section id="faqs" className="relative pt-4 pb-6 md:pt-8 md:pb-10" aria-label="Frequently Asked Growth Questions">
       <div className="container-max">
         <SectionHeading
           eyebrow="Growth FAQ &amp; Regional Insights"

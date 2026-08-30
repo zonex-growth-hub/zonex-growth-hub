@@ -61,7 +61,7 @@ export function HeroStats() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section className="relative py-8 sm:py-16 lg:py-20 px-2 sm:px-6 lg:px-8">
+    <section className="relative pt-2 pb-6 md:pt-4 md:pb-10 px-2 sm:px-6 lg:px-8">
       <div ref={ref} className="container-max">
         <div className="grid grid-cols-4 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-5 lg:gap-6 px-1 sm:px-0">
           {HERO_STATS.map((stat, i) => (

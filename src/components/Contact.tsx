@@ -46,7 +46,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="section-pad relative" aria-label="Contact &amp; Free Audit">
+    <section id="contact" className="relative pt-6 pb-6 md:pt-10 md:pb-12" aria-label="Contact &amp; Free Audit">
       <div className="container-max">
         <SectionHeading
           eyebrow="Zero Friction Lead Capture"
@@ -60,7 +60,7 @@ export function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="max-w-4xl mx-auto mb-14 rounded-3xl p-6 sm:p-10 border border-zinc-200 dark:border-violet-500/30 shadow-lg premium-card will-change-transform translate-z-0"
+          className="max-w-4xl mx-auto mb-14 rounded-3xl p-4 md:p-8 border border-zinc-200 dark:border-violet-500/30 shadow-lg premium-card will-change-transform translate-z-0"
         >
           {/* Subtle ambient gradient highlight */}
           <div className="absolute top-0 right-0 w-80 h-80 bg-violet-600/10 rounded-full blur-[100px] pointer-events-none" />

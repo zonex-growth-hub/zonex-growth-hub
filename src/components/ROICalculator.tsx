@@ -50,7 +50,7 @@ export function ROICalculator() {
   }, [budget, targetSales]);
 
   return (
-    <section id="roi" className="section-pad relative">
+    <section id="roi" className="relative pt-4 pb-4 md:pt-8 md:pb-8">
       <div className="container-max">
         <SectionHeading
           eyebrow="ROI Estimator"

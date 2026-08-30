@@ -119,7 +119,7 @@ export function Portfolio() {
   const filtered = filter === 'All Work' ? PROJECTS : PROJECTS.filter((p) => p.category === filter);
 
   return (
-    <section id="portfolio" className="section-pad relative">
+    <section id="portfolio" className="relative pt-8 pb-4 md:pt-14 md:pb-8">
       <div className="container-max">
         <SectionHeading
           eyebrow="Live Portfolio"

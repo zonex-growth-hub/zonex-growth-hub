@@ -21,18 +21,18 @@ export function SectionHeading({ eyebrow, title, subtitle, align = 'center' }: S
       whileInView="visible"
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`mb-14 ${align === 'center' ? 'text-center mx-auto max-w-3xl' : 'text-left max-w-2xl'}`}
+      className={`mb-5 md:mb-8 ${align === 'center' ? 'text-center mx-auto max-w-3xl' : 'text-left max-w-2xl'}`}
     >
       {eyebrow && (
-        <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase glass mb-5 text-violet-400">
+        <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase glass mb-2 mt-0 text-purple-600 dark:text-violet-400">
           {eyebrow}
         </span>
       )}
-      <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight">
+      <h2 className="font-display text-2xl md:text-4xl font-bold leading-tight tracking-tight mb-2 md:mb-3 text-zinc-900 dark:text-white">
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-5 text-base sm:text-lg text-slate-400 light:text-slate-600 leading-relaxed">
+        <p className="mt-0 text-xs md:text-sm text-zinc-750 dark:text-slate-400 font-medium max-w-xl mx-auto leading-relaxed">
           {subtitle}
         </p>
       )}

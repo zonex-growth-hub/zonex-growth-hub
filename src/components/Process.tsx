@@ -9,7 +9,7 @@ export function Process() {
   const mobileSteps = showAllSteps ? PROCESS_STEPS : PROCESS_STEPS.slice(0, 2);
 
   return (
-    <section id="process" className="section-pad relative" aria-label="Growth Process &amp; Methodology">
+    <section id="process" className="relative pt-6 pb-4 md:pt-10 md:pb-8" aria-label="Growth Process &amp; Methodology">
       <div className="container-max">
         <SectionHeading
           eyebrow="Data-Backed Growth Methodology"

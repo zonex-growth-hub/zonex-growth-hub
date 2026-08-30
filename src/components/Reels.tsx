@@ -211,7 +211,7 @@ export function Reels() {
   const gymReels = REELS.filter((r) => r.id >= 4);
 
   return (
-    <section id="reels" className="section-pad relative">
+    <section id="reels" className="relative pt-4 pb-8 md:pt-8 md:pb-14">
       <div className="container-max">
         <SectionHeading
           eyebrow="Reels Showcase"

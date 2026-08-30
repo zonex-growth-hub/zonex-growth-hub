@@ -17,7 +17,7 @@ export function Testimonials() {
   const active = TESTIMONIALS[index];
 
   return (
-    <section className="section-pad relative">
+    <section className="relative pt-4 pb-4 md:pt-8 md:pb-8">
       <div className="container-max">
         <SectionHeading
           eyebrow="Social Proof"

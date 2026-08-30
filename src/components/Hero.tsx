@@ -2,6 +2,104 @@ import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useApp } from '@/context/AppContext';
 
+export const HeroBackground = React.forwardRef<HTMLDivElement>((_, ref) => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationFrameId: number;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+
+    const particles: Array<{ x: number; y: number; vx: number; vy: number; radius: number; alpha: number }> = [];
+    for (let i = 0; i < 45; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
+        radius: Math.random() * 2 + 1,
+        alpha: Math.random() * 0.5 + 0.2
+      });
+    }
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      // Background base
+      ctx.fillStyle = '#030305';
+      ctx.fillRect(0, 0, width, height);
+
+      // Draw glowing purple gradient mesh
+      const grad1 = ctx.createRadialGradient(width * 0.5, height * 0.35, 10, width * 0.5, height * 0.35, width * 0.4);
+      grad1.addColorStop(0, 'rgba(138, 99, 248, 0.25)');
+      grad1.addColorStop(1, 'rgba(3, 3, 5, 0)');
+      ctx.fillStyle = grad1;
+      ctx.fillRect(0, 0, width, height);
+
+      // Connect & draw particles
+      ctx.strokeStyle = 'rgba(138, 99, 248, 0.15)';
+      ctx.lineWidth = 1;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(168, 85, 247, ${p.alpha})`;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#8A63F8';
+        ctx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 130) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return (
+    <div ref={ref} className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0" style={{ transform: 'scale(1) translateZ(0)' }}>
+      <canvas ref={canvasRef} className="w-full h-full block" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#030305]/40 to-[#030305]" />
+    </div>
+  );
+});
+
 export const Hero: React.FC = () => {
   const { playClick } = useApp();
   const videoRef = useRef<HTMLDivElement>(null);
@@ -60,27 +158,8 @@ export const Hero: React.FC = () => {
       id="hero"
       className="hero-section relative min-h-screen w-full flex flex-col justify-between overflow-hidden text-white px-6 md:px-16 py-8"
     >
-      {/* Bulletproof Native Interactive Visual Engine */}
-      <div ref={videoRef} className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none bg-[#030305]" style={{ transform: 'scale(1) translateZ(0)' }}>
-        {/* Cyber Grid Pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.18]"
-          style={{
-            backgroundImage: `linear-gradient(to right, rgba(168, 85, 247, 0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(168, 85, 247, 0.25) 1px, transparent 1px)`,
-            backgroundSize: '48px 48px',
-            maskImage: 'radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 100%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 100%)'
-          }}
-        />
-
-        {/* Pulsing Neon Atmosphere Orbs */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[450px] bg-gradient-to-tr from-purple-600/30 to-indigo-600/30 rounded-full blur-[140px] animate-pulse" />
-        <div className="absolute top-1/3 -right-24 w-[450px] h-[450px] bg-purple-900/30 rounded-full blur-[130px]" />
-        <div className="absolute -bottom-10 left-10 w-[500px] h-[350px] bg-indigo-900/25 rounded-full blur-[120px]" />
-
-        {/* Vignette Overlay for Crisp Readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030305]/60 via-transparent to-[#030305]" />
-      </div>
+      {/* Self-contained HTML5 Canvas Cyber Wave & Particle Matrix */}
+      <HeroBackground ref={videoRef} />
 
       {/* Top Navbar Placeholder spacing/offset */}
       <div className="w-full h-16 md:h-20 shrink-0" />

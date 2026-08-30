@@ -9,13 +9,17 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <img
-                src="/logo.png"
-                alt="ZoneX Growth Hub digital marketing agency logo"
-                className="h-10 w-auto object-contain"
-                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-              />
-              <span className="font-display font-bold text-xl text-zinc-900 dark:text-white">{AGENCY.name}</span>
+              <div className="relative w-9 h-9 rounded-xl overflow-hidden bg-black/40 border border-purple-500/30 p-1 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.25)] shrink-0">
+                <img
+                  src="/logo-zonex.jpg"
+                  alt="ZoneX Growth Agency Logo"
+                  className="w-full h-full object-contain rounded-lg mix-blend-screen"
+                />
+              </div>
+              <div className="flex items-baseline gap-0 leading-none">
+                <span className="font-extrabold tracking-tight text-zinc-900 dark:text-white text-sm uppercase">ZoneX</span>
+                <span className="font-semibold text-purple-600 dark:text-purple-400 ml-1.5 text-sm uppercase tracking-tight">Growth Agency</span>
+              </div>
             </div>
             <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-md mb-3 font-medium">
               Headquartered in Mysuru — Empowering brands across Mysuru, Bengaluru, Chikkamagaluru, and Karnataka with high-conversion marketing engines.

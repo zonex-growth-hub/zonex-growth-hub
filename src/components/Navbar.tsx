@@ -37,20 +37,25 @@ export function Navbar() {
       } backdrop-blur-md`}>
         <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-12 items-center w-full">
           
-          {/* Left: Cols 1-3 - Geometric clover/spark icon + Brand Name */}
-          <div className="col-span-6 md:col-span-3 flex items-center gap-2.5">
-            <svg 
-              className="w-6 h-6 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)] fill-[#a855f7] shrink-0" 
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 2a3.5 3.5 0 013.5 3.5v3A3.5 3.5 0 0112 12a3.5 3.5 0 01-3.5-3.5v-3A3.5 3.5 0 0112 2zm0 20a3.5 3.5 0 01-3.5-3.5v-3A3.5 3.5 0 0112 12a3.5 3.5 0 013.5 3.5v3A3.5 3.5 0 0112 22zm10-10a3.5 3.5 0 01-3.5 3.5h-3A3.5 3.5 0 0112 12a3.5 3.5 0 013.5-3.5h3A3.5 3.5 0 0122 12zM2 12a3.5 3.5 0 013.5-3.5h3A3.5 3.5 0 0112 12a3.5 3.5 0 01-3.5 3.5h-3A3.5 3.5 0 012 12z" />
-            </svg>
-            <span 
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="font-display font-black text-base sm:text-lg tracking-wider text-zinc-900 dark:text-white select-none cursor-pointer uppercase transition-colors"
-            >
-              ZONEX GROWTH
-            </span>
+          {/* Left: Cols 1-3 - Logo + Brand Name */}
+          <div className="col-span-6 md:col-span-3 flex items-center gap-2.5 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            {/* Glassmorphic logo emblem container */}
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl overflow-hidden bg-black/40 border border-purple-500/30 p-1 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.25)] group-hover:border-purple-500/60 transition-all shrink-0">
+              <img
+                src="/logo-zonex.jpg"
+                alt="ZoneX Growth Agency Logo"
+                className="w-full h-full object-contain rounded-lg mix-blend-screen"
+              />
+            </div>
+            {/* Brand text */}
+            <div className="flex items-baseline gap-0 select-none leading-none">
+              <span className="font-extrabold tracking-tight text-zinc-900 dark:text-white text-sm sm:text-base uppercase">
+                ZoneX
+              </span>
+              <span className="font-semibold text-purple-600 dark:text-purple-400 ml-1.5 text-sm sm:text-base uppercase tracking-tight">
+                Growth Agency
+              </span>
+            </div>
           </div>
 
           {/* Center: Cols 4-9 - Desktop Navigation */}

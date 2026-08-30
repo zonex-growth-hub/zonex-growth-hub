@@ -29,7 +29,7 @@ function StatCard({ stat, active, index }: { stat: HeroStat; active: boolean; in
       initial={{ opacity: 0, y: 30 }}
       animate={active ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="relative rounded-2xl p-6 sm:p-8 text-center overflow-hidden group"
+      className="relative rounded-xl sm:rounded-2xl p-2 sm:p-6 text-center overflow-hidden group"
       style={{
         background: 'linear-gradient(135deg, rgba(20,16,38,0.7), rgba(12,10,24,0.55))',
         backdropFilter: 'blur(14px)',
@@ -43,13 +43,13 @@ function StatCard({ stat, active, index }: { stat: HeroStat; active: boolean; in
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{ boxShadow: '0 0 32px -4px rgba(139,92,246,0.5), inset 0 0 0 1px rgba(139,92,246,0.5)' }}
       />
-      <div className="relative text-3xl lg:text-4xl font-bold gradient-text flex items-center justify-center gap-1.5">
-        {stat.star && <Star className="w-6 h-6 text-cyan-400" fill="currentColor" style={{ filter: 'drop-shadow(0 0 6px rgba(34,211,238,0.7))' }} />}
+      <div className="relative text-sm sm:text-3xl lg:text-4xl font-bold gradient-text flex items-center justify-center gap-0.5 sm:gap-1.5">
+        {stat.star && <Star className="w-3 h-3 sm:w-6 sm:h-6 text-cyan-400" fill="currentColor" style={{ filter: 'drop-shadow(0 0 6px rgba(34,211,238,0.7))' }} />}
         {stat.prefix}
         {display}
         {stat.suffix}
       </div>
-      <div className="relative mt-2 text-sm sm:text-base text-slate-300 light:text-slate-500 font-medium tracking-wide">
+      <div className="relative mt-1 sm:mt-2 text-[9px] sm:text-sm lg:text-base text-slate-300 light:text-slate-500 font-medium tracking-normal sm:tracking-wide leading-tight text-center">
         {stat.label}
       </div>
     </motion.div>
@@ -61,9 +61,9 @@ export function HeroStats() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section className="relative py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+    <section className="relative py-8 sm:py-16 lg:py-20 px-2 sm:px-6 lg:px-8">
       <div ref={ref} className="container-max">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        <div className="grid grid-cols-4 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-5 lg:gap-6 px-1 sm:px-0">
           {HERO_STATS.map((stat, i) => (
             <StatCard key={stat.label} stat={stat} active={inView} index={i} />
           ))}
@@ -72,3 +72,5 @@ export function HeroStats() {
     </section>
   );
 }
+
+export default HeroStats;

@@ -21,15 +21,20 @@ export function Hero() {
   };
 
   return (
-    <section className="relative min-h-[110vh] sm:min-h-[135vh] w-full flex flex-col items-center justify-start overflow-hidden bg-[#030307]">
+    <section 
+      id="hero"
+      className="relative min-h-[100dvh] w-full flex flex-col items-center justify-start overflow-hidden bg-[#030307]"
+    >
       
       {/* Background Video Container */}
-      <div className="absolute top-[12vh] sm:top-[16vh] left-0 w-full h-[95vh] sm:h-[120vh] z-0 pointer-events-none">
+      <div className="absolute top-[12vh] sm:top-[16vh] left-0 w-full h-[95vh] sm:h-[120vh] z-0 pointer-events-none select-none">
         <video 
           autoPlay 
           loop 
           muted 
           playsInline 
+          preload="auto"
+          style={{ transform: 'translate3d(0,0,0)' }}
           className="w-full h-full object-cover opacity-60 mix-blend-screen"
         >
           <source 
@@ -43,7 +48,7 @@ export function Hero() {
       </div>
 
       {/* Hero Content Grid */}
-      <div className="max-w-7xl w-full mx-auto px-6 md:px-16 relative z-10 grid grid-cols-12 gap-x-4 pt-32 sm:pt-40 flex-grow">
+      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 md:px-16 relative z-10 grid grid-cols-12 gap-x-4 pt-32 sm:pt-40 flex-grow">
         <div className="col-span-12 md:col-span-10 md:col-start-2 text-center md:text-left flex flex-col justify-center">
           
           {/* Animated H1 Title */}
@@ -51,13 +56,13 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="text-3xl sm:text-5xl lg:text-7xl font-display font-bold tracking-tight text-white leading-[1.15] mb-8 select-none"
+            className="text-2xl sm:text-5xl lg:text-7xl font-display font-bold tracking-tight text-white leading-[1.15] mb-8 select-none"
           >
             <span className="text-white">ZoneX Engine: </span>
             <span className="text-[#94a3b8]">Empowering</span><br />
             <span className="text-[#94a3b8]">businesses with AI &amp; performance systems to scale</span><br />
             <span className="text-[#94a3b8]">your </span>
-            <span className="w-[36px] sm:w-[54px] lg:w-[72px] h-[24px] sm:h-[34px] lg:h-[42px] border-[2px] border-[#a855f7] rounded-full inline-flex items-center justify-center align-middle mx-1 shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+            <span className="w-[30px] sm:w-[54px] lg:w-[72px] h-[20px] sm:h-[34px] lg:h-[42px] border-[2px] border-[#a855f7] rounded-full inline-flex items-center justify-center align-middle mx-1 shadow-[0_0_15px_rgba(168,85,247,0.4)]">
               <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-[#a855f7] rounded-full animate-pulse"></span>
             </span>
             <span className="text-[#94a3b8]"> digital revenue.</span>

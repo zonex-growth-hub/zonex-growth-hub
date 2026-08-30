@@ -424,3 +424,27 @@ input[type="range"]::-moz-range-thumb {
   box-shadow: 0 0 10px rgba(139,92,246,0.6);
   border: 2px solid #8B5CF6;
 }
+
+/* ── Lenis Smooth Scroll Engine ── */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Force GPU compositing on heavy animated elements */
+video, #hero, main {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}

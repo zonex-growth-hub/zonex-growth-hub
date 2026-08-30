@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import Lenis from '@studio-freight/lenis';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { AppProvider, useApp } from '@/context/AppContext';
@@ -8,18 +8,29 @@ import { Hero } from '@/components/Hero';
 import { HeroStats } from '@/components/HeroStats';
 import { Portfolio } from '@/components/Portfolio';
 import { Reels } from '@/components/Reels';
-import { ROICalculator } from '@/components/ROICalculator';
 import { Services } from '@/components/Services';
-import { BeforeAfter } from '@/components/BeforeAfter';
-import { TechMarquee } from '@/components/TechMarquee';
-import { Process } from '@/components/Process';
-import { GrowthInsights } from '@/components/GrowthInsights';
-import { Testimonials } from '@/components/Testimonials';
-import { FAQs } from '@/components/FAQs';
-import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
 import { FloatingWhatsApp } from '@/components/FloatingWhatsApp';
 import { X, Sparkles, Download, Bell } from 'lucide-react';
+
+// Lazy-loaded components for optimal bundle tree-shaking and chunk split sizes
+const ROICalculator = lazy(() => import('@/components/ROICalculator'));
+const BeforeAfter = lazy(() => import('@/components/BeforeAfter'));
+const TechMarquee = lazy(() => import('@/components/TechMarquee'));
+const Process = lazy(() => import('@/components/Process'));
+const GrowthInsights = lazy(() => import('@/components/GrowthInsights'));
+const Testimonials = lazy(() => import('@/components/Testimonials'));
+const FAQs = lazy(() => import('@/components/FAQs'));
+const Contact = lazy(() => import('@/components/Contact'));
+
+function SectionLoader() {
+  return (
+    <div className="py-14 flex items-center justify-center text-zinc-500 dark:text-zinc-400 select-none">
+      <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin mr-2" />
+      <span className="text-[10px] uppercase font-bold tracking-widest">Loading Segment...</span>
+    </div>
+  );
+}
 
 function AppContent() {
   const { playClick } = useApp();
@@ -28,7 +39,7 @@ function AppContent() {
   const [showExitModal, setShowExitModal] = useState(false);
   const [exitEmail, setExitEmail] = useState('');
 
-  // 1. Lenis Smooth Scroll Tuning
+  // 1. Lenis Smooth Scroll Tuning with Memory Safety event cleanups
   useEffect(() => {
     const lenis = new Lenis({
       duration: 0.9,
@@ -47,7 +58,7 @@ function AppContent() {
     }
     const rafId = requestAnimationFrame(raf);
 
-    // Track scroll progress
+    // Track scroll progress with passive listener to prevent touch blockages
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (totalHeight > 0) {
@@ -56,7 +67,7 @@ function AppContent() {
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // Exit Intent Modal Trigger
+    // Exit Intent Modal Trigger (Desktop boundaries)
     const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY < 5) {
         if (!sessionStorage.getItem('exit-intent-shown')) {
@@ -75,7 +86,7 @@ function AppContent() {
     };
   }, []);
 
-  // 2. Social Proof Live Notification Toasts Loop
+  // 2. Social Proof Live Notification Toasts Loop with useEffect memory safety cleanups
   useEffect(() => {
     const messages = [
       "🔥 E-Commerce Brand scaled to 4.2x ROAS in Mysuru!",
@@ -85,22 +96,23 @@ function AppContent() {
       "🔥 Fitness chain booked 45 strategy slots automatically!"
     ];
     let index = 0;
+    let autoDismissTimeout: NodeJS.Timeout;
     
-    // Trigger initial toast after 10 seconds
     const initialTimeout = setTimeout(() => {
       setToast(messages[index]);
       index = (index + 1) % messages.length;
-      setTimeout(() => setToast(null), 5000);
+      autoDismissTimeout = setTimeout(() => setToast(null), 5000);
     }, 10000);
 
     const interval = setInterval(() => {
       setToast(messages[index]);
       index = (index + 1) % messages.length;
-      setTimeout(() => setToast(null), 5000);
+      autoDismissTimeout = setTimeout(() => setToast(null), 5000);
     }, 25000);
 
     return () => {
       clearTimeout(initialTimeout);
+      clearTimeout(autoDismissTimeout);
       clearInterval(interval);
     };
   }, []);
@@ -108,7 +120,11 @@ function AppContent() {
   const handleExitModalSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     playClick();
-    const msg = encodeURIComponent(`Hi ZoneX Growth Agency! 👋\n\nI want to download the 2026 E-commerce & Brand Scaling Playbook (Free PDF).\n\nMy email: ${exitEmail}`);
+
+    // Sanitization: strip HTML script tags from input
+    const cleanEmail = exitEmail.replace(/[<>]/g, '').trim();
+
+    const msg = encodeURIComponent(`Hi ZoneX Growth Agency! 👋\n\nI want to download the 2026 E-commerce & Brand Scaling Playbook (Free PDF).\n\nMy email: ${cleanEmail}`);
     window.open(`https://wa.me/917019371818?text=${msg}`, '_blank', 'noopener,noreferrer');
     setShowExitModal(false);
   };
@@ -129,15 +145,15 @@ function AppContent() {
         <HeroStats />
         <Portfolio />
         <Reels />
-        <ROICalculator />
+        <Suspense fallback={<SectionLoader />}><ROICalculator /></Suspense>
         <Services />
-        <BeforeAfter />
-        <TechMarquee />
-        <Process />
-        <GrowthInsights />
-        <Testimonials />
-        <FAQs />
-        <Contact />
+        <Suspense fallback={<SectionLoader />}><BeforeAfter /></Suspense>
+        <Suspense fallback={<SectionLoader />}><TechMarquee /></Suspense>
+        <Suspense fallback={<SectionLoader />}><Process /></Suspense>
+        <Suspense fallback={<SectionLoader />}><GrowthInsights /></Suspense>
+        <Suspense fallback={<SectionLoader />}><Testimonials /></Suspense>
+        <Suspense fallback={<SectionLoader />}><FAQs /></Suspense>
+        <Suspense fallback={<SectionLoader />}><Contact /></Suspense>
       </main>
       <Footer />
       <FloatingWhatsApp />

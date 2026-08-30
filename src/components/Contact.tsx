@@ -18,6 +18,10 @@ export function Contact() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  
+  // Security Honeypot and input validations
+  const [honey, setHoney] = useState('');
+  const [phoneError, setPhoneError] = useState(false);
 
   // 2. Interactive Map Node Selection State
   const [activeMapPin, setActiveMapPin] = useState<'mysuru' | 'bengaluru' | 'chikkamagaluru'>('mysuru');
@@ -41,10 +45,27 @@ export function Contact() {
   const handleQuizSubmit = (e: FormEvent) => {
     e.preventDefault();
     playClick();
-    setLoading(true);
+    
+    // Honeypot validation
+    if (honey.length > 0) {
+      console.warn('Bot submission blocked');
+      return;
+    }
 
+    setLoading(true);
+    setPhoneError(false);
+
+    // Sanitization: Strip script tags / HTML brackets
     const cleanName = (brandName.trim() || 'Valued Brand').replace(/[<>]/g, '');
     const cleanPhone = (phoneNumber.trim() || 'Not Shared').replace(/[<>]/g, '');
+
+    // Phone format regex validation
+    const phoneRegex = /^\+?[0-9\s\-()]{7,25}$/;
+    if (!phoneRegex.test(cleanPhone)) {
+      setPhoneError(true);
+      setLoading(false);
+      return;
+    }
 
     analytics.trackLead('Interactive Quiz Lead Submit', {
       industry,
@@ -72,6 +93,8 @@ export function Contact() {
     setBudgetRange('');
     setBrandName('');
     setPhoneNumber('');
+    setHoney('');
+    setPhoneError(false);
     setSubmitted(false);
   };
 
@@ -208,6 +231,17 @@ export function Contact() {
                     <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-1">Enter your brand &amp; phone details</h3>
                     <p className="text-xs text-zinc-650 dark:text-slate-400 font-medium mb-4">We will formulate your digital strategy mapping based on your inputs.</p>
                     <form onSubmit={handleQuizSubmit} className="space-y-4">
+                      {/* Hidden Honeypot Field for Spam Bot Protection */}
+                      <div className="hidden" aria-hidden="true">
+                        <input
+                          type="text"
+                          name="website_url_honeypot"
+                          value={honey}
+                          onChange={(e) => setHoney(e.target.value)}
+                          tabIndex={-1}
+                          autoComplete="off"
+                        />
+                      </div>
                       <div>
                         <label htmlFor="brand-name" className="block text-[10px] font-bold uppercase tracking-wider text-zinc-700 dark:text-slate-300 mb-1">Brand Name / Website</label>
                         <input
@@ -231,6 +265,11 @@ export function Contact() {
                           placeholder="e.g. +91 98765 43210"
                           className="w-full px-4 py-3 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white placeholder:text-zinc-400 text-xs focus:outline-none focus:border-purple-500 shadow-sm"
                         />
+                        {phoneError && (
+                          <p className="text-[10px] text-red-500 font-bold mt-1.5 animate-pulse">
+                            ⚠️ Invalid phone number format. Please check and try again.
+                          </p>
+                        )}
                       </div>
                       <div className="flex gap-3">
                         <button

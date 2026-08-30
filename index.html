@@ -178,6 +178,42 @@
       ]
     }
     </script>
+
+    <!-- Rich ContactPoint & Click-to-Call Search Schema for Mobile SERP Click Actions -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MarketingAgency",
+      "@id": "https://www.zonexgrowth-agency.in/#marketing-agency",
+      "name": "ZoneX Growth Agency",
+      "url": "https://www.zonexgrowth-agency.in",
+      "telephone": "+91-7019371818",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+91-7019371818",
+          "contactType": "sales & client strategy",
+          "contactOption": "TollFree",
+          "areaServed": ["IN-KA", "IN"],
+          "availableLanguage": ["English", "Kannada", "Hindi"]
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+91-7019371818",
+          "contactType": "instant WhatsApp consultation",
+          "availableLanguage": ["English", "Kannada", "Hindi"]
+        }
+      ],
+      "potentialAction": {
+        "@type": "CommunicateAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "tel:+917019371818"
+        },
+        "instrument": "Direct Strategic Consultation"
+      }
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

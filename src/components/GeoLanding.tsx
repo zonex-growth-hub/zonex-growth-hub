@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { useApp } from '@/context/AppContext';
 import { SectionHeading } from './SectionHeading';
-import { Contact } from './Contact';
 import { ArrowLeft, MapPin, ShieldCheck } from 'lucide-react';
+
+const Contact = lazy(() => import('./Contact'));
 
 interface GeoData {
   city: string;
@@ -213,7 +214,13 @@ export function GeoLanding({ citySlug, onBack }: { citySlug: string; onBack: () 
             title={<>Get a Free <span className="gradient-text">Growth Strategy</span> proposal</>}
             subtitle={`Let our optimization agents analyze your digital footprint in ${data.city}. Complete the 3-step quiz to get custom projections.`}
           />
-          <Contact />
+          <Suspense fallback={
+            <div className="py-8 text-center text-xs text-zinc-500 font-bold select-none animate-pulse">
+              Loading Interactive Strategy Quiz...
+            </div>
+          }>
+            <Contact />
+          </Suspense>
         </div>
 
       </div>

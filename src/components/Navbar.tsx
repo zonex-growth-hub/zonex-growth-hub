@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon, Volume2, VolumeX } from "lucide-react";
 import { analytics } from "@/utils/analytics";
@@ -61,7 +61,7 @@ export function Navbar() {
   return (
     <>
       {/* ── MOBILE STICKY TOP BAR — always visible, mobile only ── */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 bg-[#EDEEF5]/95 dark:bg-[#030307]/95 border-b border-slate-200 dark:border-white/[0.08] backdrop-blur-md shadow-sm">
+      <div className="md:hidden sticky top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 bg-[#EDEEF5]/95 dark:bg-[#030307]/95 border-b border-slate-200 dark:border-white/[0.08] backdrop-blur-md shadow-sm">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => { playClick(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
           <div className="w-8 h-8 rounded-lg overflow-hidden bg-black/80 border border-purple-500/40 p-0.5 flex items-center justify-center shadow-[0_0_12px_rgba(168,85,247,0.3)]">
             <img src="/logo-zonex.jpg" alt="ZoneX" className="w-full h-full object-contain" loading="eager" />

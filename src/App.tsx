@@ -174,6 +174,28 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-[#EDEEF5] text-zinc-900 dark:bg-[#030307] dark:text-white selection:bg-[#7c3aed] selection:text-white transition-colors duration-300" style={{ overflowX: 'clip' }}>
       
+      {/* Top Announcement Marquee Banner */}
+      <div className="w-full bg-gradient-to-r from-purple-950/80 via-purple-700/50 to-indigo-950/80 border-b border-purple-500/30 text-purple-200 text-xs sm:text-sm font-medium py-2 px-4 overflow-hidden relative z-50 backdrop-blur-md">
+        <div className="flex items-center gap-8 whitespace-nowrap animate-marquee">
+          <span>🚀 Q3 High-Performance Sprints Live — Scaling Ambitious Brands to 4x+ ROAS</span>
+          <span>✦</span>
+          <span>📍 Operating Across Mysuru, Bengaluru &amp; Pan-Karnataka</span>
+          <span>✦</span>
+          <span>⚡ Meta Ads &amp; Google PPC Media Buying Systems</span>
+          <span>✦</span>
+          <span>🔥 Direct WhatsApp Strategy Booking Active</span>
+          <span>✦</span>
+          {/* Duplicate set for infinite looping */}
+          <span>🚀 Q3 High-Performance Sprints Live — Scaling Ambitious Brands to 4x+ ROAS</span>
+          <span>✦</span>
+          <span>📍 Operating Across Mysuru, Bengaluru &amp; Pan-Karnataka</span>
+          <span>✦</span>
+          <span>⚡ Meta Ads &amp; Google PPC Media Buying Systems</span>
+          <span>✦</span>
+          <span>🔥 Direct WhatsApp Strategy Booking Active</span>
+        </div>
+      </div>
+
       {/* Neon Scroll Progress Glow Line */}
       <div 
         className="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 shadow-[0_0_10px_#a855f7] z-[100] transition-all duration-100"

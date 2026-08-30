@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { analytics } from '@/utils/analytics';
 
@@ -38,6 +38,7 @@ interface GlobalWindow extends Window {
 export function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const [soundActive, setSoundActive] = useState(true);
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -45,18 +46,13 @@ export function Hero() {
   };
 
   const handleClaimAudit = () => {
-    analytics.trackLead('Book Free Growth Audit CTA');
+    analytics.trackLead('Book Growth Audit HUD CTA');
     scrollToSection('contact');
   };
 
-  const handleCalculateROI = () => {
-    analytics.trackInitiateCheckout('Hero ROI Calculator CTA');
-    scrollToSection('roi');
-  };
-
-  const handleAcademy = () => {
-    analytics.trackViewContent('ZoneX Academy Hero CTA');
-    window.open('https://zonex-academy.com', '_blank', 'noopener,noreferrer');
+  const handleExplore = () => {
+    analytics.trackViewContent('Explore Ecosystem HUD CTA');
+    scrollToSection('portfolio');
   };
 
   useEffect(() => {
@@ -68,25 +64,7 @@ export function Hero() {
     const ScrollTrigger = win.ScrollTrigger;
     const Lenis = win.Lenis;
 
-    const myProjects = [
-      {
-        title: 'OTHER AGENCIES VS ZONEX',
-        image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1000&q=80',
-      },
-      {
-        title: 'AI AUTOMATION & PERFORMANCE',
-        image: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1000&q=80',
-      },
-      {
-        title: 'LOCAL SEO DOMINANCE',
-        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1000&q=80',
-      },
-      {
-        title: 'VIRAL SCALE SYSTEMS',
-        image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1000&q=80',
-      },
-    ];
-
+    // 1. Lenis Smooth Scroll
     let lenisInstance: LenisInstance | null = null;
     let rafId: number | null = null;
     let isDisposed = false;
@@ -94,10 +72,9 @@ export function Hero() {
     if (Lenis) {
       try {
         lenisInstance = new Lenis({
-          duration: 1.2,
+          duration: 1.4,
           easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           smoothWheel: true,
-          touchMultiplier: 1.5,
         });
 
         const raf = (time: number) => {
@@ -121,145 +98,205 @@ export function Hero() {
       }
     }
 
+    // 2. Three.js Scene Setup
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x030307, 0.04);
+    scene.fog = new THREE.FogExp2(0x020204, 0.035);
 
-    const isMobile = window.innerWidth <= 768;
-
-    const camera = new THREE.PerspectiveCamera(
-      isMobile ? 70 : 55,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    camera.position.set(0, 0, 5);
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, 8);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
       antialias: true,
       alpha: true,
+      powerPreference: 'high-performance',
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    const gridBottom = new THREE.GridHelper(300, 120, 0x7c3aed, 0x1e1b4b);
-    gridBottom.position.y = -2.2;
+    // 3. Central Iridescent 3D Chrome Sphere (ALCHE Style Opening)
+    const sphereGeo = new THREE.SphereGeometry(2.2, 64, 64);
+    const sphereMat = new THREE.MeshPhysicalMaterial({
+      color: 0x111122,
+      emissive: 0x221144,
+      roughness: 0.1,
+      metalness: 0.9,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.1,
+      wireframe: true,
+    });
+    const portalSphere = new THREE.Mesh(sphereGeo, sphereMat);
+    portalSphere.position.set(0, 0, 0);
+    scene.add(portalSphere);
+
+    // Ambient Lighting & Neon Beams
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+
+    const pointLightPurple = new THREE.PointLight(0xa855f7, 4, 50);
+    pointLightPurple.position.set(0, 5, 2);
+    scene.add(pointLightPurple);
+
+    const pointLightCyan = new THREE.PointLight(0x06b6d4, 4, 50);
+    pointLightCyan.position.set(0, -5, 2);
+    scene.add(pointLightCyan);
+
+    // 4. Perspective Infinite Grid Runners (Top & Bottom)
+    const gridBottom = new THREE.GridHelper(500, 150, 0xa855f7, 0x1e1b4b);
+    gridBottom.position.y = -3.2;
     scene.add(gridBottom);
 
-    const gridTop = new THREE.GridHelper(300, 120, 0xec4899, 0x1e1b4b);
-    gridTop.position.y = 2.8;
+    const gridTop = new THREE.GridHelper(500, 150, 0x06b6d4, 0x1e1b4b);
+    gridTop.position.y = 3.8;
     scene.add(gridTop);
 
+    // 5. 3D Project Planes (Dynamic Showcase Cards in 3D Runway)
+    const showcaseProjects = [
+      { title: 'AI PERFORMANCE ENGINE', image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&q=80' },
+      { title: 'LOCAL SEO DOMINANCE', image: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1200&q=80' },
+      { title: 'VIRAL SCALE SYSTEMS', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80' },
+      { title: 'GROWTH AUTOMATION HUB', image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&q=80' },
+    ];
+
     const textureLoader = new THREE.TextureLoader();
-    const cardMeshGroup = new THREE.Group();
-    scene.add(cardMeshGroup);
+    const cardGroup = new THREE.Group();
+    scene.add(cardGroup);
 
-    const cardWidth = isMobile ? 3.0 : 4.2;
-    const cardHeight = isMobile ? 2.0 : 2.6;
-    const cardGeometry = new THREE.PlaneGeometry(cardWidth, cardHeight);
-    const spacingZ = 14;
+    const isMobile = window.innerWidth <= 768;
+    const cardWidth = isMobile ? 3.4 : 5.0;
+    const cardHeight = isMobile ? 2.2 : 3.0;
+    const cardGeo = new THREE.PlaneGeometry(cardWidth, cardHeight, 16, 16);
+    const spacingZ = 16;
 
-    myProjects.forEach((item, index) => {
-      const texture = textureLoader.load(item.image);
-      const material = new THREE.MeshBasicMaterial({
-        map: texture,
+    showcaseProjects.forEach((proj, idx) => {
+      const tex = textureLoader.load(proj.image);
+      const mat = new THREE.MeshBasicMaterial({
+        map: tex,
         side: THREE.DoubleSide,
         transparent: true,
-        opacity: 0.95,
+        opacity: 0.92,
       });
 
-      const mesh = new THREE.Mesh(cardGeometry, material);
-      const zPos = -(index * spacingZ + 8);
-      const xPos = isMobile ? 0 : index % 2 === 0 ? -1.4 : 1.4;
-      mesh.position.set(xPos, 0.1, zPos);
+      const mesh = new THREE.Mesh(cardGeo, mat);
+      const zPos = -(idx * spacingZ + 12);
+      const xPos = isMobile ? 0 : idx % 2 === 0 ? -1.8 : 1.8;
+      mesh.position.set(xPos, 0, zPos);
 
       if (!isMobile) {
-        mesh.rotation.y = index % 2 === 0 ? 0.12 : -0.12;
+        mesh.rotation.y = idx % 2 === 0 ? 0.18 : -0.18;
+        mesh.rotation.z = idx % 2 === 0 ? 0.04 : -0.04;
       }
 
-      cardMeshGroup.add(mesh);
+      cardGroup.add(mesh);
     });
 
-    const totalDistance = myProjects.length * spacingZ + 6;
+    // 6. GSAP ScrollTrigger Cinematic Travel (Full Dive Animation)
+    const totalTravel = showcaseProjects.length * spacingZ + 10;
 
-    let timeline: GSAPTimeline | null = null;
+    let tl: GSAPTimeline | null = null;
     if (gsap && ScrollTrigger) {
-      timeline = gsap.timeline({
+      tl = gsap.timeline({
         scrollTrigger: {
-          trigger: '#hero-tunnel',
+          trigger: '#webgl-experience',
           start: 'top top',
-          end: `+=${myProjects.length * 1000}`,
+          end: `+=${showcaseProjects.length * 1200}`,
           scrub: 1.2,
           pin: true,
         },
       });
 
-      timeline.to(
+      // Camera pushes forward through the tunnel
+      tl.to(
         camera.position,
         {
-          z: -totalDistance,
+          z: -totalTravel,
           ease: 'none',
         },
         0
       );
 
-      timeline.to(
-        '#hero-content',
+      // Fade and shrink initial HUD title
+      tl.to(
+        '#hud-hero-text',
         {
           opacity: 0,
-          scale: 0.85,
-          y: -50,
+          scale: 0.7,
+          y: -80,
           ease: 'power2.inOut',
-          duration: 0.25,
+          duration: 0.2,
         },
         0
       );
 
-      timeline.to(
-        gridBottom.position,
+      // Expand sphere on entry and dissolve
+      tl.to(
+        portalSphere.scale,
         {
-          z: -totalDistance * 0.5,
+          x: 3.5,
+          y: 3.5,
+          z: 3.5,
+          ease: 'power1.in',
+        },
+        0
+      );
+      tl.to(
+        portalSphere.position,
+        {
+          z: -8,
           ease: 'none',
         },
         0
       );
-      timeline.to(
-        gridTop.position,
-        {
-          z: -totalDistance * 0.5,
-          ease: 'none',
-        },
-        0
-      );
+
+      // Infinite Grid Glide
+      tl.to(gridBottom.position, { z: -totalTravel * 0.45, ease: 'none' }, 0);
+      tl.to(gridTop.position, { z: -totalTravel * 0.45, ease: 'none' }, 0);
     }
 
+    // Interactive Mouse Tilt on Hover
+    let targetMouseX = 0;
+    let targetMouseY = 0;
+    const handleMouseMove = (e: MouseEvent) => {
+      targetMouseX = (e.clientX / window.innerWidth - 0.5) * 0.6;
+      targetMouseY = (e.clientY / window.innerHeight - 0.5) * 0.4;
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+
+    // Resize Handler
     const handleResize = () => {
-      const mobile = window.innerWidth <= 768;
-      camera.fov = mobile ? 70 : 55;
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     };
-
     window.addEventListener('resize', handleResize);
 
+    // 7. Render Loop
     let animFrameId: number;
     const animate = () => {
       if (isDisposed) return;
       animFrameId = requestAnimationFrame(animate);
+
+      // Rotate 3D Sphere smoothly
+      portalSphere.rotation.x += 0.005;
+      portalSphere.rotation.y += 0.008;
+
+      // Smooth camera inertia on mouse move
+      camera.rotation.y += (targetMouseX - camera.rotation.y) * 0.05;
+      camera.rotation.x += (-targetMouseY - camera.rotation.x) * 0.05;
+
       renderer.render(scene, camera);
     };
     animate();
 
     return () => {
       isDisposed = true;
+      window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
       if (animFrameId) cancelAnimationFrame(animFrameId);
       if (rafId) cancelAnimationFrame(rafId);
-      if (timeline?.scrollTrigger) timeline.scrollTrigger.kill();
-      if (timeline) timeline.kill();
+      if (tl?.scrollTrigger) tl.scrollTrigger.kill();
+      if (tl) tl.kill();
       if (lenisInstance) {
         try {
           lenisInstance.destroy();
@@ -268,49 +305,80 @@ export function Hero() {
         }
       }
       renderer.dispose();
-      cardGeometry.dispose();
+      sphereGeo.dispose();
+      sphereMat.dispose();
+      cardGeo.dispose();
     };
   }, []);
 
   return (
-    <section className="hero-tunnel-section" id="hero-tunnel" ref={sectionRef}>
-      <canvas id="webgl-canvas" ref={canvasRef}></canvas>
-      <div className="ui-container">
-        <header className="top-nav">
+    <section className="alche-experience-container" id="webgl-experience" ref={sectionRef}>
+      <canvas id="experience-canvas" ref={canvasRef}></canvas>
+
+      <div className="hud-overlay">
+        <div className="hud-header">
           <div 
-            className="brand-logo cursor-pointer"
+            className="hud-brand cursor-pointer"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-            ZONEX GROWTH HUB
+            <span className="hud-dot"></span>
+            <span className="hud-logo-text">ZONEX // TECH HUB</span>
           </div>
-          <button onClick={handleClaimAudit} className="btn-nav-audit">
-            BOOK FREE AUDIT
-          </button>
-        </header>
 
-        <div className="center-hero" id="hero-content">
-          <div className="badge-pill">★★★ #1 DIGITAL GROWTH &amp; AI AGENCY IN KARNATAKA ★★★</div>
-          <h1 className="hero-title">
-            <span className="title-gradient-pink">ENGINE</span> FOR<br />
-            <span className="title-gradient-cyan">KARNATAKA</span> BUSINESSES
-          </h1>
-          <p className="hero-subtext">
-            Scale 10x with ZoneX Growth Hub. Top-tier Meta &amp; Google Ads, Local SEO dominance, AI-powered web systems, and viral performance marketing.
-          </p>
-          <div className="cta-group">
-            <button onClick={handleClaimAudit} className="btn-main btn-purple">
-              BOOK FREE GROWTH AUDIT →
-            </button>
-            <button onClick={handleCalculateROI} className="btn-main btn-outline">
-              CALCULATE YOUR ROI
-            </button>
-            <button onClick={handleAcademy} className="btn-main btn-dark">
-              ZONEX ACADEMY 🎓
+          <div className="hud-nav-links">
+            <span onClick={() => scrollToSection('insights')} className="hover:text-white cursor-pointer transition-colors">NEWS</span>
+            <span onClick={() => scrollToSection('portfolio')} className="hover:text-white cursor-pointer transition-colors">WORKS</span>
+            <span onClick={() => scrollToSection('services')} className="hover:text-white cursor-pointer transition-colors">ABOUT</span>
+            <a href="https://zonex-academy.com" target="_blank" rel="noopener noreferrer" className="hover:text-white cursor-pointer transition-colors">STUDIO</a>
+          </div>
+
+          <div className="hud-actions">
+            <div 
+              className="sound-toggle"
+              onClick={() => setSoundActive(!soundActive)}
+              title="Toggle Audio Feedback"
+            >
+              <span className="bar" style={{ animationPlayState: soundActive ? 'running' : 'paused' }}></span>
+              <span className="bar" style={{ animationPlayState: soundActive ? 'running' : 'paused' }}></span>
+              <span className="bar" style={{ animationPlayState: soundActive ? 'running' : 'paused' }}></span>
+              <span className="bar" style={{ animationPlayState: soundActive ? 'running' : 'paused' }}></span>
+            </div>
+            <button onClick={handleClaimAudit} className="hud-contact-btn">
+              CONTACT [ + ]
             </button>
           </div>
         </div>
 
-        <div style={{ height: '10px' }}></div>
+        <div className="hud-center-stage" id="hud-hero-text">
+          <div className="hud-pill-tag">[ EXPERIMENTAL AI GROWTH ENGINE ]</div>
+          <h1 className="hud-glitch-title">ZONEX</h1>
+          <p className="hud-sub-desc">SCALE 10X WITH NEXT-GEN PERFORMANCE &amp; AI ARCHITECTURE</p>
+          <div className="hud-cta-row">
+            <button onClick={handleExplore} className="hud-primary-btn">
+              EXPLORE ECOSYSTEM ↗
+            </button>
+            <button onClick={handleClaimAudit} className="hud-secondary-btn">
+              BOOK GROWTH AUDIT
+            </button>
+          </div>
+        </div>
+
+        <div className="hud-footer">
+          <div className="hud-coords">
+            SYS.VER // 2.6.4 <br />
+            LAT: 12.9716° N / LON: 77.5946° E
+          </div>
+          <div 
+            className="hud-scroll-prompt cursor-pointer"
+            onClick={() => scrollToSection('portfolio')}
+          >
+            <div className="scroll-arrow">↓</div>
+            <span>SCROLL TO DIVE INTO THE ARCHIVE</span>
+          </div>
+          <div className="hud-status">
+            STATUS // ONLINE <span className="status-pulse"></span>
+          </div>
+        </div>
       </div>
     </section>
   );

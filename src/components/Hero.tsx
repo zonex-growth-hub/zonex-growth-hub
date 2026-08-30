@@ -4,7 +4,7 @@ import { useApp } from '@/context/AppContext';
 
 export const Hero: React.FC = () => {
   const { playClick } = useApp();
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -29,10 +29,6 @@ export const Hero: React.FC = () => {
   };
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.play().catch((err) => console.log('Autoplay prevented:', err));
-    }
 
     const handleScroll = () => {
       if (!heroRef.current) return;
@@ -64,35 +60,25 @@ export const Hero: React.FC = () => {
       id="hero"
       className="hero-section relative min-h-screen w-full flex flex-col justify-between overflow-hidden text-white px-6 md:px-16 py-8"
     >
-      {/* Background Visual Layer */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-[#030305]">
-        {/* High Reliability Video Background */}
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="w-full h-full object-cover opacity-45 mix-blend-screen scale-105 will-change-transform"
-          style={{ transform: 'scale(1) translateZ(0)' }}
-        >
-          <source
-            src="https://cdn.pixabay.com/video/2020/05/25/40149-425265691_large.mp4"
-            type="video/mp4"
-          />
-          <source
-            src="https://strvid.nyc3.cdn.digitaloceanspaces.com/cloudinary/portfolio_hero_bg_zuhahj.webm"
-            type="video/webm"
-          />
-        </video>
+      {/* Bulletproof Native Interactive Visual Engine */}
+      <div ref={videoRef} className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none bg-[#030305]" style={{ transform: 'scale(1) translateZ(0)' }}>
+        {/* Cyber Grid Pattern */}
+        <div 
+          className="absolute inset-0 opacity-[0.18]"
+          style={{
+            backgroundImage: `linear-gradient(to right, rgba(168, 85, 247, 0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(168, 85, 247, 0.25) 1px, transparent 1px)`,
+            backgroundSize: '48px 48px',
+            maskImage: 'radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 100%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 100%)'
+          }}
+        />
 
-        {/* Deep Ambient Glow Orbs */}
-        <div className="absolute -top-20 left-1/4 w-[500px] h-[500px] bg-purple-600/25 rounded-full blur-[140px] animate-pulse" />
-        <div className="absolute top-1/3 -right-20 w-[450px] h-[450px] bg-indigo-600/20 rounded-full blur-[130px]" />
-        <div className="absolute -bottom-20 left-1/3 w-[600px] h-[300px] bg-purple-900/30 rounded-full blur-[150px]" />
+        {/* Pulsing Neon Atmosphere Orbs */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[450px] bg-gradient-to-tr from-purple-600/30 to-indigo-600/30 rounded-full blur-[140px] animate-pulse" />
+        <div className="absolute top-1/3 -right-24 w-[450px] h-[450px] bg-purple-900/30 rounded-full blur-[130px]" />
+        <div className="absolute -bottom-10 left-10 w-[500px] h-[350px] bg-indigo-900/25 rounded-full blur-[120px]" />
 
-        {/* High-Contrast Readability Gradient Overlay */}
+        {/* Vignette Overlay for Crisp Readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#030305]/60 via-transparent to-[#030305]" />
       </div>
 

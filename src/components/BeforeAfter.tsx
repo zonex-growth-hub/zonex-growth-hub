@@ -33,7 +33,7 @@ export function BeforeAfter() {
 
         <div
           ref={ref}
-          className="relative max-w-4xl mx-auto rounded-3xl overflow-hidden glass-strong select-none border border-violet-500/20 shadow-[0_0_40px_rgba(139,92,246,0.15)]"
+          className="relative max-w-4xl mx-auto rounded-3xl overflow-hidden bg-white/40 dark:bg-zinc-900/40 select-none border border-zinc-200 dark:border-violet-500/20 shadow-lg dark:shadow-[0_0_40px_rgba(139,92,246,0.15)] premium-card will-change-transform translate-z-0"
           onMouseMove={(e) => dragging.current && update(e.clientX)}
           onMouseDown={(e) => { dragging.current = true; update(e.clientX); }}
           onMouseUp={() => (dragging.current = false)}
@@ -42,42 +42,42 @@ export function BeforeAfter() {
         >
           <div className="grid grid-cols-2">
             {/* Before */}
-            <div className="p-6 sm:p-8 bg-red-950/20">
+            <div className="p-6 sm:p-8 bg-red-100/50 dark:bg-red-950/20 border-r border-zinc-200/50 dark:border-white/5">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
-                  <X className="w-5 h-5 text-red-400" />
+                  <X className="w-5 h-5 text-red-500 dark:text-red-400" />
                 </div>
                 <div>
-                  <h3 className="font-display font-bold text-sm sm:text-base">Traditional In-House</h3>
-                  <p className="text-xs text-slate-400">Competitors</p>
+                  <h3 className="font-display font-bold text-sm sm:text-base text-zinc-900 dark:text-red-200">Traditional In-House</h3>
+                  <p className="text-xs text-red-600 dark:text-red-400 font-medium">Competitors</p>
                 </div>
               </div>
               <div className="space-y-3">
                 {BEFORE_AFTER.map((item) => (
                   <div key={item.label} className="flex items-center justify-between text-xs sm:text-sm">
-                    <span className="text-slate-400">{item.label}</span>
-                    <span className="font-semibold text-red-400">{item.before}</span>
+                    <span className="text-zinc-700 dark:text-red-300/80 font-medium">{item.label}</span>
+                    <span className="font-semibold text-red-700 dark:text-red-400">{item.before}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* After */}
-            <div className="p-6 sm:p-8 bg-violet-950/20">
+            <div className="p-6 sm:p-8 bg-purple-50/60 dark:bg-violet-950/20">
               <div className="flex items-center gap-2 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-violet-500/20 flex items-center justify-center">
-                  <Check className="w-5 h-5 text-violet-400" />
+                <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                  <Check className="w-5 h-5 text-purple-600 dark:text-violet-400" />
                 </div>
                 <div>
-                  <h3 className="font-display font-bold text-sm sm:text-base text-violet-300">With ZoneX Growth Hub</h3>
-                  <p className="text-xs text-violet-400">Growth Partner</p>
+                  <h3 className="font-display font-bold text-sm sm:text-base text-purple-900 dark:text-violet-200">With ZoneX Growth Hub</h3>
+                  <p className="text-xs text-purple-600 dark:text-violet-400 font-semibold">Growth Partner</p>
                 </div>
               </div>
               <div className="space-y-3">
                 {BEFORE_AFTER.map((item) => (
                   <div key={item.label} className="flex items-center justify-between text-xs sm:text-sm">
-                    <span className="text-slate-400">{item.label}</span>
-                    <span className="font-semibold text-violet-400">{item.after}</span>
+                    <span className="text-zinc-700 dark:text-slate-300 font-medium">{item.label}</span>
+                    <span className="font-semibold text-purple-700 dark:text-cyan-400">{item.after}</span>
                   </div>
                 ))}
               </div>
@@ -86,19 +86,19 @@ export function BeforeAfter() {
 
           {/* Slider handle */}
           <div className="absolute top-0 bottom-0 w-1 bg-violet-500 glow-crimson pointer-events-none" style={{ left: `${pos}%` }}>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full glass-strong flex items-center justify-center glow-crimson cursor-ew-resize">
-              <ArrowLeftRight className="w-5 h-5 text-violet-400" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 flex items-center justify-center glow-crimson cursor-ew-resize shadow-md">
+              <ArrowLeftRight className="w-5 h-5 text-purple-600 dark:text-violet-400" />
             </div>
           </div>
 
           {/* Reveal overlay */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ width: `${pos}%` }}>
-            <div className="absolute inset-0 bg-gradient-to-r from-red-950/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent" />
           </div>
         </div>
 
         <div className="mt-8 flex flex-col items-center gap-4 text-center">
-          <p className="text-xs sm:text-sm text-slate-500">
+          <p className="text-xs sm:text-sm text-zinc-500 dark:text-slate-500 font-medium">
             ← Drag the slider horizontally to compare outcomes →
           </p>
           <button

@@ -483,3 +483,32 @@ video, #hero, main {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Premium Card Glassmorphism & Glitter Shimmer Glow */
+.premium-card {
+  @apply bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl border border-zinc-200/80 dark:border-white/10 shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl relative overflow-hidden;
+}
+.premium-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(168,85,247,0.15) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.premium-card:hover::before, .premium-card:active::before {
+  opacity: 1;
+}
+
+/* 120FPS GPU compositing optimization */
+.will-change-transform {
+  will-change: transform;
+}
+.translate-z-0 {
+  transform: translateZ(0);
+}

@@ -5,10 +5,10 @@ import { PROJECTS, PORTFOLIO_FILTERS, type Project } from '@/data/content';
 import { SectionHeading } from './SectionHeading';
 
 const metricColors: Record<string, string> = {
-  emerald: 'text-violet-400 border-violet-500/30 bg-violet-500/10',
-  cyan: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
-  gold: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
-  royal: 'text-violet-300 border-violet-400/30 bg-violet-400/10',
+  emerald: 'text-purple-600 dark:text-purple-400 border-purple-500/30 bg-purple-500/10',
+  cyan: 'text-cyan-600 dark:text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
+  gold: 'text-yellow-600 dark:text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
+  royal: 'text-purple-600 dark:text-violet-300 border-violet-400/30 bg-violet-400/10',
 };
 
 function TiltCard({ project, onPreview, onOpen }: { project: Project; onPreview: () => void; onOpen?: () => void }) {
@@ -49,7 +49,7 @@ function TiltCard({ project, onPreview, onOpen }: { project: Project; onPreview:
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.5 }}
-      className="p-2 sm:p-5 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm flex flex-col justify-between overflow-hidden card-glow-hover group hover:border-violet-500/50"
+      className="p-2 sm:p-5 flex flex-col justify-between border border-zinc-200 dark:border-white/10 premium-card will-change-transform translate-z-0 group"
     >
       {/* Image Container */}
       <div className="relative h-24 sm:h-48 overflow-hidden rounded-lg mb-2" style={{ transform: 'translateZ(40px)' }}>
@@ -59,7 +59,7 @@ function TiltCard({ project, onPreview, onOpen }: { project: Project; onPreview:
           loading="lazy"
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-transparent to-transparent dark:from-obsidian dark:via-obsidian/40 dark:to-transparent" />
         <div className={`absolute top-2 left-2 px-1.5 py-0.5 sm:px-3 sm:py-1.5 rounded-full text-[8px] sm:text-xs font-bold border ${metricColors[project.metricColor]}`}>
           <TrendingUp className="w-2.5 h-2.5 sm:w-3 sm:h-3 inline mr-1" />
           {project.metric}
@@ -69,17 +69,17 @@ function TiltCard({ project, onPreview, onOpen }: { project: Project; onPreview:
       {/* Content */}
       <div className="flex-1 flex flex-col justify-between" style={{ transform: 'translateZ(30px)' }}>
         <div>
-          <span className="text-[9px] sm:text-xs font-semibold text-purple-400 mb-1 block uppercase tracking-wider">
+          <span className="text-[9px] sm:text-xs font-semibold text-purple-600 dark:text-purple-400 mb-1 block uppercase tracking-wider">
             {project.category === 'Restaurant & Food Chain Web App' ? project.category : project.category === 'Brand Identity' ? 'BRAND IDENTITY / WEB DEV' : project.category === 'Web Development' ? 'WEB DEVELOPMENT' : project.category.toUpperCase()}
           </span>
-          <h3 className="text-xs sm:text-lg font-bold leading-tight line-clamp-1 mb-1 text-white">{project.title}</h3>
-          <p className="text-[10px] sm:text-xs text-zinc-400 line-clamp-2 mb-2 leading-relaxed">{project.description}</p>
+          <h3 className="text-xs sm:text-lg font-bold leading-tight line-clamp-1 mb-1 text-zinc-900 dark:text-white">{project.title}</h3>
+          <p className="text-[10px] sm:text-xs text-zinc-650 dark:text-zinc-400 line-clamp-2 mb-2 leading-relaxed font-medium">{project.description}</p>
         </div>
 
         {/* Tech badges (hidden on mobile to keep layout compact) */}
         <div className="hidden sm:flex flex-wrap gap-2 mt-2">
           {project.tech.map((t) => (
-            <span key={t} className="px-2.5 py-1 rounded-lg text-xs font-medium glass text-slate-300 light:text-slate-600">
+            <span key={t} className="px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-100 dark:bg-white/5 text-zinc-700 dark:text-slate-300 border border-zinc-200 dark:border-white/10 font-semibold">
               {t}
             </span>
           ))}
@@ -92,7 +92,7 @@ function TiltCard({ project, onPreview, onOpen }: { project: Project; onPreview:
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="inline-flex items-center justify-center gap-1.5 w-full py-1.5 px-2 sm:py-2.5 sm:px-4 rounded-md sm:rounded-xl text-[10px] sm:text-sm font-semibold bg-violet-500/15 text-violet-300 border border-violet-500/40 hover:bg-violet-500/25 hover:border-violet-400 transition-all text-center"
+            className="inline-flex items-center justify-center gap-1.5 w-full py-1.5 px-2 sm:py-2.5 sm:px-4 rounded-md sm:rounded-xl text-[10px] sm:text-sm font-bold bg-purple-100 dark:bg-violet-500/15 text-purple-700 dark:text-violet-300 border border-purple-200 dark:border-violet-500/40 hover:bg-purple-200 dark:hover:bg-violet-500/25 hover:border-purple-300 dark:hover:border-violet-400 transition-all text-center"
           >
             <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
             Explore Live
@@ -102,7 +102,7 @@ function TiltCard({ project, onPreview, onOpen }: { project: Project; onPreview:
               e.stopPropagation();
               onPreview();
             }}
-            className="inline-flex items-center justify-center gap-1.5 w-full py-1.5 px-2 sm:py-2.5 sm:px-4 rounded-md sm:rounded-xl text-[10px] sm:text-sm font-semibold glass text-slate-300 hover:bg-violet-500/10 transition-all"
+            className="inline-flex items-center justify-center gap-1.5 w-full py-1.5 px-2 sm:py-2.5 sm:px-4 rounded-md sm:rounded-xl text-[10px] sm:text-sm font-semibold bg-zinc-100 dark:bg-white/5 text-zinc-700 dark:text-slate-300 border border-zinc-200 dark:border-white/10 hover:bg-zinc-200 dark:hover:bg-violet-500/10 transition-all"
           >
             <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
             Live Preview
@@ -136,7 +136,7 @@ export function Portfolio() {
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 filter === f
                   ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white glow-crimson'
-                  : 'glass text-slate-300 light:text-slate-600 hover:text-violet-400'
+                  : 'bg-white dark:bg-white/5 border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-slate-300 hover:text-violet-400'
               }`}
             >
               {f}
@@ -177,14 +177,14 @@ export function Portfolio() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-6xl h-[85vh] glass-strong rounded-2xl overflow-hidden flex flex-col"
+              className="relative w-full max-w-6xl h-[85vh] bg-zinc-950 border border-white/20 rounded-2xl overflow-hidden flex flex-col shadow-2xl"
             >
               <div className="flex items-center justify-between p-4 border-b border-violet-500/20">
                 <div>
-                  <h3 className="font-display font-bold text-lg">{preview.title}</h3>
+                  <h3 className="font-display font-bold text-lg text-white">{preview.title}</h3>
                   <span className="text-xs text-violet-400">{preview.url}</span>
                 </div>
-                <button onClick={() => setPreview(null)} className="w-10 h-10 rounded-xl glass flex items-center justify-center hover:bg-violet-500/10">
+                <button onClick={() => setPreview(null)} className="w-10 h-10 rounded-xl bg-white/10 text-white flex items-center justify-center hover:bg-violet-500/10">
                   <X className="w-5 h-5" />
                 </button>
               </div>

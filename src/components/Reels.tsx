@@ -37,8 +37,8 @@ function DesktopReelCard({ reel, index }: { reel: ReelItem; index: number }) {
       className="hidden sm:flex flex-col items-center"
     >
       <div
-        className="relative w-full rounded-[2.5rem] bg-gradient-to-br from-neutral-700 via-neutral-800 to-neutral-900 p-[8px] transition-transform duration-300 hover:scale-[1.03]"
-        style={{ aspectRatio: '9 / 16', maxWidth: '260px', boxShadow: '0 0 30px rgba(139,92,246,0.12), 0 18px 50px rgba(0,0,0,0.55)' }}
+        className="relative w-full rounded-[2.5rem] bg-gradient-to-br from-neutral-700 via-neutral-800 to-neutral-900 p-[8px] transition-transform duration-300 hover:scale-[1.03] will-change-transform"
+        style={{ aspectRatio: '9 / 16', maxWidth: '260px', boxShadow: '0 0 30px rgba(139,92,246,0.12), 0 18px 50px rgba(0,0,0,0.55)', transform: 'translateZ(0)' }}
       >
         <div className="absolute left-1/2 top-2 z-10 h-5 w-20 -translate-x-1/2 rounded-full bg-black" />
 

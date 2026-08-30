@@ -22,13 +22,13 @@ import { FloatingWhatsApp } from '@/components/FloatingWhatsApp';
 function App() {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 0.9, // Lower duration for snappier response
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 1.2, // Increases scroll velocity per tick
+      touchMultiplier: 2.0, // Responsive touch scrolling on mobile
       infinite: false,
     });
 

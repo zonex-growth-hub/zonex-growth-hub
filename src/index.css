@@ -412,193 +412,220 @@ input[type="range"]::-moz-range-thumb {
   border: 2px solid #8B5CF6;
 }
 
-/* ── ALCHE Studio Cyberpunk 3D Tunnel & Interactive HUD Showcase ── */
-.alche-experience-container {
+/* ── ALCHE.TV Glass Chromatic Dispersion & Japanese Cyberpunk HUD Showcase ── */
+.alche-root {
   position: relative;
   width: 100vw;
   height: 100vh;
-  background: #020204;
+  background-color: #030306;
+  color: #e2e8f0;
+  font-family: 'Space Grotesk', 'Space Mono', -apple-system, BlinkMacSystemFont, sans-serif;
   overflow: hidden;
-  color: #ffffff;
-  font-family: 'Space Mono', 'Inter', -apple-system, monospace, sans-serif;
+  user-select: none;
 }
-#experience-canvas {
+
+#alche-webgl-canvas {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: 1;
-  touch-action: pan-y;
+  display: block;
 }
-.hud-overlay {
+
+.alche-hud-frame {
   position: absolute;
-  inset: 0;
+  inset: 12px;
   z-index: 10;
   pointer-events: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: clamp(1rem, 3vw, 2.5rem);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  margin: 10px;
   box-sizing: border-box;
+  padding: clamp(1rem, 2.5vw, 2rem);
 }
-.hud-header, .hud-footer {
+
+.alche-header, .alche-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   pointer-events: auto;
+  width: 100%;
 }
-.hud-brand {
+
+.alche-logo {
   display: flex;
   align-items: center;
   gap: 8px;
   font-weight: 900;
   letter-spacing: 2px;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
+  color: #ffffff;
 }
-.hud-dot {
-  width: 8px;
-  height: 8px;
-  background: #a855f7;
-  border-radius: 50%;
-  box-shadow: 0 0 10px #a855f7;
+
+.alche-logo-icon {
+  color: #a855f7;
+  font-size: 0.85rem;
+  filter: drop-shadow(0 0 8px #a855f7);
 }
-.hud-nav-links {
+
+.alche-nav {
   display: none;
-  gap: 2rem;
-  font-size: 0.75rem;
-  letter-spacing: 1.5px;
-  color: rgba(255, 255, 255, 0.6);
+  gap: 2.5rem;
 }
-@media(min-width: 800px) { .hud-nav-links { display: flex; } }
-.hud-actions {
+
+@media (min-width: 768px) {
+  .alche-nav {
+    display: flex;
+  }
+}
+
+.alche-nav a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: color 0.2s ease;
+}
+
+.alche-nav a.active, .alche-nav a:hover {
+  color: #ffffff;
+}
+
+.alche-header-right {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 1.2rem;
 }
-.sound-toggle {
+
+.alche-sound-visualizer {
   display: flex;
   align-items: flex-end;
   gap: 3px;
-  height: 16px;
+  height: 14px;
   cursor: pointer;
 }
-.sound-toggle .bar {
-  width: 2px;
-  height: 100%;
-  background: #a855f7;
-  animation: soundBars 1s ease-in-out infinite alternate;
-}
-.sound-toggle .bar:nth-child(2) { height: 60%; animation-delay: 0.2s; }
-.sound-toggle .bar:nth-child(3) { height: 80%; animation-delay: 0.4s; }
-.sound-toggle .bar:nth-child(4) { height: 40%; animation-delay: 0.6s; }
-@keyframes soundBars { 0% { height: 20%; } 100% { height: 100%; } }
 
-.hud-contact-btn {
+.alche-sound-visualizer .s-bar {
+  width: 2px;
+  background: #a855f7;
+  border-radius: 1px;
+  animation: alcheSoundPulse 1.2s infinite ease-in-out alternate;
+}
+
+.alche-sound-visualizer .s-bar:nth-child(1) { height: 35%; animation-delay: 0.1s; }
+.alche-sound-visualizer .s-bar:nth-child(2) { height: 90%; animation-delay: 0.3s; }
+.alche-sound-visualizer .s-bar:nth-child(3) { height: 60%; animation-delay: 0.15s; }
+.alche-sound-visualizer .s-bar:nth-child(4) { height: 40%; animation-delay: 0.45s; }
+
+@keyframes alcheSoundPulse {
+  0% { height: 20%; }
+  100% { height: 100%; }
+}
+
+.alche-btn-contact {
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 0.5rem 1.1rem;
   font-size: 0.75rem;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
   letter-spacing: 1px;
-  border-radius: 4px;
+  border-radius: 999px;
   cursor: pointer;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  backdrop-filter: blur(12px);
+  transition: all 0.25s ease;
 }
-.hud-contact-btn:hover {
-  background: #fff;
-  color: #000;
+
+.alche-btn-contact:hover {
+  background: #ffffff;
+  color: #030306;
 }
-.hud-center-stage {
+
+.alche-hud-coords {
+  position: absolute;
+  top: 5rem;
+  left: 2rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.35);
+  line-height: 1.6;
+  letter-spacing: 1px;
+  pointer-events: none;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .alche-hud-coords {
+    display: block;
+  }
+}
+
+.alche-center-hero {
   text-align: center;
   max-width: 900px;
   margin: 0 auto;
   pointer-events: auto;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
-.hud-pill-tag {
-  font-size: 0.75rem;
-  letter-spacing: 3px;
-  color: #a855f7;
-  margin-bottom: 1rem;
-  text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
-}
-.hud-glitch-title {
-  font-size: clamp(3rem, 12vw, 8rem);
-  font-weight: 900;
-  letter-spacing: -2px;
-  line-height: 0.95;
-  background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.2) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 1.5rem;
-}
-.hud-sub-desc {
-  font-size: clamp(0.75rem, 2vw, 0.95rem);
-  letter-spacing: 2px;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 2rem;
-}
-.hud-cta-row {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.hud-primary-btn {
-  background: #ffffff;
-  color: #000;
-  border: none;
-  padding: 0.9rem 1.8rem;
-  font-weight: 800;
-  font-size: 0.8rem;
-  letter-spacing: 1.5px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.hud-primary-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
-}
-.hud-secondary-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  padding: 0.9rem 1.8rem;
-  font-size: 0.8rem;
-  letter-spacing: 1.5px;
-  border-radius: 4px;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-.hud-secondary-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.4);
-}
-.hud-footer {
+
+.alche-category-tag {
+  font-family: 'Space Mono', monospace;
   font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 4px;
+  color: #a855f7;
+  margin-bottom: 0.8rem;
+  text-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+}
+
+.alche-giant-title {
+  font-size: clamp(3.5rem, 15vw, 9.5rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -3px;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.2rem;
+  text-transform: uppercase;
+}
+
+.alche-subheading {
+  font-size: clamp(0.8rem, 2.2vw, 1.05rem);
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 1.5px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.alche-footer {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
   letter-spacing: 1px;
 }
-.hud-scroll-prompt {
+
+.alche-footer-left {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 5px;
-  animation: bounceSlow 2s infinite ease-in-out;
+  gap: 10px;
 }
-@keyframes bounceSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
-.status-pulse {
+
+.alche-scroll-line {
+  width: 30px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.alche-status-dot {
   display: inline-block;
   width: 6px;
   height: 6px;
-  background: #22c55e;
+  background: #10b981;
   border-radius: 50%;
-  margin-left: 5px;
-  box-shadow: 0 0 8px #22c55e;
+  margin-right: 4px;
+  box-shadow: 0 0 8px #10b981;
 }

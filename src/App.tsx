@@ -15,6 +15,7 @@ import { X, Sparkles, Download, Bell } from 'lucide-react';
 import { sanitizeInput } from '@/utils/security';
 import { SEOManager } from '@/components/SEOManager';
 import { GeoLanding } from '@/components/GeoLanding';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 // Lazy-loaded components for optimal bundle tree-shaking and chunk split sizes
 const ROICalculator = lazy(() => import('@/components/ROICalculator'));
@@ -247,11 +248,15 @@ function AppContent() {
 
 function App() {
   return (
-    <AppProvider>
-      <ThemeProvider>
-        <AppContent />
-      </ThemeProvider>
-    </AppProvider>
+    <ErrorBoundary>
+      <AppProvider>
+        <ThemeProvider>
+          <Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+            <AppContent />
+          </Suspense>
+        </ThemeProvider>
+      </AppProvider>
+    </ErrorBoundary>
   );
 }
 

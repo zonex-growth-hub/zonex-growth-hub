@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { AGENCY, NAV_ITEMS } from '@/data/content';
 import { Instagram, Linkedin, Youtube, Twitter, ArrowUp, X } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function Footer() {
   const { playClick } = useApp();

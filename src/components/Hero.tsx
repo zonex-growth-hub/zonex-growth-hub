@@ -62,24 +62,23 @@ export const Hero: React.FC = () => {
     <section
       ref={heroRef}
       id="hero"
-      className="hero-section relative min-h-screen w-full flex flex-col justify-between overflow-hidden bg-[#030305] text-white px-6 md:px-16 py-8"
-      style={{ isolation: 'isolate' }}
+      className="hero-section relative min-h-screen w-full flex flex-col justify-between overflow-hidden text-white px-6 md:px-16 py-8"
     >
-      {/* Background Video & Gradient Overlay */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none -z-10 bg-[#030305]">
-        {/* High-Performance Looping Video Background */}
+      {/* Background Visual Layer */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-[#030305]">
+        {/* High Reliability Video Background */}
         <video
           ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
-          preload="metadata"
-          className="w-full h-full object-cover opacity-50 mix-blend-screen transition-opacity duration-1000 will-change-transform"
+          preload="auto"
+          className="w-full h-full object-cover opacity-45 mix-blend-screen scale-105 will-change-transform"
           style={{ transform: 'scale(1) translateZ(0)' }}
         >
           <source
-            src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-charts-and-data-31912-large.mp4"
+            src="https://cdn.pixabay.com/video/2020/05/25/40149-425265691_large.mp4"
             type="video/mp4"
           />
           <source
@@ -88,12 +87,13 @@ export const Hero: React.FC = () => {
           />
         </video>
 
-        {/* Sleek Cyber Neon Ambient Glow Mesh (Fallback & Depth Layer) */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-purple-600/20 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute top-1/3 right-10 w-[400px] h-[300px] bg-indigo-600/15 rounded-full blur-[100px] pointer-events-none" />
+        {/* Deep Ambient Glow Orbs */}
+        <div className="absolute -top-20 left-1/4 w-[500px] h-[500px] bg-purple-600/25 rounded-full blur-[140px] animate-pulse" />
+        <div className="absolute top-1/3 -right-20 w-[450px] h-[450px] bg-indigo-600/20 rounded-full blur-[130px]" />
+        <div className="absolute -bottom-20 left-1/3 w-[600px] h-[300px] bg-purple-900/30 rounded-full blur-[150px]" />
 
-        {/* Balanced Visual Overlay for High Contrast Text Readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030305]/40 via-transparent to-[#030305]" />
+        {/* High-Contrast Readability Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030305]/60 via-transparent to-[#030305]" />
       </div>
 
       {/* Top Navbar Placeholder spacing/offset */}

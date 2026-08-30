@@ -52,14 +52,17 @@ export const Hero = () => {
         </div>
 
         {/* Main Headline */}
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1]">
+        <h1 className="text-4xl sm:text-5xl lg:text-[4.5rem] font-bold text-white tracking-tight leading-[1.08] mb-3">
           We Scale Ambitious <br />
-          <span className="text-white underline decoration-purple-500/60 underline-offset-8">Brands Into Category Giants.</span>
+          Brands Into <br />
+          Category Giants.
         </h1>
+        {/* Full-width aesthetic purple brand bar underneath */}
+        <div className="w-full max-w-[580px] h-[3px] sm:h-[4px] bg-gradient-to-r from-[#8A63F8] via-[#7042f8] to-transparent rounded-full mb-6" />
 
         {/* Subtitle */}
-        <p className="text-lg sm:text-xl text-zinc-300 max-w-2xl font-normal leading-relaxed">
-          We architect hyper-profitable paid ads, viral short-form creatives, and high-converting funnels engineered for <strong className="text-white border-b border-cyan-400">10x ROI</strong> and predictable revenue scaling.
+        <p className="text-sm sm:text-base lg:text-[1.05rem] text-[#d5d5d5] max-w-2xl font-normal leading-relaxed mb-8">
+          We architect hyper-profitable paid ads, viral short-form creatives, and high-converting funnels engineered for <span className="text-white font-semibold border-b border-cyan-400">10x ROI</span> and predictable revenue scaling.
         </p>
 
         {/* CTA Buttons */}
@@ -93,7 +96,7 @@ export const Hero = () => {
 
         {/* WhatsApp Direct Action */}
         <a
-          href="https://wa.me/919999999999"
+          href="https://wa.me/917019371818?text=Hi%20ZoneX%20Growth%2C%20I%20want%20to%20scale%20my%20brand."
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500/90 hover:bg-emerald-500 text-white font-medium text-sm transition-all duration-200 shadow-lg shadow-emerald-500/20"

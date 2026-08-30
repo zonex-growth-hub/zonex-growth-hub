@@ -1,5 +1,6 @@
 import { ThemeProvider } from '@/context/ThemeContext';
 import { AmbientBackground } from '@/components/AmbientBackground';
+import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
 import { HeroStats } from '@/components/HeroStats';
 import { Portfolio } from '@/components/Portfolio';
@@ -19,7 +20,8 @@ import { FloatingWhatsApp } from '@/components/FloatingWhatsApp';
 function App() {
   return (
     <ThemeProvider>
-      <div className="relative min-h-screen">
+      <div className="min-h-screen bg-[#030307] text-white selection:bg-[#7c3aed] selection:text-white">
+        <Navbar />
         <AmbientBackground />
         <main>
           <Hero />

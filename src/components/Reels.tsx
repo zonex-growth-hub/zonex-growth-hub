@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Film, Eye, X, Play } from 'lucide-react';
+import { Film, Eye } from 'lucide-react';
 import { REELS, type ReelItem } from '@/data/content';
 import { SectionHeading } from './SectionHeading';
 
@@ -19,12 +19,6 @@ function ReelCard({ reel, index, onSelect }: { reel: ReelItem; index: number; on
       <div
         className="cursor-pointer rounded-2xl border-[2px] border-black/40 dark:border-white/20 p-1 bg-black aspect-[9/16] w-full max-h-[220px] sm:max-h-none overflow-hidden relative group hover:scale-[1.02] transition-transform shadow-lg shadow-black/40"
       >
-        <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300 z-10 flex items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-white/20">
-            <Play className="w-5 h-5 text-white" fill="currentColor" />
-          </div>
-        </div>
-
         {failed ? (
           <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-neutral-800 via-neutral-900 to-black p-4 text-center">
             <Film className="h-6 w-6 text-violet-400" />
@@ -32,9 +26,10 @@ function ReelCard({ reel, index, onSelect }: { reel: ReelItem; index: number; on
           </div>
         ) : (
           <video
-            src={reel.video}
-            muted
+            src={reel.videoUrl || reel.video || reel.src}
+            autoPlay
             loop
+            muted
             playsInline
             preload="metadata"
             onError={() => setFailed(true)}
@@ -113,39 +108,53 @@ export function Reels() {
       {/* Tap-To-Expand Video Popup Modal */}
       <AnimatePresence>
         {selectedReel && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div 
+            className="fixed inset-0 z-[999] bg-black/90 backdrop-blur-lg flex items-center justify-center p-4"
             onClick={closeModal}
-            className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
           >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
+            <div 
+              className="relative z-[1000] w-full max-w-[340px] sm:max-w-[380px] h-[75vh] sm:h-[80vh] bg-black rounded-3xl overflow-hidden border border-white/20 shadow-2xl flex flex-col justify-between"
               onClick={(e) => e.stopPropagation()}
-              className="relative z-[101] w-full max-w-sm sm:max-w-md aspect-[9/16] bg-black rounded-3xl overflow-hidden border border-white/20 shadow-2xl flex items-center justify-center"
             >
-              {/* Close Button */}
-              <button 
-                onClick={closeModal}
-                className="absolute top-4 right-4 z-[105] w-9 h-9 rounded-full bg-black/60 text-white border border-white/30 flex items-center justify-center hover:bg-white hover:text-black transition-colors cursor-pointer"
-                aria-label="Close video player"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              {/* Top Bar with Close Button */}
+              <div className="absolute top-3 right-3 z-[1010] flex items-center gap-2">
+                <button
+                  onClick={closeModal}
+                  className="w-9 h-9 rounded-full bg-black/70 border border-white/30 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all cursor-pointer text-sm font-bold shadow-lg"
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+              </div>
 
-              <video
-                key={selectedReel.video}
-                src={selectedReel.video}
-                controls
-                autoPlay
-                playsInline
-                className="w-full h-full object-contain relative z-[102] bg-black"
-              />
-            </motion.div>
-          </motion.div>
+              {/* Video Container (Strict Visible Sizing) */}
+              <div className="relative w-full h-full flex items-center justify-center bg-black">
+                <video
+                  key={selectedReel.videoUrl || selectedReel.video || selectedReel.src || selectedReel.id}
+                  src={selectedReel.videoUrl || selectedReel.video || selectedReel.src}
+                  autoPlay
+                  playsInline
+                  controls
+                  className="w-full h-full object-cover block"
+                />
+              </div>
+
+              {/* Bottom Details Overlay */}
+              <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black via-black/70 to-transparent z-[1005] pointer-events-none">
+                <span className="text-xs font-semibold text-purple-400 block mb-1">
+                  {selectedReel.type || selectedReel.category || selectedReel.tag || 'Instagram Reel'}
+                </span>
+                <h3 className="text-base font-bold text-white leading-tight">
+                  {selectedReel.title || 'Video Showcase'}
+                </h3>
+                {selectedReel.views && (
+                  <span className="text-xs text-zinc-300 mt-1 block">
+                    👁 {selectedReel.views} views
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
         )}
       </AnimatePresence>
     </section>

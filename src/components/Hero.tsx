@@ -71,6 +71,7 @@ export const Hero: React.FC = () => {
           muted
           playsInline
           autoPlay
+          loop
           className="w-full h-full object-cover will-change-transform transition-transform duration-75 ease-out"
           style={{ transform: 'scale(1) translateZ(0)' }}
         />

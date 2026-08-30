@@ -1,44 +1,125 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { analytics } from '@/utils/analytics';
 
-interface LenisInstance {
-  raf: (time: number) => void;
-  on: (event: string, callback: () => void) => void;
-  destroy: () => void;
+interface ProjectItem {
+  index: string;
+  tag: string;
+  title: string;
+  jpDesc: string;
+  year: string;
+  image: string;
+  url: string;
 }
 
-interface LenisConstructor {
-  new (options?: Record<string, unknown>): LenisInstance;
-}
+const PROJECTS: ProjectItem[] = [
+  {
+    index: '01 / 04',
+    tag: '[ UEFN / WEBGL2 ]',
+    title: 'FORTNITE CREATIVE // VIRAL ARCHITECTURE',
+    jpDesc: '次世代インタラクティブ・メタバース空間設計',
+    year: '2026',
+    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&q=85',
+    url: '#portfolio',
+  },
+  {
+    index: '02 / 04',
+    tag: '[ THREE.JS / GLSL ]',
+    title: 'WEAR GO LAND // 3D VIRTUAL SHOWROOM',
+    jpDesc: 'リアルタイム屈折シェーダーによる仮想体験',
+    year: '2026',
+    image: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1200&q=85',
+    url: '#portfolio',
+  },
+  {
+    index: '03 / 04',
+    tag: '[ AUTOMATION / ADS ]',
+    title: 'AI PERFORMANCE ENGINE // ZONEX',
+    jpDesc: 'AIによる事業成長と広告ROI最大化システム',
+    year: '2026',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=85',
+    url: '#services',
+  },
+  {
+    index: '04 / 04',
+    tag: '[ 3D FASHION / BRAND ]',
+    title: 'DISCOAT 2026 // METAVERSE POPUP',
+    jpDesc: 'ブランドアイデンティティと3Dコマース基盤',
+    year: '2026',
+    image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&q=85',
+    url: '#portfolio',
+  },
+];
 
-interface GSAPTimeline {
-  to: (target: unknown, vars: Record<string, unknown>, position?: number | string) => GSAPTimeline;
-  kill: () => void;
-  scrollTrigger?: {
-    kill: () => void;
-  };
-}
+const vertexShader = `
+  uniform float uSpeed;
+  uniform float uTime;
+  varying vec2 vUv;
+  varying vec3 vPosition;
 
-interface GSAPObject {
-  registerPlugin: (...plugins: unknown[]) => void;
-  timeline: (vars?: Record<string, unknown>) => GSAPTimeline;
-  ticker: {
-    add: (callback: (time: number) => void) => void;
-    lagSmoothing: (threshold: number) => void;
-  };
-}
+  void main() {
+    vUv = uv;
+    vec3 pos = position;
+    
+    // Wave distortion & plane curvature on scroll momentum
+    float bend = sin(uv.x * 3.14159265) * uSpeed * 0.0035;
+    pos.z += bend;
+    pos.y += sin(pos.x * 2.0 + uTime * 1.5) * 0.03 * (abs(uSpeed * 0.01) + 0.2);
 
-interface GlobalWindow extends Window {
-  gsap?: GSAPObject;
-  ScrollTrigger?: unknown;
-  Lenis?: LenisConstructor;
-}
+    vPosition = pos;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+  }
+`;
+
+const fragmentShader = `
+  uniform sampler2D uTexture;
+  uniform float uSpeed;
+  uniform float uTime;
+  uniform vec2 uMouse;
+  varying vec2 vUv;
+  varying vec3 vPosition;
+
+  void main() {
+    vec2 uv = vUv;
+    
+    // Refractive lens distortion from mouse position
+    vec2 mouseDist = uv - uMouse;
+    float dist = length(mouseDist);
+    float lens = smoothstep(0.4, 0.0, dist) * 0.03;
+    uv += mouseDist * lens;
+
+    // RGB Split / Chromatic Aberration based on scroll speed momentum
+    float rgbOffset = clamp(abs(uSpeed) * 0.0022, 0.0, 0.05);
+    
+    float r = texture2D(uTexture, uv + vec2(rgbOffset, 0.0)).r;
+    float g = texture2D(uTexture, uv).g;
+    float b = texture2D(uTexture, uv - vec2(rgbOffset, 0.0)).b;
+    
+    vec3 color = vec3(r, g, b);
+    
+    // Vignette
+    float vignette = 1.0 - length(vUv - 0.5) * 0.45;
+    color *= vignette;
+    
+    // Scanlines
+    float scanline = sin(vUv.y * 320.0) * 0.02;
+    color += scanline;
+
+    gl_FragColor = vec4(color, 1.0);
+  }
+`;
 
 export function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const bgTitleRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
   const [soundActive, setSoundActive] = useState(true);
+
+  // Expose methods for Arrow controls
+  const nextSlideRef = useRef<() => void>(() => {});
+  const prevSlideRef = useRef<() => void>(() => {});
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -46,59 +127,29 @@ export function Hero() {
   };
 
   const handleClaimAudit = () => {
-    analytics.trackLead('ALCHE TV Contact / Audit CTA');
+    analytics.trackLead('ALCHE Studio Header Contact CTA');
     scrollToSection('contact');
+  };
+
+  const handleViewActiveProject = () => {
+    const current = PROJECTS[activeIdx];
+    analytics.trackViewContent(`ALCHE Studio Project: ${current.title}`);
+    scrollToSection('portfolio');
   };
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
 
-    const win = window as unknown as GlobalWindow;
-    const gsap = win.gsap;
-    const ScrollTrigger = win.ScrollTrigger;
-    const Lenis = win.Lenis;
-
-    // 1. Lenis Smooth Scroll Setup
-    let lenisInstance: LenisInstance | null = null;
-    let rafId: number | null = null;
     let isDisposed = false;
 
-    if (Lenis) {
-      try {
-        lenisInstance = new Lenis({
-          duration: 1.2,
-          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          smoothWheel: true,
-        });
-
-        const raf = (time: number) => {
-          if (isDisposed) return;
-          lenisInstance?.raf(time);
-          rafId = requestAnimationFrame(raf);
-        };
-        rafId = requestAnimationFrame(raf);
-
-        if (gsap && ScrollTrigger) {
-          gsap.registerPlugin(ScrollTrigger);
-          lenisInstance.on('scroll', () => {
-            const st = ScrollTrigger as { update: () => void };
-            if (typeof st.update === 'function') st.update();
-          });
-          gsap.ticker.add((time: number) => lenisInstance?.raf(time * 1000));
-          gsap.ticker.lagSmoothing(0);
-        }
-      } catch (err) {
-        console.warn('Lenis smooth scroll initialization skipped:', err);
-      }
-    }
-
-    // 2. Three.js Scene, Camera, & WebGL Renderer
+    // 1. Scene, Camera & WebGL Renderer
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x030306, 0.025);
+    scene.fog = new THREE.FogExp2(0x030306, 0.02);
 
-    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 0, 9);
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 8);
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -109,205 +160,159 @@ export function Hero() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // 3. Custom Glass Refractive Chromatic Sphere (The Core 3D Centerpiece)
-    const sphereGeometry = new THREE.SphereGeometry(2.3, 64, 64);
-    const glassShaderMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uMouse: { value: new THREE.Vector2(0, 0) },
-      },
-      vertexShader: `
-        varying vec3 vNormal;
-        varying vec3 vPosition;
-        uniform float uTime;
-        void main() {
-          vNormal = normalize(normalMatrix * normal);
-          vec3 pos = position;
-          pos += normal * (sin(pos.x * 3.0 + uTime * 2.0) * 0.08);
-          vPosition = pos;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-        }
-      `,
-      fragmentShader: `
-        varying vec3 vNormal;
-        varying vec3 vPosition;
-        uniform float uTime;
-        void main() {
-          vec3 viewDir = normalize(-vPosition);
-          float fresnel = pow(1.0 - max(dot(viewDir, vNormal), 0.0), 3.0);
-          
-          // Chromatic dispersion simulation
-          vec3 colorR = vec3(0.9, 0.2, 0.6) * (fresnel + 0.1);
-          vec3 colorG = vec3(0.2, 0.8, 1.0) * (pow(1.0 - max(dot(viewDir, vNormal), 0.0), 2.0) + 0.05);
-          vec3 colorB = vec3(0.6, 0.3, 0.95) * (fresnel + 0.2);
-          
-          vec3 finalColor = vec3(colorR.r, colorG.g, colorB.b) + fresnel * 0.4;
-          gl_FragColor = vec4(finalColor, 0.85);
-        }
-      `,
-      transparent: true,
-      side: THREE.DoubleSide,
-    });
+    // Ambient Lighting
+    const ambient = new THREE.AmbientLight(0xffffff, 0.9);
+    scene.add(ambient);
 
-    const glassOrb = new THREE.Mesh(sphereGeometry, glassShaderMaterial);
-    scene.add(glassOrb);
-
-    // Wireframe Cage around the sphere for high-tech aesthetic
-    const wireGeometry = new THREE.IcosahedronGeometry(2.5, 2);
-    const wireMaterial = new THREE.MeshBasicMaterial({
-      color: 0x7c3aed,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.18,
-    });
-    const wireCage = new THREE.Mesh(wireGeometry, wireMaterial);
-    scene.add(wireCage);
-
-    // 4. Perspective Tunnel Grid Ground
-    const gridBottom = new THREE.GridHelper(400, 100, 0x8b5cf6, 0x1e1b4b);
-    gridBottom.position.y = -3.2;
-    scene.add(gridBottom);
-
-    const gridTop = new THREE.GridHelper(400, 100, 0x06b6d4, 0x1e1b4b);
-    gridTop.position.y = 3.6;
-    scene.add(gridTop);
-
-    // 5. 3D Project Planes (Perspective Cards with Titles & Tags)
-    const projectsData = [
-      { title: 'FORTNITE CREATIVE // VIRAL MAPS', image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1000&q=80' },
-      { title: 'WEAR GO LAND // 3D EXHIBITION', image: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1000&q=80' },
-      { title: 'DISCOAT 2026 // VIRTUAL SHOWROOM', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1000&q=80' },
-      { title: 'AI PERFORMANCE ENGINE // ZONEX', image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1000&q=80' },
-    ];
-
+    // 2. 3D Curved Project Planes Setup
     const textureLoader = new THREE.TextureLoader();
-    const cardGroup = new THREE.Group();
-    scene.add(cardGroup);
+    const planeGroup = new THREE.Group();
+    scene.add(planeGroup);
 
     const isMobile = window.innerWidth <= 768;
-    const cardWidth = isMobile ? 3.6 : 5.4;
-    const cardHeight = isMobile ? 2.4 : 3.2;
-    const cardGeo = new THREE.PlaneGeometry(cardWidth, cardHeight);
-    const cardSpacingZ = 16;
+    const cardWidth = isMobile ? 3.4 : 5.2;
+    const cardHeight = isMobile ? 2.3 : 3.4;
+    const cardSpacing = isMobile ? 4.2 : 6.4;
+    const geometry = new THREE.PlaneGeometry(cardWidth, cardHeight, 32, 32);
 
-    projectsData.forEach((proj, idx) => {
-      const tex = textureLoader.load(proj.image);
-      const mat = new THREE.MeshBasicMaterial({
-        map: tex,
+    const materials: THREE.ShaderMaterial[] = [];
+    const meshes: THREE.Mesh[] = [];
+
+    PROJECTS.forEach((proj, i) => {
+      const texture = textureLoader.load(proj.image);
+      const mat = new THREE.ShaderMaterial({
+        vertexShader,
+        fragmentShader,
+        uniforms: {
+          uTexture: { value: texture },
+          uSpeed: { value: 0 },
+          uTime: { value: 0 },
+          uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+        },
         side: THREE.DoubleSide,
         transparent: true,
-        opacity: 0.95,
       });
+      materials.push(mat);
 
-      const cardMesh = new THREE.Mesh(cardGeo, mat);
-      const zPos = -(idx * cardSpacingZ + 12);
-      const xPos = isMobile ? 0 : idx % 2 === 0 ? -2.0 : 2.0;
-      cardMesh.position.set(xPos, 0, zPos);
-
-      if (!isMobile) {
-        cardMesh.rotation.y = idx % 2 === 0 ? 0.22 : -0.22;
-        cardMesh.rotation.z = idx % 2 === 0 ? 0.04 : -0.04;
-      }
-      cardGroup.add(cardMesh);
+      const mesh = new THREE.Mesh(geometry, mat);
+      mesh.position.x = i * cardSpacing;
+      meshes.push(mesh);
+      planeGroup.add(mesh);
     });
 
-    // 6. GSAP ScrollTrigger Sequence
-    let masterTimeline: GSAPTimeline | null = null;
-    if (gsap && ScrollTrigger) {
-      const totalZ = projectsData.length * cardSpacingZ + 10;
+    // 3. Smooth Momentum Drag & Wheel Lerp Controller
+    let scrollX = 0;
+    let targetScrollX = 0;
+    const maxScrollX = (PROJECTS.length - 1) * cardSpacing;
+    let isDragging = false;
+    let startX = 0;
+    let startScrollX = 0;
+    let currentSpeed = 0;
 
-      masterTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: '#alche-viewport',
-          start: 'top top',
-          end: `+=${projectsData.length * 1100}`,
-          scrub: 1.1,
-          pin: true,
-        },
+    nextSlideRef.current = () => {
+      targetScrollX = Math.min(targetScrollX + cardSpacing, maxScrollX);
+    };
+
+    prevSlideRef.current = () => {
+      targetScrollX = Math.max(targetScrollX - cardSpacing, 0);
+    };
+
+    const handlePointerDown = (e: PointerEvent) => {
+      isDragging = true;
+      startX = e.clientX;
+      startScrollX = targetScrollX;
+    };
+
+    const handlePointerMove = (e: PointerEvent) => {
+      // Update mouse coordinate for shader lens effect
+      const mouseX = e.clientX / window.innerWidth;
+      const mouseY = 1.0 - e.clientY / window.innerHeight;
+      materials.forEach((mat) => {
+        mat.uniforms.uMouse.value.set(mouseX, mouseY);
       });
 
-      // Camera Travel
-      masterTimeline.to(
-        camera.position,
-        {
-          z: -totalZ,
-          ease: 'none',
-        },
-        0
-      );
-
-      // Initial Hero Text Fade out
-      masterTimeline.to(
-        '#alche-hero-ui',
-        {
-          opacity: 0,
-          scale: 0.75,
-          y: -60,
-          ease: 'power2.inOut',
-          duration: 0.25,
-        },
-        0
-      );
-
-      // Orb scale & tunnel entrance
-      masterTimeline.to(glassOrb.scale, { x: 3.2, y: 3.2, z: 3.2, ease: 'power1.in' }, 0);
-      masterTimeline.to(glassOrb.position, { z: -8, ease: 'none' }, 0);
-      masterTimeline.to(wireCage.scale, { x: 3.4, y: 3.4, z: 3.4, ease: 'power1.in' }, 0);
-      masterTimeline.to(wireCage.position, { z: -8, ease: 'none' }, 0);
-
-      // Dynamic Grids movement
-      masterTimeline.to(gridBottom.position, { z: -totalZ * 0.45, ease: 'none' }, 0);
-      masterTimeline.to(gridTop.position, { z: -totalZ * 0.45, ease: 'none' }, 0);
-    }
-
-    // 7. Mouse Dynamic Tilt Interaction
-    let targetRotX = 0;
-    let targetRotY = 0;
-    const handleMouseMove = (e: MouseEvent) => {
-      targetRotY = (e.clientX / window.innerWidth - 0.5) * 0.5;
-      targetRotX = (e.clientY / window.innerHeight - 0.5) * 0.4;
+      if (!isDragging) return;
+      const diff = (e.clientX - startX) * 0.012;
+      targetScrollX = Math.max(0, Math.min(startScrollX - diff * cardSpacing, maxScrollX));
     };
-    window.addEventListener('mousemove', handleMouseMove);
 
-    // 8. Continuous Render Loop
+    const handlePointerUp = () => {
+      isDragging = false;
+      // Snap to closest card
+      const snapIndex = Math.round(targetScrollX / cardSpacing);
+      targetScrollX = Math.max(0, Math.min(snapIndex * cardSpacing, maxScrollX));
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      // Only capture wheel within hero if not scrolling page
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || Math.abs(e.deltaY) > 5) {
+        targetScrollX = Math.max(0, Math.min(targetScrollX + e.deltaY * 0.005 * cardSpacing, maxScrollX));
+      }
+    };
+
+    container.addEventListener('pointerdown', handlePointerDown);
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
+    window.addEventListener('pointercancel', handlePointerUp);
+    container.addEventListener('wheel', handleWheel, { passive: true });
+
+    // 4. Render & Animation Loop
     const clock = new THREE.Clock();
     let animFrameId: number;
     let frameCount = 0;
-    let lastTime = performance.now();
+    let lastFpsTime = performance.now();
     const fpsElement = document.getElementById('alche-fps');
 
-    const renderLoop = () => {
+    const render = () => {
       if (isDisposed) return;
-      animFrameId = requestAnimationFrame(renderLoop);
+      animFrameId = requestAnimationFrame(render);
+
       const elapsedTime = clock.getElapsedTime();
 
-      // Update Shader uniforms
-      glassShaderMaterial.uniforms.uTime.value = elapsedTime;
+      // Lerp scroll position with smooth inertia damping
+      const prevScrollX = scrollX;
+      scrollX += (targetScrollX - scrollX) * 0.085;
+      currentSpeed = (scrollX - prevScrollX) * 45.0;
 
-      // Smooth Orb & Cage auto-rotation
-      glassOrb.rotation.y += 0.006;
-      glassOrb.rotation.x += 0.003;
-      wireCage.rotation.y -= 0.004;
-      wireCage.rotation.x -= 0.002;
+      // Update plane group position
+      planeGroup.position.x = -scrollX;
 
-      // Smooth mouse inertia
-      camera.rotation.y += (targetRotY - camera.rotation.y) * 0.06;
-      camera.rotation.x += (-targetRotX - camera.rotation.x) * 0.06;
+      // Update active index
+      const curIdx = Math.max(0, Math.min(Math.round(scrollX / cardSpacing), PROJECTS.length - 1));
+      setActiveIdx(curIdx);
+
+      // Parallax Background Title translation
+      if (bgTitleRef.current) {
+        const parallaxOffset = (scrollX / maxScrollX - 0.5) * -120;
+        bgTitleRef.current.style.transform = `translate(calc(-50% + ${parallaxOffset}px), -50%)`;
+      }
+
+      // Update card uniforms & individual perspective tilts
+      materials.forEach((mat, idx) => {
+        mat.uniforms.uTime.value = elapsedTime;
+        mat.uniforms.uSpeed.value = currentSpeed;
+
+        const mesh = meshes[idx];
+        const distFromCenter = Math.abs(mesh.position.x - scrollX);
+        const scaleFactor = Math.max(0.85, 1.0 - distFromCenter * 0.04);
+        mesh.scale.set(scaleFactor, scaleFactor, 1.0);
+        mesh.rotation.y = (mesh.position.x - scrollX) * 0.035;
+      });
 
       renderer.render(scene, camera);
 
       // FPS tracking for HUD telemetry
       frameCount++;
       const now = performance.now();
-      if (now - lastTime >= 1000) {
+      if (now - lastFpsTime >= 1000) {
         if (fpsElement) {
-          fpsElement.textContent = String(Math.round((frameCount * 1000) / (now - lastTime)));
+          fpsElement.textContent = String(Math.round((frameCount * 1000) / (now - lastFpsTime)));
         }
         frameCount = 0;
-        lastTime = now;
+        lastFpsTime = now;
       }
     };
-    renderLoop();
+    render();
 
     // Resize Handler
     const handleResize = () => {
@@ -320,34 +325,32 @@ export function Hero() {
 
     return () => {
       isDisposed = true;
-      window.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('pointerdown', handlePointerDown);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+      window.removeEventListener('pointercancel', handlePointerUp);
+      container.removeEventListener('wheel', handleWheel);
       window.removeEventListener('resize', handleResize);
       if (animFrameId) cancelAnimationFrame(animFrameId);
-      if (rafId) cancelAnimationFrame(rafId);
-      if (masterTimeline?.scrollTrigger) masterTimeline.scrollTrigger.kill();
-      if (masterTimeline) masterTimeline.kill();
-      if (lenisInstance) {
-        try {
-          lenisInstance.destroy();
-        } catch {
-          // ignore
-        }
-      }
       renderer.dispose();
-      sphereGeometry.dispose();
-      glassShaderMaterial.dispose();
-      wireGeometry.dispose();
-      wireMaterial.dispose();
-      cardGeo.dispose();
+      geometry.dispose();
+      materials.forEach((m) => m.dispose());
     };
   }, []);
 
+  const activeProject = PROJECTS[activeIdx] || PROJECTS[0];
+
   return (
-    <section className="alche-root" id="alche-viewport" ref={sectionRef}>
-      <canvas id="alche-webgl-canvas" ref={canvasRef}></canvas>
+    <section className="alche-slider-root" id="alche-viewport" ref={containerRef}>
+      <canvas id="alche-slider-canvas" ref={canvasRef}></canvas>
+
+      {/* Large Parallax Hollow Typography in Background Space */}
+      <div className="alche-parallax-bg-title" ref={bgTitleRef}>
+        ZONEX // ARCHIVE 2026
+      </div>
 
       <div className="alche-hud-frame">
-        {/* Top Bar */}
+        {/* Top Minimalist Header */}
         <header className="alche-header">
           <div 
             className="alche-logo cursor-pointer"
@@ -358,10 +361,10 @@ export function Hero() {
           </div>
 
           <nav className="alche-nav">
-            <a href="#news" onClick={(e) => { e.preventDefault(); scrollToSection('insights'); }}>News</a>
             <a href="#works" className="active" onClick={(e) => { e.preventDefault(); scrollToSection('portfolio'); }}>Works</a>
-            <a href="#about" onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}>About</a>
-            <a href="https://zonex-academy.com" target="_blank" rel="noopener noreferrer">Studio</a>
+            <a href="#services" onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}>Services</a>
+            <a href="#insights" onClick={(e) => { e.preventDefault(); scrollToSection('insights'); }}>Insights</a>
+            <a href="https://zonex-academy.com" target="_blank" rel="noopener noreferrer">Academy</a>
           </nav>
 
           <div className="alche-header-right">
@@ -381,30 +384,57 @@ export function Hero() {
           </div>
         </header>
 
-        {/* Floating HUD Coordinates & Diagnostics */}
+        {/* Floating Telemetry Coordinates */}
         <div className="alche-hud-coords">
           <div>SYS.LOC // 12.2958° N, 76.6394° E</div>
-          <div>RENDER // WEBGL2 CHROMATIC PIPELINE</div>
+          <div>SHADER // GLSL CURVED LENS PIPELINE</div>
           <div>FPS: <span id="alche-fps">60</span></div>
         </div>
 
-        {/* Center Interactive Hero Titles */}
-        <div className="alche-center-hero" id="alche-hero-ui">
-          <div className="alche-category-tag">EXPERIMENTAL DIGITAL &amp; AI ENGINE</div>
-          <h1 className="alche-giant-title">ZONEX</h1>
-          <p className="alche-subheading">Bridging Artificial Intelligence with High-Performance Growth</p>
+        {/* Active Project Glassmorphism HUD Card (Bottom Left) */}
+        <div className="flex items-end justify-between w-full">
+          <div className="alche-active-card-info">
+            <div className="alche-card-meta-row">
+              <span className="alche-card-index">{activeProject.index}</span>
+              <span className="alche-card-tag">{activeProject.tag}</span>
+            </div>
+            <h2 className="alche-card-title">{activeProject.title}</h2>
+            <p className="alche-card-jp-desc">{activeProject.jpDesc}</p>
+            <button onClick={handleViewActiveProject} className="alche-card-cta-btn">
+              <span>EXPLORE CASE ARCHIVE</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Interactive Arrow Controls */}
+          <div className="alche-slider-controls hidden sm:flex">
+            <button 
+              onClick={() => prevSlideRef.current()}
+              className="alche-ctrl-arrow"
+              aria-label="Previous Project"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={() => nextSlideRef.current()}
+              className="alche-ctrl-arrow"
+              aria-label="Next Project"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Bottom Minimalist Footer */}
         <footer className="alche-footer">
           <div 
             className="alche-footer-left cursor-pointer"
             onClick={() => scrollToSection('portfolio')}
           >
-            <span>SCROLL TO EXPLORE ARCHIVE</span>
+            <span>DRAG / SCROLL TO EXPLORE ARCHIVE</span>
             <div className="alche-scroll-line"></div>
           </div>
-          <div className="alche-footer-center">
+          <div className="alche-footer-center hidden sm:block">
             <span className="alche-status-dot"></span> ALL SYSTEMS ONLINE
           </div>
           <div className="alche-footer-right">

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Film, Eye, Play, Pause, Volume2, VolumeX, AlertCircle } from 'lucide-react';
 import { REELS, type ReelItem } from '@/data/content';
 import { SectionHeading } from './SectionHeading';
@@ -108,9 +108,29 @@ function DesktopReelCard({ reel, index }: { reel: ReelItem; index: number }) {
   );
 }
 
-// Compact Mobile Reel Card (Taps to open centered popup modal)
-function MobileReelCard({ reel, index, onSelect }: { reel: ReelItem; index: number; onSelect: (reel: ReelItem) => void }) {
+// Compact Mobile Reel Card with Inline controls
+function MobileReelCard({ reel, index }: { reel: ReelItem; index: number }) {
   const [failed, setFailed] = useState(false);
+  const [muted, setMuted] = useState(true);
+  const [playing, setPlaying] = useState(true);
+  const [videoEl, setVideoEl] = useState<HTMLVideoElement | null>(null);
+
+  const togglePlay = () => {
+    if (!videoEl) return;
+    if (videoEl.paused) {
+      videoEl.play().catch((err) => console.log('Playback error:', err));
+      setPlaying(true);
+    } else {
+      videoEl.pause();
+      setPlaying(false);
+    }
+  };
+
+  const toggleMute = () => {
+    if (!videoEl) return;
+    videoEl.muted = !videoEl.muted;
+    setMuted(videoEl.muted);
+  };
 
   return (
     <motion.div
@@ -121,13 +141,8 @@ function MobileReelCard({ reel, index, onSelect }: { reel: ReelItem; index: numb
       className="flex sm:hidden flex-col items-center w-full"
     >
       <div
-        onClick={() => onSelect(reel)}
-        onTouchEnd={(e) => {
-          e.preventDefault();
-          onSelect(reel);
-        }}
-        className="cursor-pointer relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black border border-white/15 active:scale-95 transition-transform shadow-lg shadow-black/40"
-        style={{ touchAction: 'manipulation' }}
+        className="relative w-full aspect-[9/16] rounded-2xl overflow-hidden bg-black border border-white/15 shadow-lg shadow-black/40 will-change-transform"
+        style={{ transform: 'translateZ(0)' }}
       >
         {failed ? (
           <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-neutral-800 via-neutral-900 to-black p-4 text-center">
@@ -136,14 +151,18 @@ function MobileReelCard({ reel, index, onSelect }: { reel: ReelItem; index: numb
           </div>
         ) : (
           <video
+            ref={setVideoEl}
             src={reel.videoUrl || reel.video || reel.src}
             autoPlay
             loop
-            muted
+            muted={muted}
             playsInline
             preload="metadata"
             onError={() => setFailed(true)}
-            className="w-full h-full object-cover pointer-events-none"
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
+            onVolumeChange={() => { if (videoEl) setMuted(videoEl.muted); }}
+            className="w-full h-full object-cover rounded-xl pointer-events-none"
           />
         )}
 
@@ -152,6 +171,28 @@ function MobileReelCard({ reel, index, onSelect }: { reel: ReelItem; index: numb
           <span>👁</span> {reel.views}
         </div>
       </div>
+
+      {/* Inline controls */}
+      {!failed && (
+        <div className="flex items-center justify-center gap-2 mt-2">
+          <button
+            type="button"
+            onClick={togglePlay}
+            className="w-7 h-7 rounded-full bg-white/10 dark:bg-black/50 border border-white/20 flex items-center justify-center text-xs text-white backdrop-blur-sm active:scale-90 transition-transform cursor-pointer"
+            aria-label="Toggle Play"
+          >
+            {playing ? '⏸' : '▶'}
+          </button>
+          <button
+            type="button"
+            onClick={toggleMute}
+            className="w-7 h-7 rounded-full bg-white/10 dark:bg-black/50 border border-white/20 flex items-center justify-center text-xs text-white backdrop-blur-sm active:scale-90 transition-transform cursor-pointer"
+            aria-label="Toggle Mute"
+          >
+            {muted ? '🔇' : '🔊'}
+          </button>
+        </div>
+      )}
 
       <div className="mt-1.5 text-center w-full px-1">
         <h3 className="text-[11px] font-bold leading-tight line-clamp-1 mt-1 text-zinc-900 dark:text-white">
@@ -166,33 +207,8 @@ function MobileReelCard({ reel, index, onSelect }: { reel: ReelItem; index: numb
 }
 
 export function Reels() {
-  const [selectedReel, setSelectedReel] = useState<ReelItem | null>(null);
-
   const mainReels = REELS.filter((r) => r.id <= 3);
   const gymReels = REELS.filter((r) => r.id >= 4);
-
-  const closeModal = () => setSelectedReel(null);
-
-  // Lock body scroll on mobile when modal is active
-  useEffect(() => {
-    if (selectedReel) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [selectedReel]);
-
-  // Handle escape key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeModal();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
 
   return (
     <section id="reels" className="section-pad relative">
@@ -200,7 +216,7 @@ export function Reels() {
         <SectionHeading
           eyebrow="Reels Showcase"
           title={<>Short-Form <span className="gradient-text">Video Reels</span> &amp; Ad Creatives</>}
-          subtitle="Real video work — play with sound on desktop or tap on mobile to open full-screen player."
+          subtitle="Real video work — play with sound on desktop or tap inline controls on mobile."
         />
 
         {/* Main showcase reels */}
@@ -215,7 +231,7 @@ export function Reels() {
           {/* Mobile Showcase */}
           <div className="grid sm:hidden grid-cols-2 gap-2.5 px-3">
             {mainReels.map((reel, i) => (
-              <MobileReelCard key={reel.id} reel={reel} index={i} onSelect={setSelectedReel} />
+              <MobileReelCard key={reel.id} reel={reel} index={i} />
             ))}
           </div>
         </div>
@@ -232,60 +248,11 @@ export function Reels() {
           {/* Mobile Showcase */}
           <div className="grid sm:hidden grid-cols-2 gap-2.5 px-3">
             {gymReels.map((reel, i) => (
-              <MobileReelCard key={reel.id} reel={reel} index={i} onSelect={setSelectedReel} />
+              <MobileReelCard key={reel.id} reel={reel} index={i} />
             ))}
           </div>
         </div>
       </div>
-
-      {/* Tap-To-Expand Video Popup Modal (Mobile only viewport center fixed) */}
-      <AnimatePresence>
-        {selectedReel && (
-          <div 
-            className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md flex items-center justify-center p-3"
-            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: '100vw', height: '100dvh' }}
-            onClick={closeModal}
-          >
-            {/* Dialog Box */}
-            <div 
-              className="relative z-[100000] w-full max-w-[340px] h-[80dvh] max-h-[640px] bg-black rounded-3xl overflow-hidden border border-white/20 shadow-2xl flex flex-col justify-between"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Close Button */}
-              <button
-                type="button"
-                onClick={closeModal}
-                className="absolute top-3 right-3 z-[100010] w-9 h-9 rounded-full bg-black/80 border border-white/40 text-white flex items-center justify-center font-bold text-sm shadow-xl cursor-pointer"
-                aria-label="Close modal"
-              >
-                ✕
-              </button>
-
-              {/* Playable Video with Sound */}
-              <div className="relative w-full h-full bg-black flex items-center justify-center">
-                <video
-                  key={selectedReel.videoUrl || selectedReel.video || selectedReel.src}
-                  src={selectedReel.videoUrl || selectedReel.video || selectedReel.src}
-                  autoPlay
-                  playsInline
-                  controls
-                  className="w-full h-full object-cover block"
-                />
-              </div>
-
-              {/* Bottom Details */}
-              <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black via-black/80 to-transparent z-[100005] pointer-events-none">
-                <span className="text-[11px] font-semibold text-purple-400 block mb-0.5">
-                  {selectedReel.type || selectedReel.category || selectedReel.tag || 'Instagram Reel'}
-                </span>
-                <h3 className="text-sm font-bold text-white leading-tight">
-                  {selectedReel.title || 'Reel Showcase'}
-                </h3>
-              </div>
-            </div>
-          </div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

@@ -46,7 +46,7 @@ function App() {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-[#030307] text-white selection:bg-[#7c3aed] selection:text-white overflow-x-hidden">
+      <div className="min-h-screen bg-[#EDEEF5] text-zinc-900 dark:bg-[#030307] dark:text-white selection:bg-[#7c3aed] selection:text-white overflow-x-hidden transition-colors duration-300">
         <Navbar />
         <AmbientBackground />
         <main>

@@ -9,23 +9,24 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden bg-black/60 border border-purple-500/30 flex items-center justify-center shrink-0 shadow-[0_0_12px_rgba(168,85,247,0.25)]">
+              <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-xl overflow-hidden bg-black/80 border border-purple-500/40 p-1 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(168,85,247,0.3)]">
                 <img
                   src="/logo-zonex.jpg"
                   alt="ZoneX Growth Agency"
-                  className="w-full h-full object-contain p-1 transform-gpu"
+                  className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(168,85,247,0.4)]"
                   loading="eager"
                   style={{
-                    imageRendering: '-webkit-optimize-contrast',
-                    filter: 'none',
+                    imageRendering: 'crisp-edges',
                     WebkitBackfaceVisibility: 'hidden',
                     backfaceVisibility: 'hidden',
+                    willChange: 'transform',
+                    transform: 'translateZ(0)',
                   }}
                 />
               </div>
-              <div className="flex items-baseline gap-0 leading-none">
-                <span className="font-extrabold tracking-tight text-zinc-900 dark:text-white text-sm uppercase">ZoneX</span>
-                <span className="font-semibold text-purple-600 dark:text-purple-400 ml-1.5 text-sm uppercase tracking-tight">Growth Agency</span>
+              <div className="flex flex-col text-left select-none">
+                <span className="text-sm font-black tracking-tight text-zinc-900 dark:text-white leading-none">ZoneX</span>
+                <span className="text-[10px] font-semibold text-purple-600 dark:text-purple-400 tracking-wider uppercase leading-tight mt-0.5">Growth Agency</span>
               </div>
             </div>
             <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-md mb-3 font-medium">

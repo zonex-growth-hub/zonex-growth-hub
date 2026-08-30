@@ -38,6 +38,9 @@ const SEO_MAP: Record<string, SEOMetadata> = {
 
 export function SEOManager() {
   useEffect(() => {
+    const isGeo = ['/mysuru', '/bengaluru', '/chikkamagaluru', '/mangaluru', '/hubballi', '/belagavi', '/shivamogga', '/udupi', '/india'].includes(window.location.pathname.toLowerCase());
+    if (isGeo) return;
+
     let lastSection = 'hero';
 
     const updateSEO = () => {

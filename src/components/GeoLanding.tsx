@@ -40,8 +40,8 @@ const GEO_MAP: Record<string, GeoData> = {
     email: "zonexacdemy@gmail.com",
     title: "Performance Marketing & E-commerce Scaling Bengaluru | ZoneX Hub",
     h1: "Performance Marketing & E-commerce Scaling Bengaluru",
-    desc: "High-ROI digital marketing and conversion rate optimization (CRO) engines for Bengaluru startups & D2C brands. We scale Meta/Google ad accounts to 4.2x+ verified ROAS.",
-    marketScope: "Bengaluru Metro, Whitefield, Indiranagar tech corridors"
+    desc: "High-ROI digital marketing and conversion rate optimization (CRO) engines for Bengaluru startups & D2C brands. We scale Meta/Google ad accounts across Koramangala, HSR Layout, Indiranagar, and Whitefield.",
+    marketScope: "Bengaluru Metro, Whitefield, Indiranagar, Koramangala, HSR Layout corridors"
   },
   chikkamagaluru: {
     city: "Chikkamagaluru",
@@ -54,6 +54,78 @@ const GEO_MAP: Record<string, GeoData> = {
     h1: "Local Business SEO & Growth Systems Chikkamagaluru",
     desc: "Unlocking organic visibility for tourism, resorts, estate exports, and local businesses in Chikkamagaluru. Deconstruct competition and capture inbound leads with search dominance.",
     marketScope: "Chikkamagaluru, Mudigere, Kadur estate corridors"
+  },
+  mangaluru: {
+    city: "Mangaluru",
+    focus: "SEO Agency & Web Ordering Systems Mangaluru",
+    lat: 12.9141,
+    lng: 74.8560,
+    phone: "+91 7019371818",
+    email: "zonexacdemy@gmail.com",
+    title: "SEO Agency & Web Ordering Systems Mangaluru | ZoneX Hub",
+    h1: "SEO Agency & Web Ordering Systems Mangaluru",
+    desc: "Scale your coastal retail, education hub, or export brand with professional search engine optimization and high-CTR local advertising campaigns tailored for Mangaluru.",
+    marketScope: "Mangaluru, Udupi, Dakshina Kannada coastal business corridors"
+  },
+  hubballi: {
+    city: "Hubballi",
+    focus: "PPC & Lead Generation Agency Hubballi",
+    lat: 15.3647,
+    lng: 75.1240,
+    phone: "+91 7019371818",
+    email: "zonexacdemy@gmail.com",
+    title: "PPC & Lead Generation Agency Hubballi | ZoneX Hub",
+    h1: "PPC & Lead Generation Agency Hubballi-Dharwad",
+    desc: "Empowering Hubballi-Dharwad commerce hubs with high-conversion landing pages, automated lead capture pipelines, and targeted B2B paid advertising systems.",
+    marketScope: "Hubballi, Dharwad, Belagavi North Karnataka corridors"
+  },
+  belagavi: {
+    city: "Belagavi",
+    focus: "Local SEO & Performance Marketing Belagavi",
+    lat: 15.8497,
+    lng: 74.4977,
+    phone: "+91 7019371818",
+    email: "zonexacdemy@gmail.com",
+    title: "Local SEO & Performance Marketing Belagavi | ZoneX Hub",
+    h1: "Local SEO & Performance Marketing Belagavi",
+    desc: "Establish absolute search engine dominance and route high-intent local customer queries directly to your sales pipeline with our custom citation networks in Belagavi.",
+    marketScope: "Belagavi district, industrial & commercial zones"
+  },
+  shivamogga: {
+    city: "Shivamogga",
+    focus: "Digital Marketing & Brand Building Shivamogga",
+    lat: 13.9299,
+    lng: 75.5681,
+    phone: "+91 7019371818",
+    email: "zonexacdemy@gmail.com",
+    title: "Digital Marketing & Brand Building Shivamogga | ZoneX Hub",
+    h1: "Digital Marketing & Brand Building Shivamogga",
+    desc: "From local search footprint optimization to high-hook Instagram reels and YouTube branding videos, we build market leaders in Shivamogga.",
+    marketScope: "Shivamogga, Bhadravathi, Malnad regional zones"
+  },
+  udupi: {
+    city: "Udupi",
+    focus: "Local Search SEO & Google Maps Dominance Udupi",
+    lat: 13.3409,
+    lng: 74.7421,
+    phone: "+91 7019371818",
+    email: "zonexacdemy@gmail.com",
+    title: "Local Search SEO & Google Maps Dominance Udupi | ZoneX Hub",
+    h1: "Local Search SEO & Google Maps Dominance Udupi",
+    desc: "Dominate search engine result pages (SERPs) and capture regional tourists, hospitality clients, and retail checkouts with Udupi local citation frameworks.",
+    marketScope: "Udupi, Manipal, coastal Karnataka corridors"
+  },
+  india: {
+    city: "India",
+    focus: "National Performance Marketing & E-commerce Scaling India",
+    lat: 20.5937,
+    lng: 78.9629,
+    phone: "+91 7019371818",
+    email: "zonexacdemy@gmail.com",
+    title: "National Performance Marketing & E-commerce Scaling India | ZoneX Hub",
+    h1: "National Performance Marketing & E-commerce Scaling India",
+    desc: "Scale your e-commerce storefront or pan-India enterprise with high-ROI Meta & Google PPC ads, server-side tracking solutions, and hyper-profitable sales funnels.",
+    marketScope: "Pan-India e-commerce, D2C, and enterprise channels"
   }
 };
 

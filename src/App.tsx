@@ -149,7 +149,7 @@ function AppContent() {
     setShowExitModal(false);
   };
 
-  const isGeoRoute = ['/mysuru', '/bengaluru', '/chikkamagaluru'].includes(currentRoute.toLowerCase());
+  const isGeoRoute = ['/mysuru', '/bengaluru', '/chikkamagaluru', '/mangaluru', '/hubballi', '/belagavi', '/shivamogga', '/udupi', '/india'].includes(currentRoute.toLowerCase());
 
   return (
     <div className="min-h-screen bg-[#EDEEF5] text-zinc-900 dark:bg-[#030307] dark:text-white selection:bg-[#7c3aed] selection:text-white overflow-x-hidden transition-colors duration-300">

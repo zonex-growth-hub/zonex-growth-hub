@@ -18,10 +18,15 @@ export const Hero = () => {
         <video
           ref={videoRef}
           autoPlay
+          loop
           muted
           playsInline
           preload="auto"
           className="w-full h-full object-cover"
+          onEnded={(e) => {
+            e.currentTarget.currentTime = 0;
+            e.currentTarget.play().catch(() => {});
+          }}
         >
           <source
             src="https://strvid.nyc3.cdn.digitaloceanspaces.com/cloudinary/portfolio_hero_bg_zuhahj.webm"

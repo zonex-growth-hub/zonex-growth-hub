@@ -60,7 +60,7 @@ export const Hero: React.FC = () => {
       id="hero"
       className="hero-section relative min-h-screen w-full flex flex-col justify-between overflow-hidden bg-[#030305] text-white px-6 md:px-16 py-8"
     >
-      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+      <div className="video-container absolute inset-0 w-full h-full overflow-hidden pointer-events-none -z-10">
         <video
           id="heroVideo"
           autoPlay
@@ -69,6 +69,13 @@ export const Hero: React.FC = () => {
           playsInline
           preload="auto"
           className="w-full h-full object-cover"
+          ref={(el) => {
+            (videoRef as React.MutableRefObject<HTMLVideoElement | null>).current = el;
+            if (el) {
+              el.currentTime = 0;
+              el.play().catch(() => {});
+            }
+          }}
         >
           <source
             src="https://strvid.nyc3.cdn.digitaloceanspaces.com/cloudinary/portfolio_hero_bg_zuhahj.webm"
@@ -76,10 +83,10 @@ export const Hero: React.FC = () => {
           />
         </video>
         <div
-          className="absolute inset-0"
+          className="video-overlay absolute inset-0"
           style={{
             background:
-              "linear-gradient(90deg, rgba(5, 5, 8, 0.95) 0%, rgba(29, 29, 53, 0.182) 40%, rgba(5, 5, 8, 0.4) 100%)",
+              'linear-gradient(90deg, rgba(5, 5, 8, 0.95) 0%, rgba(29, 29, 53, 0.182) 40%, rgba(5, 5, 8, 0.4) 100%)',
           }}
         />
       </div>

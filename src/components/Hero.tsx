@@ -2,107 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useApp } from '@/context/AppContext';
 
-export const HeroBackground = React.forwardRef<HTMLDivElement>((_, ref) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animationFrameId: number;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
-
-    const particles: Array<{ x: number; y: number; vx: number; vy: number; radius: number; alpha: number }> = [];
-    for (let i = 0; i < 45; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: (Math.random() - 0.5) * 0.6,
-        radius: Math.random() * 2 + 1,
-        alpha: Math.random() * 0.5 + 0.2
-      });
-    }
-
-    const render = () => {
-      ctx.clearRect(0, 0, width, height);
-
-      // Background base
-      ctx.fillStyle = '#030305';
-      ctx.fillRect(0, 0, width, height);
-
-      // Draw glowing purple gradient mesh
-      const grad1 = ctx.createRadialGradient(width * 0.5, height * 0.35, 10, width * 0.5, height * 0.35, width * 0.4);
-      grad1.addColorStop(0, 'rgba(138, 99, 248, 0.25)');
-      grad1.addColorStop(1, 'rgba(3, 3, 5, 0)');
-      ctx.fillStyle = grad1;
-      ctx.fillRect(0, 0, width, height);
-
-      // Connect & draw particles
-      ctx.strokeStyle = 'rgba(138, 99, 248, 0.15)';
-      ctx.lineWidth = 1;
-
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0 || p.x > width) p.vx *= -1;
-        if (p.y < 0 || p.y > height) p.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(168, 85, 247, ${p.alpha})`;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#8A63F8';
-        ctx.fill();
-
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx = p.x - p2.x;
-          const dy = p.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 130) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      animationFrameId = requestAnimationFrame(render);
-    };
-
-    render();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
-
-  return (
-    <div ref={ref} className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0" style={{ transform: 'scale(1) translateZ(0)' }}>
-      <canvas ref={canvasRef} className="w-full h-full block" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#030305]/40 to-[#030305]" />
-    </div>
-  );
-});
-
 export const Hero: React.FC = () => {
   const { playClick } = useApp();
-  const videoRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -156,10 +58,41 @@ export const Hero: React.FC = () => {
     <section
       ref={heroRef}
       id="hero"
-      className="hero-section relative min-h-screen w-full flex flex-col justify-between overflow-hidden text-white px-6 md:px-16 py-8"
+      className="hero-section relative min-h-screen w-full flex flex-col justify-between overflow-hidden bg-[#030305] text-white px-6 md:px-16 py-8"
     >
-      {/* Self-contained HTML5 Canvas Cyber Wave & Particle Matrix */}
-      <HeroBackground ref={videoRef} />
+      {/* Exact 3D Background Video Container */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none -z-10 bg-[#030305]">
+        <video
+          id="heroVideo"
+          autoPlay
+          muted
+          playsInline
+          loop
+          preload="auto"
+          className="w-full h-full object-cover"
+          ref={(el) => {
+            (videoRef as React.MutableRefObject<HTMLVideoElement | null>).current = el;
+            if (el) {
+              el.currentTime = 0;
+              el.play().catch((err) => console.warn("Autoplay:", err));
+            }
+          }}
+        >
+          <source
+            src="https://strvid.nyc3.cdn.digitaloceanspaces.com/cloudinary/portfolio_hero_bg_zuhahj.webm"
+            type="video/webm"
+          />
+        </video>
+
+        {/* Exact Video Overlay Gradient */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(5, 5, 8, 0.95) 0%, rgba(29, 29, 53, 0.182) 40%, rgba(5, 5, 8, 0.4) 100%)",
+          }}
+        />
+      </div>
 
       {/* Top Navbar Placeholder spacing/offset */}
       <div className="w-full h-16 md:h-20 shrink-0" />

@@ -110,11 +110,10 @@ export const Hero: React.FC = () => {
         ref={contentRef}
         className="hero-content flex-1 flex flex-col justify-center max-w-[820px] py-8 z-20 will-change-transform"
       >
-        {/* Badge */}
-        <span className="greeting inline-flex items-center gap-2 text-[#8A63F8] text-[0.75rem] sm:text-[0.85rem] font-bold tracking-[2px] mb-5 uppercase font-['Outfit'] animate-fade-up select-none">
-          <span>✨</span>
-          <span>High-Performance Digital Marketing &amp; Growth Agency</span>
-        </span>
+        {/* Performance-backed Authority Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-950/40 border border-purple-500/40 text-purple-300 text-xs sm:text-sm font-semibold backdrop-blur-md shadow-[0_0_20px_rgba(168,85,247,0.15)] mb-6 select-none animate-fade-up">
+          <span>⚡ High-Performance Architecture: Engineered exclusively for businesses scaling to ₹10L–₹1Cr+ monthly revenue via hyper-profitable Meta &amp; Google PPC infrastructure.</span>
+        </div>
 
         {/* H1 Headline */}
         <h1
@@ -181,7 +180,7 @@ export const Hero: React.FC = () => {
             onClick={scrollToAudit}
             className="btn-outline inline-flex items-center justify-center px-8 py-3.5 rounded-lg font-['Inter'] text-[0.85rem] font-semibold tracking-wider uppercase text-white border border-white/10 bg-[rgba(20,20,25,0.4)] backdrop-blur-md hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer"
           >
-            Claim Free Audit ✦
+            Apply for Strategy Audit ✦
           </button>
         </div>
       </div>

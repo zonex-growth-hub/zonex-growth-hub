@@ -25,10 +25,10 @@ export const NAV_ITEMS = [
 
 
 export const HERO_STATS: HeroStat[] = [
-  { prefix: '$', suffix: 'M+', target: 2.5, decimals: 1, label: 'Ad Budget Scaled' },
-  { suffix: '+', target: 180, decimals: 0, label: 'Successful Launches' },
-  { suffix: '%', target: 99.2, decimals: 1, label: 'Client Satisfaction' },
-  { suffix: '/5', target: 4.9, decimals: 1, star: true, label: 'Average Rating' },
+  { prefix: '₹', suffix: 'Cr+', target: 1.2, decimals: 1, label: 'Client Revenue Scaled' },
+  { suffix: 'x+', target: 4.2, decimals: 1, label: 'Average ROAS' },
+  { suffix: ' FPS', target: 120, decimals: 0, label: 'Deployed Funnels' },
+  { suffix: '+ Hubs', target: 15, decimals: 0, label: 'Regional Market Domination across Karnataka' },
 ];
 
 export const PORTFOLIO_FILTERS = ['All Work', 'Web Development', 'Video Reels & Ads', 'Brand Identity', 'SEO Growth'] as const;
@@ -326,8 +326,8 @@ export const KARNATAKA_CITIES = [
 export const PROCESS_STEPS = [
   {
     step: 1,
-    title: 'Free Audit & Strategy',
-    description: 'We deep-dive into your brand, competitors, and current metrics — then deliver a free 15-minute audit with actionable growth opportunities.',
+    title: 'Strategic Growth Audit',
+    description: 'We deep-dive into your brand, competitors, and current metrics — then deliver a professional 15-minute pipeline audit with actionable growth opportunities.',
     icon: 'Search',
   },
   {

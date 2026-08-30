@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, Calendar, Mail, Phone, MapPin, ArrowUpRight, Send, CheckCircle2, Sparkles, MapPin as MapPinIcon } from 'lucide-react';
+import { MessageCircle, Calendar, Mail, Phone, MapPin, ArrowUpRight, CheckCircle2, Sparkles, MapPin as MapPinIcon } from 'lucide-react';
 import { AGENCY } from '@/data/content';
 import { SectionHeading } from './SectionHeading';
 import { analytics } from '@/utils/analytics';
@@ -28,8 +28,8 @@ export function Contact() {
   const [activeMapPin, setActiveMapPin] = useState<'mysuru' | 'bengaluru' | 'chikkamagaluru'>('mysuru');
 
   const budgetOptions = isINR
-    ? ['< ₹50K', '₹50K - ₹2L', '₹2L - ₹5L', '₹5L+']
-    : ['< $1K', '$1K - $3K', '$3K - $7K', '$7K+'];
+    ? ['₹50K - ₹1.5L', '₹1.5L - ₹5L', '₹5L+']
+    : ['$600 - $2K', '$2K - $6K', '$6K+'];
 
   const handleIndustrySelect = (ind: string) => {
     playClick();
@@ -76,7 +76,7 @@ export function Contact() {
     });
 
     const msg = encodeURIComponent(
-      `Hi ZoneX Growth Agency! 👋\n\nI just completed the Growth Quiz for a Free Strategy:\n\n🏢 Industry: ${industry}\n💰 Budget: ${budgetRange}\n👤 Brand Name: ${cleanName}\n📱 WhatsApp: ${cleanPhone}\n\nPlease share my audit proposal.`
+      `Hi ZoneX Growth Agency! 👋\n\nI just completed the Growth Quiz for a Direct Strategy Audit:\n\n🏢 Industry: ${industry}\n💰 Budget: ${budgetRange}\n👤 Brand Name: ${cleanName}\n📱 WhatsApp: ${cleanPhone}\n\nPlease share my growth proposal.`
     );
     const whatsappUrl = `https://wa.me/917019371818?text=${msg}`;
 
@@ -126,12 +126,12 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="relative pt-6 pb-6 md:pt-10 md:pb-12" aria-label="Contact &amp; Free Audit">
+    <section id="contact" className="relative pt-6 pb-6 md:pt-10 md:pb-12" aria-label="Contact &amp; Pipeline Audit">
       <div className="container-max">
         <SectionHeading
           eyebrow="Zero Friction Lead Capture"
-          title={<>Claim Your <span className="gradient-text">Free Growth Audit</span></>}
-          subtitle="Complete our 3-step interactive questionnaire to see how we can optimize your performance marketing."
+          title={<>Apply for <span className="gradient-text">Direct Growth Consultation &amp; Pipeline Audit</span></>}
+          subtitle="Fast-track your acquisition funnel with custom media architecture."
         />
 
         {/* ── FRICTIONLESS 3-STEP QUIZ CONTAINER ── */}
@@ -150,7 +150,7 @@ export function Contact() {
                 <span className="absolute w-full h-full bg-amber-500 rounded-full animate-ping opacity-75" />
               </span>
               <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-                ⚡ 3/5 Free Strategy Slots Claimed Today in Karnataka
+                ⚡ Q3 Client Onboarding Slots Available in Karnataka
               </span>
             </div>
             <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-widest">
@@ -285,8 +285,7 @@ export function Contact() {
                           disabled={loading}
                           className="flex-1 py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 shadow-md transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
                         >
-                          {loading ? 'Generating Proposal...' : 'Get My Strategy proposal'}
-                          <Send className="w-4 h-4" />
+                          {loading ? 'Dispatching...' : 'Submit for Consultation & WhatsApp Dispatch ↗'}
                         </button>
                       </div>
                     </form>
@@ -397,7 +396,7 @@ export function Contact() {
               <Calendar className="w-6 h-6 text-purple-600 dark:text-violet-400" />
             </div>
             <h3 className="font-display font-bold text-base mb-0.5 text-zinc-900 dark:text-white">1-on-1 Video Call</h3>
-            <p className="text-xs text-zinc-650 dark:text-slate-400 mb-2 font-medium">15-min free strategy</p>
+            <p className="text-xs text-zinc-650 dark:text-slate-400 mb-2 font-medium">15-min strategy discovery</p>
             <span className="inline-flex items-center gap-1 text-purple-600 dark:text-violet-400 text-xs font-bold">
               Schedule Call <ArrowUpRight className="w-3.5 h-3.5" />
             </span>

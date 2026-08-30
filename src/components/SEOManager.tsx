@@ -31,8 +31,8 @@ const SEO_MAP: Record<string, SEOMetadata> = {
     description: "Get transparent answers about marketing budgets, Local SEO, campaign timelines, and how ZoneX drives predictable brand scaling in Karnataka."
   },
   contact: {
-    title: "Claim Your Free Digital Audit & Proposal | ZoneX Agency",
-    description: "Complete our frictionless 3-step interactive marketing quiz to claim your custom growth roadmap and strategy proposal today."
+    title: "Apply for Digital Strategy Audit & Proposal | ZoneX Agency",
+    description: "Complete our frictionless 3-step interactive marketing quiz to request your custom growth roadmap and strategy proposal today."
   }
 };
 

@@ -10,7 +10,7 @@ export function FloatingWhatsApp() {
   const handleSend = () => {
     analytics.trackContact('Floating WhatsApp Direct Send', { selectedService: service });
     const msg = encodeURIComponent(
-      `Hi ZoneX Growth Hub Team! 👋\n\nI want to scale my business revenue.\n🎯 Focus Area: ${service}\n\nPlease share your free growth roadmap and availability.`
+      `Hi ZoneX Growth Hub Team! 👋\n\nI want to scale my business revenue.\n🎯 Focus Area: ${service}\n\nPlease share your growth roadmap and availability.`
     );
     window.open(`https://wa.me/917019371818?text=${msg}`, '_blank', 'noopener,noreferrer');
     setOpen(false);

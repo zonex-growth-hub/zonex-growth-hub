@@ -283,7 +283,7 @@ export function GeoLanding({ citySlug, onBack }: { citySlug: string; onBack: () 
         <div id="contact" className="max-w-4xl mx-auto">
           <SectionHeading
             eyebrow="Frictionless Lead Pipeline"
-            title={<>Get a Free <span className="gradient-text">Growth Strategy</span> proposal</>}
+            title={<>Apply for a <span className="gradient-text">Direct Growth Strategy</span> proposal</>}
             subtitle={`Let our optimization agents analyze your digital footprint in ${data.city}. Complete the 3-step quiz to get custom projections.`}
           />
           <Suspense fallback={

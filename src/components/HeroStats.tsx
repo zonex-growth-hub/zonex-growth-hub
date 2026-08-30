@@ -28,10 +28,10 @@ function StatCard({ stat, active, index }: { stat: HeroStat; active: boolean; in
   
   // Dynamically calculate and format stats based on selected currency
   const isBudgetStat = index === 0;
-  const target = isBudgetStat ? (currency === 'INR' ? 20 : 2.5) : stat.target;
-  const decimals = isBudgetStat ? (currency === 'INR' ? 0 : 1) : stat.decimals;
+  const target = isBudgetStat ? (currency === 'INR' ? 1.2 : 150) : stat.target;
+  const decimals = isBudgetStat ? (currency === 'INR' ? 1 : 0) : stat.decimals;
   const prefix = isBudgetStat ? (currency === 'INR' ? '₹' : '$') : stat.prefix;
-  const suffix = isBudgetStat ? (currency === 'INR' ? 'Cr+' : 'M+') : stat.suffix;
+  const suffix = isBudgetStat ? (currency === 'INR' ? 'Cr+' : 'K+') : stat.suffix;
 
   const display = useCountUp(target, decimals, active);
 
@@ -48,7 +48,7 @@ function StatCard({ stat, active, index }: { stat: HeroStat; active: boolean; in
         {display}
         {suffix}
       </div>
-      <div className="relative mt-1 sm:mt-2 text-[9px] sm:text-sm lg:text-base text-zinc-700 dark:text-slate-350 font-medium tracking-normal sm:tracking-wide leading-tight text-center">
+      <div className="relative mt-1 sm:mt-2 text-[9px] sm:text-[13px] lg:text-[15px] text-zinc-700 dark:text-slate-350 font-medium tracking-normal sm:tracking-wide leading-tight text-center">
         {stat.label}
       </div>
     </motion.div>

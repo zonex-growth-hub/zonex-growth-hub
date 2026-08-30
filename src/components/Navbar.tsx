@@ -28,7 +28,7 @@ export function Navbar() {
 
   const handleClaimAudit = () => {
     playClick();
-    analytics.trackLead('Navbar Book Free Audit CTA');
+    analytics.trackLead('Navbar Book Audit CTA');
     scrollToSection('contact');
   };
 
@@ -159,7 +159,7 @@ export function Navbar() {
               onClick={handleClaimAudit}
               className="hidden lg:inline-block bg-gradient-to-r from-[#7c3aed] to-[#4f46e5] text-white px-4 py-2 rounded-full text-xs font-bold tracking-widest uppercase shadow-lg shadow-purple-500/20 hover:scale-105 active:scale-95 transition-transform duration-200 cursor-pointer"
             >
-              Free Audit →
+              Apply for Audit →
             </button>
 
             {/* Sun/Moon Toggle Button */}
@@ -295,7 +295,7 @@ export function Navbar() {
                   onClick={handleClaimAudit}
                   className="w-full bg-gradient-to-r from-[#7c3aed] to-[#4f46e5] text-white py-3 rounded-full text-xs font-bold tracking-widest uppercase shadow-lg shadow-purple-500/20 hover:scale-[1.02] transition-transform cursor-pointer text-center"
                 >
-                  Book Free Audit →
+                  Apply for Strategy Audit →
                 </button>
                 <div className="text-slate-500 text-[10px] text-center uppercase tracking-[0.15em]">
                   SYS // 2026

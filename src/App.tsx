@@ -144,7 +144,7 @@ function AppContent() {
     // Sanitization: use the custom XSS/HTML sanitizer
     const cleanEmail = sanitizeInput(exitEmail);
 
-    const msg = encodeURIComponent(`Hi ZoneX Growth Agency! 👋\n\nI want to download the 2026 E-commerce & Brand Scaling Playbook (Free PDF).\n\nMy email: ${cleanEmail}`);
+    const msg = encodeURIComponent(`Hi ZoneX Growth Agency! 👋\n\nI want to access the exclusive 2026 E-commerce & Brand Scaling Playbook.\n\nMy email: ${cleanEmail}`);
     window.open(`https://wa.me/917019371818?text=${msg}`, '_blank', 'noopener,noreferrer');
     setShowExitModal(false);
   };
@@ -212,13 +212,13 @@ function AppContent() {
             </button>
             <div className="flex items-center gap-2 mb-2">
               <Sparkles className="w-5 h-5 text-purple-500" />
-              <span className="text-[10px] uppercase font-bold tracking-widest text-purple-600 dark:text-purple-400">Exclusive Free Gift</span>
+              <span className="text-[10px] uppercase font-bold tracking-widest text-purple-600 dark:text-purple-400">Client Resource Access</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white leading-tight mb-3">
-              Wait! Grab Our Brand Scaling Playbook
+              Access Exclusive Brand Scaling Playbook
             </h3>
             <p className="text-xs sm:text-sm text-zinc-650 dark:text-slate-350 leading-relaxed font-medium mb-6">
-              Enter your email to instantly receive the **2026 E-commerce &amp; Brand Scaling Playbook** containing our exact ads strategy for scaling regional brands in India.
+              Enter your email to receive the **2026 E-commerce &amp; Brand Scaling Playbook** containing our exact ads strategy for scaling regional brands in India.
             </p>
             <form onSubmit={handleExitModalSubmit} className="space-y-4">
               <input
@@ -234,7 +234,7 @@ function AppContent() {
                 className="w-full py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 shadow-[0_0_20px_rgba(147,51,234,0.3)] transition-all uppercase tracking-wider text-xs flex items-center justify-center gap-2"
               >
                 <Download className="w-4 h-4" />
-                Download Playbook (PDF)
+                Access Exclusive Growth Playbook
               </button>
             </form>
           </div>

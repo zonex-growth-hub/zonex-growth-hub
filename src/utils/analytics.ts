@@ -43,8 +43,8 @@ export function trackGoogleEvent(action: string, params?: AnalyticsParams) {
  * Standardized High-Level Conversion Trackers for ZoneX Growth Hub
  */
 export const analytics = {
-  // Lead Event (e.g. Free Audit Claim, Contact Submission)
-  trackLead(label: string = 'Claim Free Audit', metaData?: AnalyticsParams) {
+  // Lead Event (e.g. Audit Claim, Contact Submission)
+  trackLead(label: string = 'Apply for Audit', metaData?: AnalyticsParams) {
     trackMetaEvent('Lead', { content_name: label, ...metaData });
     trackGoogleEvent('claim_audit_click', { event_category: 'CTA', event_label: label, ...metaData });
   },

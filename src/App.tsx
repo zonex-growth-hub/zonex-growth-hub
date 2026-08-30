@@ -12,6 +12,8 @@ import { Services } from '@/components/Services';
 import { Footer } from '@/components/Footer';
 import { FloatingWhatsApp } from '@/components/FloatingWhatsApp';
 import { X, Sparkles, Download, Bell } from 'lucide-react';
+import { sanitizeInput } from '@/utils/security';
+import { SEOManager } from '@/components/SEOManager';
 
 // Lazy-loaded components for optimal bundle tree-shaking and chunk split sizes
 const ROICalculator = lazy(() => import('@/components/ROICalculator'));
@@ -121,8 +123,8 @@ function AppContent() {
     e.preventDefault();
     playClick();
 
-    // Sanitization: strip HTML script tags from input
-    const cleanEmail = exitEmail.replace(/[<>]/g, '').trim();
+    // Sanitization: use the custom XSS/HTML sanitizer
+    const cleanEmail = sanitizeInput(exitEmail);
 
     const msg = encodeURIComponent(`Hi ZoneX Growth Agency! 👋\n\nI want to download the 2026 E-commerce & Brand Scaling Playbook (Free PDF).\n\nMy email: ${cleanEmail}`);
     window.open(`https://wa.me/917019371818?text=${msg}`, '_blank', 'noopener,noreferrer');
@@ -138,6 +140,7 @@ function AppContent() {
         style={{ width: `${scrollProgress}%` }}
       />
 
+      <SEOManager />
       <Navbar />
       <AmbientBackground />
       <main>

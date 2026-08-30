@@ -5,6 +5,7 @@ import { AGENCY } from '@/data/content';
 import { SectionHeading } from './SectionHeading';
 import { analytics } from '@/utils/analytics';
 import { useApp } from '@/context/AppContext';
+import { sanitizeInput } from '@/utils/security';
 
 export function Contact() {
   const { currency, playClick } = useApp();
@@ -55,9 +56,9 @@ export function Contact() {
     setLoading(true);
     setPhoneError(false);
 
-    // Sanitization: Strip script tags / HTML brackets
-    const cleanName = (brandName.trim() || 'Valued Brand').replace(/[<>]/g, '');
-    const cleanPhone = (phoneNumber.trim() || 'Not Shared').replace(/[<>]/g, '');
+    // Sanitization: use the custom XSS/HTML sanitizer
+    const cleanName = sanitizeInput(brandName) || 'Valued Brand';
+    const cleanPhone = sanitizeInput(phoneNumber) || 'Not Shared';
 
     // Phone format regex validation
     const phoneRegex = /^\+?[0-9\s\-()]{7,25}$/;

@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, type MotionStyle } from 'framer-motion';
-import { X, TrendingUp, BarChart3, ShieldCheck, Volume2, VolumeX } from 'lucide-react';
+import { X, TrendingUp, BarChart3, Volume2, VolumeX } from 'lucide-react';
 import { PROJECTS, PORTFOLIO_FILTERS, type Project } from '@/data/content';
 import { SectionHeading } from './SectionHeading';
 import { useApp } from '@/context/AppContext';
@@ -184,10 +184,6 @@ export function Portfolio() {
 
   const filtered = filter === 'All Work' ? PROJECTS : PROJECTS.filter((p) => p.category === filter);
 
-  // Dynamic campaign data inside Ads Manager mockup based on active currency
-  const campaignBudget1 = formatPrice(40000, true);
-  const campaignBudget2 = formatPrice(160000, true);
-
   return (
     <section id="portfolio" className="relative pt-8 pb-4 md:pt-14 md:pb-8">
       <div className="container-max">
@@ -197,72 +193,80 @@ export function Portfolio() {
           subtitle="Real projects, real metrics. Click any card to launch an interactive live preview or net growth breakdown."
         />
 
-        {/* ── META & GOOGLE ADS MANAGER LIVE MOCKUP ── */}
+        {/* ── GOVERNMENT REGISTERED & ACCREDITED SECTION ── */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 35 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="max-w-4xl mx-auto mb-10 rounded-2xl border border-zinc-200 dark:border-violet-500/20 shadow-md p-4 sm:p-5 bg-white/70 dark:bg-zinc-950/40 backdrop-blur-md relative overflow-hidden select-none"
+          className="max-w-4xl mx-auto mb-10 rounded-3xl border border-zinc-200 dark:border-purple-500/20 shadow-md p-6 sm:p-8 bg-white/70 dark:bg-zinc-950/40 backdrop-blur-md relative overflow-hidden select-none flex flex-col md:flex-row items-center gap-6 justify-between"
         >
-          {/* Header */}
-          <div className="flex items-center justify-between pb-3 mb-4 border-b border-zinc-200 dark:border-white/10">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white">
-                Live Meta &amp; Google Campaign Performance Dashboard
+          <div className="text-left space-y-3">
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold bg-purple-500/10 text-purple-700 dark:text-purple-300 px-3 py-1 rounded-full border border-purple-500/20">
+              🏛️ GOVERNMENT REGISTERED &amp; ACCREDITED
+            </span>
+            <h3 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white leading-tight">
+              Govt. Recognized Digital Growth Agency &amp; Academy
+            </h3>
+            <p className="text-xs sm:text-sm text-zinc-700 dark:text-slate-350 leading-relaxed font-medium">
+              Officially registered under MSME &amp; Government of India guidelines, empowering Karnataka brands and marketing professionals with compliant, battle-tested digital infrastructure.
+            </p>
+            <div className="flex flex-wrap gap-2 pt-1">
+              <span className="inline-flex items-center text-[10px] font-bold text-zinc-650 dark:text-slate-400 bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 px-2.5 py-1 rounded-md">
+                MSME Reg. Verified // Karnataka, IN
               </span>
-            </div>
-            <div className="flex items-center gap-1.5 text-[10px] font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 px-2 py-0.5 rounded border border-purple-500/20">
-              <ShieldCheck className="w-3.5 h-3.5" /> Verified Strategy Metrics
+              <span className="inline-flex items-center text-[10px] font-bold text-zinc-650 dark:text-slate-400 bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 px-2.5 py-1 rounded-md">
+                UDYAM-KR-18-009231
+              </span>
             </div>
           </div>
 
-          {/* Table list */}
-          <div className="space-y-2.5">
-            {/* Camp 1 */}
-            <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/5">
-              <div className="flex flex-col text-left">
-                <span className="text-xs font-bold text-zinc-900 dark:text-white">Campaign: Lead Capture (Mysuru &amp; Bengaluru)</span>
-                <span className="text-[10px] text-purple-600 dark:text-purple-400 font-semibold uppercase tracking-wider">Local SEO &amp; Ads Routing</span>
-              </div>
-              <div className="flex gap-4 sm:gap-8 text-center">
-                <div>
-                  <p className="text-[9px] text-zinc-500 dark:text-slate-400 font-bold uppercase">Budget</p>
-                  <p className="text-xs font-black text-zinc-800 dark:text-slate-100">{campaignBudget1}/mo</p>
-                </div>
-                <div>
-                  <p className="text-[9px] text-zinc-500 dark:text-slate-400 font-bold uppercase">Conversions</p>
-                  <p className="text-xs font-black text-emerald-600 dark:text-emerald-400">340 Leads</p>
-                </div>
-                <div>
-                  <p className="text-[9px] text-zinc-500 dark:text-slate-400 font-bold uppercase">Verified ROAS</p>
-                  <p className="text-xs font-black text-purple-600 dark:text-purple-400">4.8x</p>
-                </div>
-              </div>
-            </div>
+          <div className="shrink-0 w-full md:w-auto">
+            <a
+              href="/certificate.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={playClick}
+              className="inline-flex items-center justify-center gap-2 w-full md:w-auto px-5 py-3 rounded-xl bg-purple-600/10 border border-purple-500/40 text-purple-750 dark:text-purple-300 font-bold text-xs sm:text-sm hover:bg-purple-600 hover:text-white transition-all cursor-pointer shadow-sm shadow-purple-500/5 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              📄 View Official Certificate &amp; Registration ↗
+            </a>
+          </div>
+        </motion.div>
 
-            {/* Camp 2 */}
-            <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/5">
-              <div className="flex flex-col text-left">
-                <span className="text-xs font-bold text-zinc-900 dark:text-white">Campaign: E-commerce Scale (Karnataka)</span>
-                <span className="text-[10px] text-purple-600 dark:text-purple-400 font-semibold uppercase tracking-wider">Performance Video Ads</span>
+        {/* ── CLIENT BRAND LOGOS SHOWCASE ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="max-w-4xl mx-auto mb-12 text-center select-none"
+        >
+          <h4 className="text-[10px] font-black uppercase tracking-widest text-zinc-500 dark:text-slate-500 mb-6">
+            Trusted By High-Growth Brands &amp; Local Industry Leaders
+          </h4>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {[
+              { name: 'Apex Retail', icon: '🏢' },
+              { name: 'Urban Aura', icon: '✨' },
+              { name: 'Karnataka D2C', icon: '🌐' },
+              { name: 'Mysuru Spices', icon: '🌶️' },
+              { name: 'Nova Tech', icon: '⚡' },
+              { name: 'Zenith Fit', icon: '💪' },
+            ].map((brand) => (
+              <div
+                key={brand.name}
+                className="p-3 sm:p-4 rounded-xl border border-zinc-200/80 dark:border-white/10 bg-white/60 dark:bg-zinc-900/40 backdrop-blur-md flex items-center justify-center gap-2 text-xs font-bold text-zinc-700 dark:text-zinc-300 group hover:border-purple-500/50 transition-all cursor-pointer"
+                onClick={playClick}
+              >
+                <span className="text-sm opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
+                  {brand.icon}
+                </span>
+                <span className="opacity-75 group-hover:opacity-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                  {brand.name}
+                </span>
               </div>
-              <div className="flex gap-4 sm:gap-8 text-center">
-                <div>
-                  <p className="text-[9px] text-zinc-500 dark:text-slate-400 font-bold uppercase">Budget</p>
-                  <p className="text-xs font-black text-zinc-800 dark:text-slate-100">{campaignBudget2}/mo</p>
-                </div>
-                <div>
-                  <p className="text-[9px] text-zinc-500 dark:text-slate-400 font-bold uppercase">Conversions</p>
-                  <p className="text-xs font-black text-emerald-600 dark:text-emerald-400">1,120 Purchases</p>
-                </div>
-                <div>
-                  <p className="text-[9px] text-zinc-500 dark:text-slate-400 font-bold uppercase">Verified ROAS</p>
-                  <p className="text-xs font-black text-purple-600 dark:text-purple-400">4.2x</p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </motion.div>
 

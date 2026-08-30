@@ -60,35 +60,23 @@ export const Hero: React.FC = () => {
       id="hero"
       className="hero-section relative min-h-screen w-full flex flex-col justify-between overflow-hidden bg-[#030305] text-white px-6 md:px-16 py-8"
     >
-      {/* Exact 3D Background Video Container */}
-      <div className="video-container absolute inset-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none -z-10">
         <video
           id="heroVideo"
           autoPlay
+          loop
           muted
           playsInline
-          loop
           preload="auto"
           className="w-full h-full object-cover"
-          ref={(videoEl) => {
-            (videoRef as React.MutableRefObject<HTMLVideoElement | null>).current = videoEl;
-            if (videoEl) {
-              videoEl.currentTime = 0;
-              videoEl.play().catch((err) => {
-                console.warn("Autoplay handler caught:", err);
-              });
-            }
-          }}
         >
           <source
             src="https://strvid.nyc3.cdn.digitaloceanspaces.com/cloudinary/portfolio_hero_bg_zuhahj.webm"
             type="video/webm"
           />
         </video>
-
-        {/* Exact Video Overlay Gradient */}
         <div
-          className="video-overlay absolute inset-0"
+          className="absolute inset-0"
           style={{
             background:
               "linear-gradient(90deg, rgba(5, 5, 8, 0.95) 0%, rgba(29, 29, 53, 0.182) 40%, rgba(5, 5, 8, 0.4) 100%)",

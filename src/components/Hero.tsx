@@ -66,21 +66,34 @@ export const Hero: React.FC = () => {
       style={{ isolation: 'isolate' }}
     >
       {/* Background Video & Gradient Overlay */}
-      <div className="video-container absolute inset-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none -z-10">
         <video
+          id="heroVideo"
           ref={videoRef}
-          src="https://strvid.nyc3.cdn.digitaloceanspaces.com/cloudinary/portfolio_hero_bg_zuhahj.webm"
+          autoPlay
           muted
           playsInline
-          autoPlay
           loop
-          className="w-full h-full object-cover will-change-transform transition-transform duration-75 ease-out"
+          preload="auto"
+          className="w-full h-full object-cover opacity-60 will-change-transform transition-transform duration-75 ease-out"
           style={{ transform: 'scale(1) translateZ(0)' }}
-        />
-        <div
+          onLoadedMetadata={(e) => {
+            const vid = e.currentTarget;
+            vid.currentTime = 0;
+            vid.play().catch(() => {});
+          }}
+        >
+          <source
+            src="https://strvid.nyc3.cdn.digitaloceanspaces.com/cloudinary/portfolio_hero_bg_zuhahj.webm"
+            type="video/webm"
+          />
+        </video>
+
+        {/* Cinematic Readability Gradient Overlay */}
+        <div 
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(90deg, rgba(5, 5, 8, 0.95) 0%, rgba(29, 29, 53, 0.182) 40%, rgba(5, 5, 8, 0.4) 100%)',
+            background: "linear-gradient(90deg, rgba(3, 3, 5, 0.95) 0%, rgba(20, 15, 38, 0.45) 45%, rgba(3, 3, 5, 0.75) 100%)"
           }}
         />
       </div>

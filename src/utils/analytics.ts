@@ -40,7 +40,7 @@ export function trackGoogleEvent(action: string, params?: AnalyticsParams) {
 }
 
 /**
- * Standardized High-Level Conversion Trackers for ZoneX Growth Hub
+ * Standardized High-Level Conversion Trackers for ZoneX Growth Agency
  */
 export const analytics = {
   // Lead Event (e.g. Audit Claim, Contact Submission)

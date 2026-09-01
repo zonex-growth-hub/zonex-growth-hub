@@ -26,7 +26,7 @@ const GEO_MAP: Record<string, GeoData> = {
     lng: 76.6394,
     phone: "+91 7019371818",
     email: "zonexacdemy@gmail.com",
-    title: "Top Digital Marketing & PPC Ads Agency in Mysuru | ZoneX Hub",
+    title: "Top Digital Marketing & PPC Ads Agency in Mysuru | ZoneX Growth Agency",
     h1: "Top Digital Marketing & PPC Ads Agency in Mysuru",
     desc: "Officially registered MSME digital growth agency in Mysuru. We scale local retail, hospitality, and traditional brands with high-performance paid ads, local SEO, and web ordering engines.",
     marketScope: "Mysuru, Nanjangud, Mandya, Chamarajanagar regional corridors"
@@ -38,7 +38,7 @@ const GEO_MAP: Record<string, GeoData> = {
     lng: 77.5946,
     phone: "+91 7019371818",
     email: "zonexacdemy@gmail.com",
-    title: "Performance Marketing & E-commerce Scaling Bengaluru | ZoneX Hub",
+    title: "Performance Marketing & E-commerce Scaling Bengaluru | ZoneX Growth Agency",
     h1: "Performance Marketing & E-commerce Scaling Bengaluru",
     desc: "High-ROI digital marketing and conversion rate optimization (CRO) engines for Bengaluru startups & D2C brands. We scale Meta/Google ad accounts across Koramangala, HSR Layout, Indiranagar, and Whitefield.",
     marketScope: "Bengaluru Metro, Whitefield, Indiranagar, Koramangala, HSR Layout corridors"
@@ -50,7 +50,7 @@ const GEO_MAP: Record<string, GeoData> = {
     lng: 75.7720,
     phone: "+91 7019371818",
     email: "zonexacdemy@gmail.com",
-    title: "Local Business SEO & Growth Systems Chikkamagaluru | ZoneX Hub",
+    title: "Local Business SEO & Growth Systems Chikkamagaluru | ZoneX Growth Agency",
     h1: "Local Business SEO & Growth Systems Chikkamagaluru",
     desc: "Unlocking organic visibility for tourism, resorts, estate exports, and local businesses in Chikkamagaluru. Deconstruct competition and capture inbound leads with search dominance.",
     marketScope: "Chikkamagaluru, Mudigere, Kadur estate corridors"
@@ -62,7 +62,7 @@ const GEO_MAP: Record<string, GeoData> = {
     lng: 74.8560,
     phone: "+91 7019371818",
     email: "zonexacdemy@gmail.com",
-    title: "SEO Agency & Web Ordering Systems Mangaluru | ZoneX Hub",
+    title: "SEO Agency & Web Ordering Systems Mangaluru | ZoneX Growth Agency",
     h1: "SEO Agency & Web Ordering Systems Mangaluru",
     desc: "Scale your coastal retail, education hub, or export brand with professional search engine optimization and high-CTR local advertising campaigns tailored for Mangaluru.",
     marketScope: "Mangaluru, Udupi, Dakshina Kannada coastal business corridors"
@@ -74,7 +74,7 @@ const GEO_MAP: Record<string, GeoData> = {
     lng: 75.1240,
     phone: "+91 7019371818",
     email: "zonexacdemy@gmail.com",
-    title: "PPC & Lead Generation Agency Hubballi | ZoneX Hub",
+    title: "PPC & Lead Generation Agency Hubballi | ZoneX Growth Agency",
     h1: "PPC & Lead Generation Agency Hubballi-Dharwad",
     desc: "Empowering Hubballi-Dharwad commerce hubs with high-conversion landing pages, automated lead capture pipelines, and targeted B2B paid advertising systems.",
     marketScope: "Hubballi, Dharwad, Belagavi North Karnataka corridors"
@@ -86,7 +86,7 @@ const GEO_MAP: Record<string, GeoData> = {
     lng: 74.4977,
     phone: "+91 7019371818",
     email: "zonexacdemy@gmail.com",
-    title: "Local SEO & Performance Marketing Belagavi | ZoneX Hub",
+    title: "Local SEO & Performance Marketing Belagavi | ZoneX Growth Agency",
     h1: "Local SEO & Performance Marketing Belagavi",
     desc: "Establish absolute search engine dominance and route high-intent local customer queries directly to your sales pipeline with our custom citation networks in Belagavi.",
     marketScope: "Belagavi district, industrial & commercial zones"
@@ -98,7 +98,7 @@ const GEO_MAP: Record<string, GeoData> = {
     lng: 75.5681,
     phone: "+91 7019371818",
     email: "zonexacdemy@gmail.com",
-    title: "Digital Marketing & Brand Building Shivamogga | ZoneX Hub",
+    title: "Digital Marketing & Brand Building Shivamogga | ZoneX Growth Agency",
     h1: "Digital Marketing & Brand Building Shivamogga",
     desc: "From local search footprint optimization to high-hook Instagram reels and YouTube branding videos, we build market leaders in Shivamogga.",
     marketScope: "Shivamogga, Bhadravathi, Malnad regional zones"
@@ -110,7 +110,7 @@ const GEO_MAP: Record<string, GeoData> = {
     lng: 74.7421,
     phone: "+91 7019371818",
     email: "zonexacdemy@gmail.com",
-    title: "Local Search SEO & Google Maps Dominance Udupi | ZoneX Hub",
+    title: "Local Search SEO & Google Maps Dominance Udupi | ZoneX Growth Agency",
     h1: "Local Search SEO & Google Maps Dominance Udupi",
     desc: "Dominate search engine result pages (SERPs) and capture regional tourists, hospitality clients, and retail checkouts with Udupi local citation frameworks.",
     marketScope: "Udupi, Manipal, coastal Karnataka corridors"
@@ -122,7 +122,7 @@ const GEO_MAP: Record<string, GeoData> = {
     lng: 78.9629,
     phone: "+91 7019371818",
     email: "zonexacdemy@gmail.com",
-    title: "National Performance Marketing & E-commerce Scaling India | ZoneX Hub",
+    title: "National Performance Marketing & E-commerce Scaling India | ZoneX Growth Agency",
     h1: "National Performance Marketing & E-commerce Scaling India",
     desc: "Scale your e-commerce storefront or pan-India enterprise with high-ROI Meta & Google PPC ads, server-side tracking solutions, and hyper-profitable sales funnels.",
     marketScope: "Pan-India e-commerce, D2C, and enterprise channels"

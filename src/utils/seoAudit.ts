@@ -1,5 +1,5 @@
 /**
- * ZoneX Growth Hub - Continuous SEO & Keyword Audit Automation Engine
+ * ZoneX Growth Agency - Continuous SEO & Keyword Audit Automation Engine
  * Runs programmatic checks on DOM nodes, metadata, schema, and keyword density
  */
 

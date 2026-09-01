@@ -21,7 +21,7 @@ const ARTICLES: ArticleItem[] = [
     tag: 'Regional SEO & Local Domination',
     tagColor: 'bg-purple-100 text-purple-700 border border-purple-200 dark:bg-purple-950/50 dark:text-purple-300 dark:border-purple-800/50',
     title: 'How Mysuru & Bengaluru Businesses Scale 10x with Hyper-Local SEO & Google Maps Domination',
-    excerpt: 'A deep-dive into how ZoneX Growth Hub captures high-intent local search queries across Karnataka commercial hubs, generating 4x higher inbound customer inquiries.',
+    excerpt: 'A deep-dive into how ZoneX Growth Agency captures high-intent local search queries across Karnataka commercial hubs, generating 4x higher inbound customer inquiries.',
     readTime: '4 min read',
     hub: 'Mysuru (HQ) & Bengaluru',
     points: [

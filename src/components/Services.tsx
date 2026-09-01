@@ -38,7 +38,7 @@ function DesktopServiceCard({ service, index }: { service: typeof SERVICES[numbe
       <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-500 z-0">
         <img
           src={service.image}
-          alt={`ZoneX Growth Hub digital marketing and AI growth service - ${service.title}`}
+          alt={`ZoneX Growth Agency digital marketing and AI growth service - ${service.title}`}
           loading="lazy"
           className="w-full h-full object-cover"
         />

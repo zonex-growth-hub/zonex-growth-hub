@@ -69,7 +69,7 @@ export function BeforeAfter() {
                   <Check className="w-5 h-5 text-purple-600 dark:text-violet-400" />
                 </div>
                 <div>
-                  <h3 className="font-display font-bold text-sm sm:text-base text-purple-900 dark:text-violet-200">With ZoneX Growth Hub</h3>
+                  <h3 className="font-display font-bold text-sm sm:text-base text-purple-900 dark:text-violet-200">With ZoneX Growth Agency</h3>
                   <p className="text-xs text-purple-600 dark:text-violet-400 font-semibold">Growth Partner</p>
                 </div>
               </div>

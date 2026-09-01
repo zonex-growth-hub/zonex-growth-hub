@@ -15,7 +15,7 @@ const SEO_MAP: Record<string, SEOMetadata> = {
     description: "Explore our verified growth metrics, campaign outcomes, and 30-Second video case study breakdowns showing real 4x+ ROAS scaling across Bengaluru & Mysuru."
   },
   roi: {
-    title: "Interactive ROI Calculator & Growth Estimator | ZoneX Hub",
+    title: "Interactive ROI Calculator & Growth Estimator | ZoneX Growth Agency",
     description: "Drag the budget slider to calculate projected website traffic, qualified leads, conversion rates, and net revenue compounding for Indian startups & local brands."
   },
   services: {

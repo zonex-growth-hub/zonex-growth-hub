@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Target } from 'lucide-react';
+import { BookOpen, ChevronDown, Sparkles, MapPin, Search } from 'lucide-react';
 import { SectionHeading } from './SectionHeading';
-import { analytics } from '@/utils/analytics';
+import { useApp } from '@/context/AppContext';
 
 interface ArticleItem {
   id: string;
   tag: string;
-  tagColor: string;
   title: string;
   excerpt: string;
   readTime: string;
@@ -19,7 +18,6 @@ const ARTICLES: ArticleItem[] = [
   {
     id: 'mysuru-digital-marketing-framework',
     tag: 'Regional SEO & Local Domination',
-    tagColor: 'bg-purple-100 text-purple-700 border border-purple-200 dark:bg-purple-950/50 dark:text-purple-300 dark:border-purple-800/50',
     title: 'How Mysuru & Bengaluru Businesses Scale 10x with Hyper-Local SEO & Google Maps Domination',
     excerpt: 'A deep-dive into how ZoneX Growth Agency captures high-intent local search queries across Karnataka commercial hubs, generating 4x higher inbound customer inquiries.',
     readTime: '4 min read',
@@ -32,182 +30,117 @@ const ARTICLES: ArticleItem[] = [
   },
   {
     id: 'meta-google-ads-roas-scaling',
-    tag: 'Performance Advertising',
-    tagColor: 'bg-cyan-100 text-cyan-700 border border-cyan-200 dark:bg-cyan-950/50 dark:text-cyan-300 dark:border-cyan-800/50',
-    title: 'The 4.2x ROAS Meta & Google PPC Playbook for D2C & Regional Enterprises',
-    excerpt: 'Discover the exact creative testing frameworks, dynamic budget allocation methods, and full-funnel tracking architectures we use to scale paid media spend profitably.',
+    tag: 'Performance Media Buying',
+    title: 'Deconstructing 4.2x ROAS Meta & Google PPC Campaign Infrastructure',
+    excerpt: 'Step-by-step breakdown of how our media buyers construct high-ROAS ad sets, perform creative testing sprints, and prevent customer acquisition cost (CAC) inflation.',
     readTime: '5 min read',
-    hub: 'Statewide Karnataka & India',
+    hub: 'Pan-Karnataka & D2C India',
     points: [
-      'High-CTR video hook formulas engineered for short-form attention',
-      'Custom audience segmentation & predictive lifetime value modeling',
-      'Server-side CAPI tracking & zero-leak attribution dashboards',
+      'First-party CAPI server tracking setup for 100% conversion attribution',
+      'Dynamic creative testing (DCT) matrix targeting high-intent cohorts',
+      'Conversion Rate Optimization (CRO) funnels with < 1.2s page load speed',
     ],
   },
   {
-    id: 'ai-business-automation-growth',
-    tag: 'AI Workflows & Web Systems',
-    tagColor: 'bg-emerald-100 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/50 dark:text-emerald-300 dark:border-emerald-800/50',
-    title: 'Next-Gen AI Business Automations & Frictionless Lead Funnels for High Conversion',
-    excerpt: 'Why traditional slow-loading websites lose 60% of paid ad traffic and how lightning-fast React architecture combined with WhatsApp lead triggers compounds conversion rates.',
+    id: 'viral-short-form-video-reels',
+    tag: 'Creative Production & Reels',
+    title: 'High-Retention Video Editing Systems that Drive Organic Reach & Direct Sales',
+    excerpt: 'Why traditional promo videos fail on Instagram & YouTube Shorts, and how high-hook 15-second creative reels turn passive viewers into active buyers.',
     readTime: '3 min read',
-    hub: 'Karnataka Tech Ecosystem',
+    hub: 'Content Studio Mysuru',
     points: [
-      'Sub-second Core Web Vitals performance for maximum Google quality scores',
-      'Automated 2-step WhatsApp inquiry routing (< 5 min response time)',
-      'Programmatic landing page generation for multi-city search capture',
+      '3-Second Visual Pattern Interrupts that stop infinite scrolling',
+      'Native CapCut & Premiere Pro color grading for high-end brand perception',
+      'Direct WhatsApp conversion triggers embedded in video descriptions',
     ],
   },
 ];
 
 export function GrowthInsights() {
-  const [selected, setSelected] = useState<string | null>(null);
+  const { playClick } = useApp();
+  const [openId, setOpenId] = useState<string | null>(ARTICLES[0].id);
 
-  // Dynamically inject Article Schema markup for index crawl on playbook expansion
-  useEffect(() => {
-    const scriptId = 'insights-article-schema';
-    const oldScript = document.getElementById(scriptId);
-    if (oldScript) oldScript.remove();
-
-    if (selected) {
-      const art = ARTICLES.find(a => a.id === selected);
-      if (art) {
-        const schema = {
-          "@context": "https://schema.org",
-          "@type": "TechArticle",
-          "headline": art.title,
-          "description": art.excerpt,
-          "inLanguage": "en",
-          "author": {
-            "@type": "Organization",
-            "name": "ZoneX Growth Agency",
-            "url": "https://www.zonexgrowth-agency.in"
-          },
-          "publisher": {
-            "@type": "Organization",
-            "name": "ZoneX Growth Agency",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://www.zonexgrowth-agency.in/logo-zonex.jpg"
-            }
-          },
-          "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https://www.zonexgrowth-agency.in/#insights"
-          },
-          "datePublished": "2026-08-30",
-          "dateModified": "2026-08-30"
-        };
-        const script = document.createElement('script');
-        script.id = scriptId;
-        script.type = 'application/ld+json';
-        script.innerHTML = JSON.stringify(schema);
-        document.head.appendChild(script);
-      }
-    }
-
-    return () => {
-      const script = document.getElementById(scriptId);
-      if (script) script.remove();
-    };
-  }, [selected]);
-
-  const handleRead = (article: ArticleItem) => {
-    analytics.trackViewContent(`Growth Insight: ${article.title}`, { hub: article.hub });
-    setSelected(selected === article.id ? null : article.id);
-  };
-
-  const handleConsultation = () => {
-    analytics.trackLead('Growth Insight CTA Click');
-    const el = document.getElementById('contact');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  const toggleAccordion = (id: string) => {
+    playClick();
+    setOpenId(openId === id ? null : id);
   };
 
   return (
-    <section id="insights" className="section-pad relative" aria-label="Growth Insights &amp; Digital Marketing Playbooks">
-      <div className="container-max">
+    <section id="insights" className="py-16 md:py-24 relative select-none bg-[#030305]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         <SectionHeading
-          eyebrow="Continuous Knowledge Engine"
-          title={<>Authoritative <span className="gradient-text">Growth Insights</span> &amp; Playbooks</>}
-          subtitle="Programmatically curated strategies on performance advertising, local SEO engineering, and AI automation for regional leaders."
+          eyebrow="Regional Authority & Playbooks"
+          title={<>Karnataka Growth <span className="gradient-text-accent">Playbooks &amp; Insights</span></>}
+          subtitle="Battle-tested digital marketing blueprints engineered for Mysuru, Bengaluru, and pan-India commercial scaling."
         />
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {ARTICLES.map((art, i) => {
-            const isOpen = selected === art.id;
-
+        {/* Playbook Accordion List */}
+        <div className="max-w-4xl mx-auto space-y-4">
+          {ARTICLES.map((article) => {
+            const isOpen = openId === article.id;
             return (
-              <motion.article
-                key={art.id}
-                initial={{ opacity: 0, y: 30 }}
+              <motion.div
+                key={article.id}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="p-6 sm:p-7 flex flex-col justify-between premium-card will-change-transform translate-z-0 group border border-zinc-200 dark:border-white/10"
+                className="rounded-3xl bg-[#0B0B10]/80 backdrop-blur-2xl border border-white/[0.08] overflow-hidden transition-all duration-300"
               >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <span className={`text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full border ${art.tagColor}`}>
-                      {art.tag}
-                    </span>
-                    <span className="text-[11px] text-zinc-500 dark:text-slate-555 font-medium">{art.readTime}</span>
+                <button
+                  type="button"
+                  onClick={() => toggleAccordion(article.id)}
+                  className="w-full p-6 text-left flex items-start justify-between gap-4 cursor-pointer hover:bg-white/[0.02] transition-colors"
+                >
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/30">
+                        {article.tag}
+                      </span>
+                      <span className="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
+                        <MapPin className="w-3 h-3 text-cyan-400" />
+                        {article.hub}
+                      </span>
+                    </div>
+
+                    <h3 className="font-display font-bold text-lg sm:text-xl text-white leading-snug">{article.title}</h3>
                   </div>
 
-                  <h3 className="text-lg sm:text-xl font-bold text-zinc-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-cyan-300 transition-colors leading-snug mb-3">
-                    {art.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-zinc-700 dark:text-slate-400 leading-relaxed mb-4 font-medium">
-                    {art.excerpt}
-                  </p>
-
-                  <div className="flex items-center gap-1.5 text-xs text-purple-600 dark:text-violet-400 font-semibold mb-4">
-                    <Target className="w-3.5 h-3.5" />
-                    <span>Focus: {art.hub}</span>
+                  <div className={`w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-purple-300 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 bg-purple-600 text-white' : ''}`}>
+                    <ChevronDown className="w-4 h-4" />
                   </div>
+                </button>
 
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="overflow-hidden pt-3 pb-2 border-t border-zinc-200 dark:border-white/10"
-                      >
-                        <h4 className="text-xs font-bold uppercase text-purple-600 dark:text-cyan-300 mb-2">Key Execution Highlights:</h4>
-                        <ul className="space-y-2 mb-4">
-                          {art.points.map((pt) => (
-                            <li key={pt} className="flex items-start gap-2 text-xs text-zinc-700 dark:text-slate-300 font-medium">
-                              <span className="w-1.5 h-1.5 rounded-full bg-purple-600 dark:bg-violet-400 mt-1.5 shrink-0" />
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="p-6 pt-0 text-xs sm:text-sm text-slate-300 border-t border-white/5 space-y-4 font-normal">
+                        <p className="leading-relaxed opacity-90">{article.excerpt}</p>
+
+                        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300 block mb-1">Key Growth Action Pillars:</span>
+                          {article.points.map((pt) => (
+                            <div key={pt} className="flex items-center gap-2 text-xs font-medium text-slate-200">
+                              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
                               <span>{pt}</span>
-                            </li>
+                            </div>
                           ))}
-                        </ul>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                <div className="pt-4 border-t border-zinc-200 dark:border-white/10 flex items-center justify-between gap-2">
-                  <button
-                    onClick={() => handleRead(art)}
-                    className="text-xs font-bold text-purple-600 dark:text-violet-400 hover:text-purple-800 dark:hover:text-white flex items-center gap-1 transition-colors cursor-pointer"
-                  >
-                    <span>{isOpen ? 'Show Less' : 'Read Framework'}</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </button>
-
-                  <button
-                    onClick={handleConsultation}
-                    className="px-3.5 py-1.5 rounded-full text-[11px] font-bold bg-purple-100 dark:bg-violet-950/60 hover:bg-purple-600 dark:hover:bg-violet-700 text-purple-750 dark:text-purple-200 hover:text-white border border-purple-200 dark:border-violet-500/30 transition-all cursor-pointer"
-                  >
-                    Apply to My Brand
-                  </button>
-                </div>
-              </motion.article>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
         </div>
+
       </div>
     </section>
   );

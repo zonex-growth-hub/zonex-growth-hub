@@ -1,6 +1,6 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
-import { Star } from 'lucide-react';
+import { Star, ShieldCheck, Award, TrendingUp, CheckCircle2 } from 'lucide-react';
 import { HERO_STATS, type HeroStat } from '@/data/content';
 import { useApp } from '@/context/AppContext';
 
@@ -26,7 +26,6 @@ function useCountUp(target: number, decimals: number, active: boolean, duration 
 function StatCard({ stat, active, index }: { stat: HeroStat; active: boolean; index: number }) {
   const { currency } = useApp();
   
-  // Dynamically calculate and format stats based on selected currency
   const isBudgetStat = index === 0;
   const target = isBudgetStat ? (currency === 'INR' ? 1.2 : 150) : stat.target;
   const decimals = isBudgetStat ? (currency === 'INR' ? 1 : 0) : stat.decimals;
@@ -40,15 +39,15 @@ function StatCard({ stat, active, index }: { stat: HeroStat; active: boolean; in
       initial={{ opacity: 0, y: 30 }}
       animate={active ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="relative rounded-xl sm:rounded-2xl p-2 sm:p-6 text-center overflow-hidden group border border-zinc-200 dark:border-purple-500/20 shadow-md premium-card will-change-transform translate-z-0"
+      className="relative rounded-2xl p-5 text-center overflow-hidden group bg-[#0B0B10]/80 backdrop-blur-2xl border border-white/[0.08] hover:border-purple-500/40 hover:shadow-[0_0_30px_rgba(138,99,248,0.2)] transition-all duration-300"
     >
-      <div className="relative text-sm sm:text-3xl lg:text-4xl font-bold gradient-text flex items-center justify-center gap-0.5 sm:gap-1.5">
-        {stat.star && <Star className="w-3 h-3 sm:w-6 sm:h-6 text-purple-600 dark:text-cyan-400 animate-pulse" fill="currentColor" />}
+      <div className="relative text-2xl sm:text-3xl lg:text-4xl font-bold font-display gradient-text-accent flex items-center justify-center gap-1">
+        {stat.star && <Star className="w-5 h-5 text-cyan-400 animate-pulse fill-cyan-400" />}
         {prefix}
         {display}
         {suffix}
       </div>
-      <div className="relative mt-1 sm:mt-2 text-[9px] sm:text-[13px] lg:text-[15px] text-zinc-700 dark:text-slate-350 font-medium tracking-normal sm:tracking-wide leading-tight text-center">
+      <div className="relative mt-2 text-xs sm:text-sm text-slate-300 font-medium tracking-wide">
         {stat.label}
       </div>
     </motion.div>
@@ -60,13 +59,34 @@ export function HeroStats() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section className="relative pt-2 pb-6 md:pt-4 md:pb-10 px-2 sm:px-6 lg:px-8">
-      <div ref={ref} className="container-max">
-        <div className="grid grid-cols-4 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-5 lg:gap-6 px-1 sm:px-0">
+    <section className="relative pt-4 pb-12 px-4 sm:px-6 lg:px-8 select-none">
+      <div ref={ref} className="max-w-7xl mx-auto space-y-6">
+        
+        {/* Main Stats Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {HERO_STATS.map((stat, i) => (
             <StatCard key={stat.label} stat={stat} active={inView} index={i} />
           ))}
         </div>
+
+        {/* Elite Credibility & Government Registration Strip */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#08080D]/90 backdrop-blur-2xl border border-white/[0.08] flex flex-wrap items-center justify-between gap-4 text-xs font-semibold text-slate-300">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>Government Registered MSME Entity: <strong className="text-white font-mono">UDYAM-KR-18-009231</strong></span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Award className="w-4 h-4 text-purple-400 shrink-0" />
+            <span>Google Partner &amp; Meta Ads Certified Architecture</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-cyan-400 shrink-0" />
+            <span>Pan-Karnataka Operations: <span className="text-white">Mysuru HQ • Bengaluru • Statewide</span></span>
+          </div>
+        </div>
+
       </div>
     </section>
   );

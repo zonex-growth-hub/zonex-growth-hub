@@ -1,20 +1,14 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-} from 'recharts';
-import { DollarSign, Target, TrendingUp, Users, MessageCircle, Calculator } from 'lucide-react';
-import { AGENCY } from '@/data/content';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { DollarSign, Target, TrendingUp, Users, Calculator, ArrowUpRight } from 'lucide-react';
 import { SectionHeading } from './SectionHeading';
-import { analytics } from '@/utils/analytics';
 import { useApp } from '@/context/AppContext';
 
 export function ROICalculator() {
   const { currency, formatPrice, playClick } = useApp();
-
   const isINR = currency === 'INR';
 
-  // Config bounds depending on active currency
   const budgetMin = isINR ? 5000 : 100;
   const budgetMax = isINR ? 500000 : 10000;
   const budgetStep = isINR ? 5000 : 100;
@@ -26,38 +20,21 @@ export function ROICalculator() {
   const [budgetVal, setBudgetVal] = useState(isINR ? 25000 : 300);
   const [targetSalesVal, setTargetSalesVal] = useState(isINR ? 200000 : 2500);
 
-  // Sync state on currency switch
-  const [prevCurrency, setPrevCurrency] = useState(currency);
-  if (currency !== prevCurrency) {
-    setPrevCurrency(currency);
-    if (isINR) {
-      setBudgetVal(budgetVal * 80);
-      setTargetSalesVal(targetSalesVal * 80);
-    } else {
-      setBudgetVal(Math.round(budgetVal / 80));
-      setTargetSalesVal(Math.round(targetSalesVal / 80));
-    }
-  }
-
-  // Convert values back to INR to execute calculations
+  // Convert values back to INR for core calculations
   const budgetInINR = isINR ? budgetVal : budgetVal * 80;
 
   const calc = useMemo(() => {
-    // Realistic conversion rates compounding
     const traffic = Math.round(280 * Math.pow(budgetInINR / 1000, 0.65));
-    const conversionRate = 0.038; // Deployed premium CRO optimization
+    const conversionRate = 0.038;
     const leads = Math.round(traffic * conversionRate);
-
-    // sublinear scaling return on ad spend
     const roas = 2.8 + 1.8 * Math.pow(budgetInINR / 100000, 0.4);
 
-    // compounded chart data over 6 months
     const chartData = Array.from({ length: 6 }, (_, i) => {
-      const growth = 1 + i * 0.15;
+      const growth = 1 + i * 0.18;
       return {
         month: `M${i + 1}`,
-        revenue: Math.round((targetSalesVal * growth)),
-        budget: Math.round((budgetVal * growth)),
+        revenue: Math.round(targetSalesVal * growth),
+        budget: Math.round(budgetVal * growth),
       };
     });
 
@@ -66,186 +43,156 @@ export function ROICalculator() {
     return { traffic, leads, roas, projectedRevenue, chartData };
   }, [budgetInINR, budgetVal, targetSalesVal]);
 
-  const handleBudgetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    playClick();
-    setBudgetVal(Number(e.target.value));
-  };
-
-  const handleSalesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    playClick();
-    setTargetSalesVal(Number(e.target.value));
-  };
-
   return (
-    <section id="roi" className="relative pt-4 pb-4 md:pt-8 md:pb-8">
-      <div className="container-max">
+    <section id="roi" className="py-16 md:py-24 relative select-none bg-[#030305]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         <SectionHeading
-          eyebrow="ROI Estimator"
-          title={<>Interactive <span className="gradient-text">ROI Growth</span> Calculator</>}
-          subtitle="Built for Indian startups &amp; small businesses. Drag the sliders to see realistic projections for your budget."
+          eyebrow="FinTech Revenue Simulator"
+          title={<>Interactive <span className="gradient-text-accent">ROI Trading Console</span></>}
+          subtitle="Built for ambitious Indian brands &amp; startups. Drag the budget sliders to project realistic revenue multi-folds."
         />
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Controls */}
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Controls Panel */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="glass-strong rounded-3xl p-6 sm:p-8"
+            className="lg:col-span-5 bg-[#0B0B10]/90 backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-8 space-y-8 shadow-2xl"
           >
-            <div className="space-y-8">
-              {/* Budget Slider */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <label className="flex items-center gap-2 text-sm font-bold text-zinc-900 dark:text-white">
-                    <DollarSign className="w-4 h-4 text-purple-600 dark:text-violet-400" />
-                    Monthly Marketing Budget
-                  </label>
-                  <span className="text-xl font-bold gradient-text">{formatPrice(isINR ? budgetVal : budgetVal * 80)}</span>
-                </div>
-                <input
-                  type="range"
-                  min={budgetMin}
-                  max={budgetMax}
-                  step={budgetStep}
-                  value={budgetVal}
-                  onChange={handleBudgetChange}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-zinc-650 dark:text-slate-500 mt-2 font-medium">
-                  <span>{formatPrice(isINR ? budgetMin : budgetMin * 80, true)}</span>
-                  <span>{formatPrice(isINR ? budgetMax : budgetMax * 80, true)}</span>
-                </div>
+            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+              <div className="flex items-center gap-2">
+                <Calculator className="w-5 h-5 text-purple-400" />
+                <span className="font-display font-bold text-sm text-white uppercase tracking-wider">Trading Console</span>
               </div>
-
-              {/* Target Sales Slider */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <label className="flex items-center gap-2 text-sm font-bold text-zinc-900 dark:text-white">
-                    <Target className="w-4 h-4 text-purple-600 dark:text-violet-400" />
-                    Target Monthly Sales
-                  </label>
-                  <span className="text-xl font-bold gradient-text">{formatPrice(isINR ? targetSalesVal : targetSalesVal * 80)}</span>
-                </div>
-                <input
-                  type="range"
-                  min={salesMin}
-                  max={salesMax}
-                  step={salesStep}
-                  value={targetSalesVal}
-                  onChange={handleSalesChange}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-zinc-650 dark:text-slate-500 mt-2 font-medium">
-                  <span>{formatPrice(isINR ? salesMin : salesMin * 80, true)}</span>
-                  <span>{formatPrice(isINR ? salesMax : salesMax * 80, true)}</span>
-                </div>
-              </div>
-
-              {/* Results Grid */}
-              <div className="grid grid-cols-2 gap-4 pt-2 select-none">
-                <div className="bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-4 shadow-sm">
-                  <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-slate-400 mb-1 font-semibold">
-                    <Users className="w-3.5 h-3.5 text-purple-600 dark:text-violet-400" /> 
-                    Projected Visitors
-                  </div>
-                  <div className="text-2xl font-bold text-purple-600 dark:text-violet-400">{calc.traffic.toLocaleString()}</div>
-                  <div className="text-[10px] text-zinc-550 dark:text-slate-500 font-medium">visitors / month</div>
-                </div>
-
-                <div className="bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-4 shadow-sm">
-                  <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-slate-400 mb-1 font-semibold">
-                    <TrendingUp className="w-3.5 h-3.5 text-purple-600 dark:text-violet-400" /> 
-                    High-Intent Leads
-                  </div>
-                  <div className="text-2xl font-bold text-purple-600 dark:text-violet-400">{calc.leads.toLocaleString()}</div>
-                  <div className="text-[10px] text-zinc-550 dark:text-slate-500 font-medium">leads / month</div>
-                </div>
-
-                <div className="bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-4 shadow-sm">
-                  <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-slate-400 mb-1 font-semibold">
-                    <Calculator className="w-3.5 h-3.5 text-purple-600 dark:text-violet-400" /> 
-                    Estimated ROAS
-                  </div>
-                  <div className="text-2xl font-bold text-purple-600 dark:text-violet-400">{calc.roas.toFixed(1)}x</div>
-                  <div className="text-[10px] text-zinc-550 dark:text-slate-500 font-medium">return on ad spend</div>
-                </div>
-
-                <div className="bg-white/70 dark:bg-zinc-900/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-4 shadow-sm">
-                  <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-slate-400 mb-1 font-semibold">
-                    <DollarSign className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" /> 
-                    Projected Revenue
-                  </div>
-                  <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">{formatPrice(isINR ? calc.projectedRevenue : calc.projectedRevenue * 80, true)}</div>
-                  <div className="text-[10px] text-zinc-550 dark:text-slate-500 font-medium font-semibold">estimated compounds</div>
-                </div>
-              </div>
-
-              {/* WhatsApp CTA */}
-              <a
-                href={AGENCY.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => {
-                  playClick();
-                  analytics.trackInitiateCheckout('ROI Strategy Claim on WhatsApp', { budget: budgetVal, targetSales: targetSalesVal });
-                }}
-                className="btn-glow w-full cursor-pointer flex items-center justify-center gap-2 text-xs uppercase tracking-wider font-bold py-4"
-              >
-                <MessageCircle className="w-5 h-5" />
-                Get Strategy for My Budget on WhatsApp →
-              </a>
+              <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">LIVE ENGINE</span>
             </div>
+
+            {/* Budget Slider */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                  <DollarSign className="w-4 h-4 text-purple-400" />
+                  Monthly Ad Budget
+                </label>
+                <span className="text-xl font-bold font-display text-white">{formatPrice(isINR ? budgetVal : budgetVal * 80)}</span>
+              </div>
+              <input
+                type="range"
+                min={budgetMin}
+                max={budgetMax}
+                step={budgetStep}
+                value={budgetVal}
+                onChange={(e) => { playClick(); setBudgetVal(Number(e.target.value)); }}
+                className="w-full accent-purple-500 bg-white/10 rounded-lg h-2 cursor-pointer"
+              />
+              <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+                <span>{formatPrice(isINR ? budgetMin : budgetMin * 80, true)}</span>
+                <span>{formatPrice(isINR ? budgetMax : budgetMax * 80, true)}</span>
+              </div>
+            </div>
+
+            {/* Target Revenue Slider */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                  <Target className="w-4 h-4 text-cyan-400" />
+                  Target Monthly Revenue
+                </label>
+                <span className="text-xl font-bold font-display text-cyan-300">{formatPrice(isINR ? targetSalesVal : targetSalesVal * 80)}</span>
+              </div>
+              <input
+                type="range"
+                min={salesMin}
+                max={salesMax}
+                step={salesStep}
+                value={targetSalesVal}
+                onChange={(e) => { playClick(); setTargetSalesVal(Number(e.target.value)); }}
+                className="w-full accent-cyan-400 bg-white/10 rounded-lg h-2 cursor-pointer"
+              />
+              <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+                <span>{formatPrice(isINR ? salesMin : salesMin * 80, true)}</span>
+                <span>{formatPrice(isINR ? salesMax : salesMax * 80, true)}</span>
+              </div>
+            </div>
+
+            {/* Live Metrics Grid */}
+            <div className="grid grid-cols-2 gap-4 pt-2">
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Target Traffic</span>
+                <span className="text-lg font-bold text-white font-mono">{calc.traffic.toLocaleString()} Visits</span>
+              </div>
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Inbound Leads</span>
+                <span className="text-lg font-bold text-emerald-400 font-mono">{calc.leads.toLocaleString()} Leads</span>
+              </div>
+            </div>
+
           </motion.div>
 
-          {/* Chart */}
+          {/* Chart & Projections Display */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="glass-strong rounded-3xl p-6 sm:p-8 flex flex-col"
+            className="lg:col-span-7 bg-[#0B0B10]/90 backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl"
           >
-            <h3 className="font-display font-bold text-lg mb-1 text-zinc-900 dark:text-white">6-Month Projected Revenue Growth</h3>
-            <p className="text-sm text-zinc-600 dark:text-slate-400 mb-6 font-medium">Compounding growth model based on your inputs</p>
-            <div className="flex-1 min-h-[300px]">
+            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-purple-400 block">6-Month Scaling Projection</span>
+                <h3 className="text-lg font-bold font-display text-white">Compounding Sales Curve</h3>
+              </div>
+              <div className="text-right">
+                <span className="text-[10px] font-bold uppercase text-slate-400 block">Est. ROAS Multiplier</span>
+                <span className="text-xl font-bold font-display text-emerald-400">{calc.roas.toFixed(1)}x ROAS</span>
+              </div>
+            </div>
+
+            {/* Recharts Curve Display */}
+            <div className="h-64 w-full pt-2">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={calc.chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <AreaChart data={calc.chartData}>
                   <defs>
-                    <linearGradient id="revGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.5} />
-                      <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="budGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#00F0FF" stopOpacity={0.3} />
-                      <stop offset="100%" stopColor="#00F0FF" stopOpacity={0} />
+                    <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#8A63F8" stopOpacity={0.6}/>
+                      <stop offset="95%" stopColor="#8A63F8" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                  <XAxis dataKey="month" tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
-                  <YAxis 
-                    tick={{ fill: '#94a3b8', fontSize: 11 }} 
-                    axisLine={false} 
-                    tickLine={false} 
-                    tickFormatter={(v) => formatPrice(isINR ? v * 1000 : v * 80000, true)} 
-                  />
+                  <XAxis dataKey="month" stroke="#666" fontSize={11} />
+                  <YAxis stroke="#666" fontSize={11} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
                   <Tooltip
-                    contentStyle={{ background: 'rgba(11,15,25,0.95)', border: '1px solid rgba(139,92,246,0.25)', borderRadius: '12px', fontSize: '13px' }}
-                    labelStyle={{ color: '#8B5CF6' }}
-                    formatter={(value: string | number) => [formatPrice(isINR ? Number(value) * 1000 : Number(value) * 80, true), 'Value']}
+                    contentStyle={{ backgroundColor: '#07070B', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                    labelStyle={{ color: '#fff', fontWeight: 'bold' }}
                   />
-                  <Area type="monotone" dataKey="revenue" stroke="#8B5CF6" strokeWidth={2.5} fill="url(#revGradient)" />
-                  <Area type="monotone" dataKey="budget" stroke="#00F0FF" strokeWidth={2} fill="url(#budGradient)" />
+                  <Area type="monotone" dataKey="revenue" stroke="#8A63F8" strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex items-center justify-center gap-6 mt-4 text-xs font-semibold select-none">
-              <span className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-purple-500" /> Revenue Target</span>
-              <span className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-cyan-400" /> Marketing Spend</span>
+
+            {/* Bottom Callout */}
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-900/30 to-indigo-900/30 border border-purple-500/30 flex items-center justify-between gap-4">
+              <div>
+                <span className="text-[10px] font-bold text-purple-300 uppercase tracking-wider block">Projected 6-Mo Cumulative Revenue</span>
+                <span className="text-xl font-extrabold text-white font-display">{formatPrice(isINR ? calc.projectedRevenue : calc.projectedRevenue * 80)}</span>
+              </div>
+              <a
+                href="#contact"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#8A63F8] to-[#5C43FA] hover:from-[#9C7AFA] hover:to-[#6D56FB] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer"
+              >
+                <span>Lock Strategy</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </a>
             </div>
+
           </motion.div>
+
         </div>
+
       </div>
     </section>
   );

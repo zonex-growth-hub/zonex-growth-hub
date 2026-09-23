@@ -17,7 +17,6 @@ import { SEOManager } from '@/components/SEOManager';
 import { GeoLanding } from '@/components/GeoLanding';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 
-// Lazy-loaded components for optimal bundle tree-shaking and chunk split sizes
 const ROICalculator = lazy(() => import('@/components/ROICalculator'));
 const BeforeAfter = lazy(() => import('@/components/BeforeAfter'));
 const TechMarquee = lazy(() => import('@/components/TechMarquee'));
@@ -29,9 +28,9 @@ const Contact = lazy(() => import('@/components/Contact'));
 
 function SectionLoader() {
   return (
-    <div className="py-14 flex items-center justify-center text-zinc-500 dark:text-zinc-400 select-none">
+    <div className="py-14 flex items-center justify-center text-slate-400 select-none bg-[#030305]">
       <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin mr-2" />
-      <span className="text-[10px] uppercase font-bold tracking-widest">Loading Segment...</span>
+      <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">Loading Segment...</span>
     </div>
   );
 }
@@ -43,7 +42,6 @@ function AppContent() {
   const [showExitModal, setShowExitModal] = useState(false);
   const [exitEmail, setExitEmail] = useState('');
 
-  // Client-Side Programmatic SEO Router State
   const [currentRoute, setCurrentRoute] = useState(window.location.pathname);
 
   useEffect(() => {
@@ -60,9 +58,8 @@ function AppContent() {
     window.scrollTo(0, 0);
   };
 
-  // 1. Lenis Smooth Scroll — disabled on touch/mobile devices to prevent scroll lockup
+  // Lenis Smooth Scroll — disabled on touch/mobile
   useEffect(() => {
-    // Touch devices have their own native smooth scroll — Lenis conflicts with it
     const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
     if (isTouchDevice) return;
 
@@ -83,7 +80,6 @@ function AppContent() {
     }
     const rafId = requestAnimationFrame(raf);
 
-    // Track scroll progress with passive listener to prevent touch blockages
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (totalHeight > 0) {
@@ -92,7 +88,6 @@ function AppContent() {
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // Exit Intent Modal Trigger (Desktop boundaries)
     const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY < 5) {
         if (!sessionStorage.getItem('exit-intent-shown')) {
@@ -111,7 +106,6 @@ function AppContent() {
     };
   }, []);
 
-  // On touch devices, still track scroll progress and exit intent
   useEffect(() => {
     const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
     if (!isTouchDevice) return;
@@ -126,7 +120,6 @@ function AppContent() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 2. Social Proof Live Notification Toasts Loop with useEffect memory safety cleanups
   useEffect(() => {
     const messages = [
       "🔥 E-Commerce Brand scaled to 4.2x ROAS in Mysuru!",
@@ -148,7 +141,7 @@ function AppContent() {
       setToast(messages[index]);
       index = (index + 1) % messages.length;
       autoDismissTimeout = setTimeout(() => setToast(null), 5000);
-    }, 25000);
+    }, 28000);
 
     return () => {
       clearTimeout(initialTimeout);
@@ -160,21 +153,19 @@ function AppContent() {
   const handleExitModalSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     playClick();
-
-    // Sanitization: use the custom XSS/HTML sanitizer
     const cleanEmail = sanitizeInput(exitEmail);
-
-    const msg = encodeURIComponent(`Hi ZoneX Growth Agency! 👋\n\nI want to access the exclusive 2026 E-commerce & Brand Scaling Playbook.\n\nMy email: ${cleanEmail}`);
-    window.open(`https://wa.me/917019371818?text=${msg}`, '_blank', 'noopener,noreferrer');
-    setShowExitModal(false);
+    if (cleanEmail) {
+      window.open(`https://wa.me/917019371818?text=Hi%20ZoneX!%20I%20requested%20the%20Brand%20Scaling%20Playbook%20for%20${encodeURIComponent(cleanEmail)}`, '_blank');
+      setShowExitModal(false);
+    }
   };
 
   const isGeoRoute = ['/mysuru', '/bengaluru', '/chikkamagaluru', '/mangaluru', '/hubballi', '/belagavi', '/shivamogga', '/udupi', '/india'].includes(currentRoute.toLowerCase());
 
   return (
-    <div className="min-h-screen bg-[#EDEEF5] text-zinc-900 dark:bg-[#030307] dark:text-white selection:bg-[#7c3aed] selection:text-white transition-colors duration-300" style={{ overflowX: 'clip' }}>
+    <div className="min-h-screen bg-[#030305] text-white selection:bg-[#8A63F8] selection:text-white relative font-sans" style={{ overflowX: 'clip' }}>
       
-      {/* Top Announcement Marquee Banner */}
+      {/* Top Announcement Marquee Ticker */}
       <div className="w-full bg-gradient-to-r from-purple-950/80 via-purple-700/50 to-indigo-950/80 border-b border-purple-500/30 text-purple-200 text-xs sm:text-sm font-medium py-2 px-4 overflow-hidden relative z-50 backdrop-blur-md">
         <div className="flex items-center gap-8 whitespace-nowrap animate-marquee">
           <span>🚀 Q3 High-Performance Sprints Live — Scaling Ambitious Brands to 4x+ ROAS</span>
@@ -183,22 +174,15 @@ function AppContent() {
           <span>✦</span>
           <span>⚡ Meta Ads &amp; Google PPC Media Buying Systems</span>
           <span>✦</span>
-          <span>🔥 Direct WhatsApp Strategy Booking Active</span>
+          <span>🔥 Direct WhatsApp Strategy Booking Active (+91 7019371818)</span>
           <span>✦</span>
-          {/* Duplicate set for infinite looping */}
           <span>🚀 Q3 High-Performance Sprints Live — Scaling Ambitious Brands to 4x+ ROAS</span>
-          <span>✦</span>
-          <span>📍 Operating Across Mysuru, Bengaluru &amp; Pan-Karnataka</span>
-          <span>✦</span>
-          <span>⚡ Meta Ads &amp; Google PPC Media Buying Systems</span>
-          <span>✦</span>
-          <span>🔥 Direct WhatsApp Strategy Booking Active</span>
         </div>
       </div>
 
       {/* Neon Scroll Progress Glow Line */}
       <div 
-        className="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 shadow-[0_0_10px_#a855f7] z-[100] transition-all duration-100"
+        className="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 shadow-[0_0_15px_#8A63F8] z-[100] transition-all duration-100"
         style={{ width: `${scrollProgress}%` }}
       />
 
@@ -209,7 +193,7 @@ function AppContent() {
       {isGeoRoute ? (
         <GeoLanding citySlug={currentRoute.replace('/', '')} onBack={() => navigateTo('/')} />
       ) : (
-        <main>
+        <main className="bg-[#030305]">
           <Hero />
           <HeroStats />
           <Portfolio />
@@ -229,37 +213,37 @@ function AppContent() {
       <Footer />
       <FloatingWhatsApp />
 
-      {/* Social Proof Live Notification Toast — top-right on mobile, bottom-left on desktop */}
+      {/* Social Proof Live Notification Toast */}
       {toast && (
-        <div className="fixed top-16 right-4 sm:top-auto sm:bottom-6 sm:left-6 sm:right-auto z-[80] animate-fade-up max-w-[calc(100vw-2rem)] sm:max-w-sm rounded-2xl bg-white/90 dark:bg-zinc-950/85 backdrop-blur-xl border border-zinc-200/80 dark:border-purple-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.15)] p-3 sm:p-4 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 shrink-0">
+        <div className="fixed top-16 right-4 sm:top-auto sm:bottom-6 sm:left-6 sm:right-auto z-[80] animate-fade-up max-w-[calc(100vw-2rem)] sm:max-w-sm rounded-2xl bg-[#0B0B10]/90 backdrop-blur-2xl border border-white/10 p-4 flex items-center gap-3 shadow-2xl">
+          <div className="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 shrink-0">
             <Bell className="w-4 h-4 animate-bounce" />
           </div>
           <div>
-            <p className="text-xs font-bold text-zinc-900 dark:text-white leading-tight">Live Proof</p>
-            <p className="text-[11px] text-zinc-700 dark:text-zinc-300 font-medium mt-0.5">{toast}</p>
+            <p className="text-xs font-bold text-white leading-tight">Live Proof</p>
+            <p className="text-[11px] text-slate-300 font-medium mt-0.5">{toast}</p>
           </div>
         </div>
       )}
 
       {/* Exit-Intent Playbook Modal */}
       {showExitModal && (
-        <div className="fixed inset-0 z-[90] bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="relative w-full max-w-md bg-white/90 dark:bg-zinc-950/80 border border-zinc-200/80 dark:border-purple-500/20 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col">
+        <div className="fixed inset-0 z-[90] bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="relative w-full max-w-md bg-[#07070B] border border-white/10 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col">
             <button 
               onClick={() => { playClick(); setShowExitModal(false); }} 
-              className="absolute top-4 right-4 w-8 h-8 rounded-xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 flex items-center justify-center hover:bg-red-500/10 hover:text-red-500 transition-colors"
+              className="absolute top-4 right-4 w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-red-500/20 hover:text-red-400 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-5 h-5 text-purple-500" />
-              <span className="text-[10px] uppercase font-bold tracking-widest text-purple-600 dark:text-purple-400">Client Resource Access</span>
+              <Sparkles className="w-5 h-5 text-purple-400" />
+              <span className="text-[10px] uppercase font-bold tracking-widest text-purple-300">Client Resource Access</span>
             </div>
-            <h3 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white leading-tight mb-3">
+            <h3 className="text-xl sm:text-2xl font-black font-display text-white leading-tight mb-3">
               Access Exclusive Brand Scaling Playbook
             </h3>
-            <p className="text-xs sm:text-sm text-zinc-650 dark:text-slate-350 leading-relaxed font-medium mb-6">
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium mb-6">
               Enter your email to receive the **2026 E-commerce &amp; Brand Scaling Playbook** containing our exact ads strategy for scaling regional brands in India.
             </p>
             <form onSubmit={handleExitModalSubmit} className="space-y-4">
@@ -269,11 +253,11 @@ function AppContent() {
                 value={exitEmail}
                 onChange={(e) => setExitEmail(e.target.value)}
                 placeholder="Enter your email address"
-                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white placeholder:text-zinc-400 text-xs sm:text-sm focus:outline-none focus:border-purple-500 shadow-sm"
+                className="w-full px-4 py-3 rounded-xl bg-black border border-white/10 text-white placeholder:text-slate-600 text-xs sm:text-sm focus:outline-none focus:border-purple-500"
               />
               <button
                 type="submit"
-                className="w-full py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 shadow-[0_0_20px_rgba(147,51,234,0.3)] transition-all uppercase tracking-wider text-xs flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition-all uppercase tracking-wider text-xs flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20 cursor-pointer"
               >
                 <Download className="w-4 h-4" />
                 Access Exclusive Growth Playbook
@@ -292,7 +276,7 @@ function App() {
     <ErrorBoundary>
       <AppProvider>
         <ThemeProvider>
-          <Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+          <Suspense fallback={<div className="min-h-screen bg-[#030305]" />}>
             <AppContent />
           </Suspense>
         </ThemeProvider>

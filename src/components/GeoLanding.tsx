@@ -136,7 +136,6 @@ export function GeoLanding({ citySlug, onBack }: { citySlug: string; onBack: () 
   useEffect(() => {
     if (!data) return;
 
-    // 1. Dynamic Meta Injection
     document.title = data.title;
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
@@ -146,7 +145,6 @@ export function GeoLanding({ citySlug, onBack }: { citySlug: string; onBack: () 
     }
     metaDesc.setAttribute('content', data.desc);
 
-    // 2. LocalBusiness JSON-LD Schema Injection
     const schemaId = 'geo-local-business-schema';
     const oldSchema = document.getElementById(schemaId);
     if (oldSchema) oldSchema.remove();
@@ -156,13 +154,13 @@ export function GeoLanding({ citySlug, onBack }: { citySlug: string; onBack: () 
       "@graph": [
         {
           "@type": ["LocalBusiness", "MarketingAgency"],
-          "@id": `https://www.zonexgrowth-agency.in/${citySlug.toLowerCase()}#agency`,
+          "@id": `https://zonexgrowth-agency.in/${citySlug.toLowerCase()}#agency`,
           "name": `ZoneX Growth Agency - ${data.city} Hub`,
-          "url": `https://www.zonexgrowth-agency.in/${citySlug.toLowerCase()}`,
+          "url": `https://zonexgrowth-agency.in/${citySlug.toLowerCase()}`,
           "telephone": data.phone,
           "email": data.email,
           "priceRange": "₹₹",
-          "image": "https://www.zonexgrowth-agency.in/logo-zonex.jpg",
+          "image": "https://zonexgrowth-agency.in/logo-zonex.jpg",
           "description": data.desc,
           "address": {
             "@type": "PostalAddress",
@@ -188,19 +186,19 @@ export function GeoLanding({ citySlug, onBack }: { citySlug: string; onBack: () 
         },
         {
           "@type": "BreadcrumbList",
-          "@id": `https://www.zonexgrowth-agency.in/${citySlug.toLowerCase()}#breadcrumbs`,
+          "@id": `https://zonexgrowth-agency.in/${citySlug.toLowerCase()}#breadcrumbs`,
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://www.zonexgrowth-agency.in"
+              "item": "https://zonexgrowth-agency.in"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": `${data.city} Digital Marketing Hub`,
-              "item": `https://www.zonexgrowth-agency.in/${citySlug.toLowerCase()}`
+              "item": `https://zonexgrowth-agency.in/${citySlug.toLowerCase()}`
             }
           ]
         }
@@ -221,9 +219,9 @@ export function GeoLanding({ citySlug, onBack }: { citySlug: string; onBack: () 
 
   if (!data) {
     return (
-      <div className="py-24 text-center select-none min-h-screen flex flex-col items-center justify-center bg-zinc-950 text-white">
-        <h2 className="text-xl font-bold">City Hub Not Found</h2>
-        <button onClick={onBack} className="mt-4 px-4 py-2 bg-purple-600 rounded-xl font-semibold text-xs">
+      <div className="py-24 text-center select-none min-h-screen flex flex-col items-center justify-center bg-[#030305] text-white">
+        <h2 className="text-xl font-bold font-display">City Hub Not Found</h2>
+        <button onClick={onBack} className="mt-4 px-5 py-2.5 bg-purple-600 rounded-xl font-bold text-xs">
           Return to Homepage
         </button>
       </div>
@@ -231,49 +229,49 @@ export function GeoLanding({ citySlug, onBack }: { citySlug: string; onBack: () 
   }
 
   return (
-    <div className="min-h-screen bg-[#EDEEF5] dark:bg-[#030307] text-zinc-900 dark:text-white transition-colors duration-300 pt-24 pb-12">
-      <div className="container-max px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#030305] text-white pt-24 pb-12 select-none">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Navigation Breadcrumb back button */}
-        <div className="mb-6 select-none">
+        <div className="mb-6">
           <button
             onClick={() => { playClick(); onBack(); }}
-            className="inline-flex items-center gap-2 text-xs font-bold text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-white transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 text-xs font-bold text-purple-400 hover:text-white transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" /> Back to main hub
           </button>
         </div>
 
         {/* Hero Section */}
-        <div className="max-w-4xl mx-auto mb-12 rounded-3xl border border-zinc-200 dark:border-purple-500/20 shadow-md p-6 sm:p-10 bg-white/70 dark:bg-zinc-950/40 backdrop-blur-md relative overflow-hidden">
+        <div className="max-w-4xl mx-auto mb-12 rounded-3xl border border-white/[0.08] p-6 sm:p-10 bg-[#0B0B10]/80 backdrop-blur-2xl relative overflow-hidden shadow-2xl">
           <div className="absolute top-4 right-4 flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-300">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#00FF88]" />
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-purple-300">
               Active Regional Sprint
             </span>
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-[10px] font-black tracking-widest text-zinc-500 uppercase">
-              <MapPin className="w-3.5 h-3.5 text-purple-500" />
+            <div className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-slate-400 uppercase">
+              <MapPin className="w-3.5 h-3.5 text-purple-400" />
               <span>Karnataka Digital Growth Nodes</span>
             </div>
             
-            <h1 className="text-2xl sm:text-4xl font-black text-zinc-900 dark:text-white leading-tight">
+            <h1 className="text-2xl sm:text-4xl font-extrabold font-display text-white leading-tight">
               {data.h1}
             </h1>
             
-            <p className="text-sm sm:text-base text-zinc-700 dark:text-slate-350 leading-relaxed font-medium">
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
               {data.desc}
             </p>
 
-            <div className="pt-4 border-t border-zinc-200 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none">
-              <div className="flex items-center gap-1.5 text-[11px] font-bold text-zinc-650 dark:text-slate-400 bg-zinc-150 dark:bg-white/5 px-3 py-1.5 rounded-md border border-zinc-200 dark:border-white/10 shrink-0">
-                <ShieldCheck className="w-4 h-4 text-purple-500" /> MSME UDYAM-KR-18-009231 Registered
+            <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-300 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 shrink-0">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" /> MSME UDYAM-KR-18-009231 Registered
               </div>
               <div className="text-right">
-                <p className="text-[9px] uppercase tracking-wider text-zinc-500 font-black">Market Service Scope</p>
-                <p className="text-xs font-bold text-purple-600 dark:text-purple-400">{data.marketScope}</p>
+                <p className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Market Service Scope</p>
+                <p className="text-xs font-bold text-purple-400">{data.marketScope}</p>
               </div>
             </div>
           </div>
@@ -283,11 +281,11 @@ export function GeoLanding({ citySlug, onBack }: { citySlug: string; onBack: () 
         <div id="contact" className="max-w-4xl mx-auto">
           <SectionHeading
             eyebrow="Frictionless Lead Pipeline"
-            title={<>Apply for a <span className="gradient-text">Direct Growth Strategy</span> proposal</>}
+            title={<>Apply for a <span className="gradient-text-accent">Direct Growth Strategy</span> proposal</>}
             subtitle={`Let our optimization agents analyze your digital footprint in ${data.city}. Complete the 3-step quiz to get custom projections.`}
           />
           <Suspense fallback={
-            <div className="py-8 text-center text-xs text-zinc-500 font-bold select-none animate-pulse">
+            <div className="py-8 text-center text-xs text-slate-400 font-bold select-none animate-pulse">
               Loading Interactive Strategy Quiz...
             </div>
           }>
